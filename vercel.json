@@ -1,6 +1,0 @@
-{
-  "buildCommand": "FORCE_ENV_GENERATE=true npm run env:generate && npm run build",
-  "outputDirectory": "dist/ymi-project/browser",
-  "framework": null,
-  "installCommand": "npm install --legacy-peer-deps"
-}

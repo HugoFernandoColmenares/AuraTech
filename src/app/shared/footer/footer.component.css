@@ -1,8 +1,8 @@
 .footer {
-  background-color: #FAFAFA;
-  border-top: 1px solid #E0E0E0;
+  background-color: var(--sidebar-bg);
+  border-top: 1px solid #d5dde3;
   font-size: 0.75rem;
-  color: #888;
+  color: #5b6775;
 }
 
 .footer p {

@@ -18,7 +18,7 @@
 }
 
 .modal-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 1.5rem;
   color: var(--text-primary, #000000);
 }
@@ -59,9 +59,9 @@
 }
 
 .store-option.active {
-  border-color: var(--primary-color, #6A0DAD);
+  border-color: var(--primary-color, #134e4a);
   background: #F5EEFF;
-  box-shadow: 0 4px 6px -1px rgba(106, 13, 173, 0.1);
+  box-shadow: 0 4px 6px -1px rgba(19, 78, 74, 0.1);
 }
 
 /* Hide native radio button but keep it accessible for keyboard */
@@ -73,7 +73,7 @@
 
 /* Custom focus ring for accessibility */
 .store-option:focus-within {
-  outline: 2px solid var(--primary-color, #6A0DAD);
+  outline: 2px solid var(--primary-color, #134e4a);
   outline-offset: 2px;
 }
 
@@ -114,10 +114,10 @@
 }
 
 .store-categories::-webkit-scrollbar-thumb {
-  background: #C0C0C0;
+  background: #94a3b8;
   border-radius: 0.25rem;
 }
 
 .store-categories::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-color, #6A0DAD);
+  background: var(--primary-color, #134e4a);
 }

@@ -264,7 +264,7 @@ export class ProductsComponent implements OnInit {
       input: 'text',
       inputLabel: 'Name',
       showCancelButton: true,
-      confirmButtonColor: '#D81B60',
+      confirmButtonColor: '#0f766e',
       inputValidator: (value: string) => {
         if (!value) return 'You must enter a name!';
         return null;

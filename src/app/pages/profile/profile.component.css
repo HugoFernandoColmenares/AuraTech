@@ -13,7 +13,7 @@
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--color-accent, #C0C0C0);
+  border: 1px solid var(--color-accent, #94a3b8);
   border-radius: 0.25rem;
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
   width: 100%;
@@ -23,8 +23,8 @@
 }
 
 .profile-card:hover {
-  border-color: var(--color-secondary, #6A0DAD);
-  box-shadow: 0 20px 40px rgba(106, 13, 173, 0.08);
+  border-color: var(--color-secondary, #134e4a);
+  box-shadow: 0 20px 40px rgba(19, 78, 74, 0.08);
 }
 
 /* Header & Avatar Styles */
@@ -37,7 +37,7 @@
   width: 6.5rem;
   height: 6.5rem;
   border-radius: 50%;
-  border: 2px solid var(--color-secondary, #6A0DAD);
+  border: 2px solid var(--color-secondary, #134e4a);
   padding: 0.25rem;
   background-color: var(--color-primary, #FFFFFF);
   transition: transform 0.3s ease;
@@ -59,12 +59,12 @@
   height: 100%;
   border-radius: 50%;
   font-size: 3rem;
-  color: var(--color-secondary, #6A0DAD);
-  background-color: rgba(106, 13, 173, 0.05);
+  color: var(--color-secondary, #134e4a);
+  background-color: rgba(19, 78, 74, 0.05);
 }
 
 .art-deco-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 2rem;
   font-weight: 700;
   letter-spacing: 0.05em;
@@ -73,7 +73,7 @@
 }
 
 .subtitle {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 0.9rem;
   color: #666666;
   letter-spacing: 0.03em;
@@ -92,7 +92,7 @@
 }
 
 .detail-row:hover {
-  background-color: rgba(106, 13, 173, 0.02);
+  background-color: rgba(19, 78, 74, 0.02);
 }
 
 .detail-row:last-child {
@@ -100,7 +100,7 @@
 }
 
 .label {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -109,22 +109,22 @@
 }
 
 .value {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 0.95rem;
   color: #333333;
 }
 
 /* Custom premium badge and links */
 .badge-premium {
-  background-color: rgba(106, 13, 173, 0.07);
-  color: var(--color-secondary, #6A0DAD);
+  background-color: rgba(19, 78, 74, 0.07);
+  color: var(--color-secondary, #134e4a);
   padding: 0.25rem 0.75rem;
   border-radius: 1rem;
   font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border: 1px solid rgba(106, 13, 173, 0.15);
+  border: 1px solid rgba(19, 78, 74, 0.15);
 }
 
 .status-indicator {
@@ -140,7 +140,7 @@
 }
 
 .link-premium {
-  color: var(--color-secondary, #6A0DAD);
+  color: var(--color-secondary, #134e4a);
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s ease, border-bottom 0.3s ease;
@@ -148,8 +148,8 @@
 }
 
 .link-premium:hover {
-  color: #520a87;
-  border-bottom: 1px solid #520a87;
+  color: #115e59;
+  border-bottom: 1px solid #115e59;
 }
 
 /* Form Styles (Edit Mode) */
@@ -162,7 +162,7 @@
 }
 
 .form-group label {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
@@ -173,9 +173,9 @@
 .input-premium {
   width: 100%;
   padding: 0.75rem 1rem;
-  border: 1px solid var(--color-accent, #C0C0C0);
+  border: 1px solid var(--color-accent, #94a3b8);
   border-radius: 0.25rem;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 0.95rem;
   background-color: var(--color-primary, #FFFFFF);
   color: var(--color-tertiary, #000000);
@@ -185,18 +185,18 @@
 
 .input-premium:focus {
   outline: none;
-  border-color: var(--color-secondary, #6A0DAD);
-  box-shadow: 0 0 0 2px rgba(106, 13, 173, 0.1);
+  border-color: var(--color-secondary, #134e4a);
+  box-shadow: 0 0 0 2px rgba(19, 78, 74, 0.1);
 }
 
 /* Button & Action Styles */
 .btn-premium {
   padding: 0.75rem 1.5rem;
-  background-color: var(--color-secondary, #6A0DAD);
+  background-color: var(--color-secondary, #134e4a);
   color: var(--color-primary, #FFFFFF);
-  border: 1px solid var(--color-secondary, #6A0DAD);
+  border: 1px solid var(--color-secondary, #134e4a);
   border-radius: 0.25rem;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -206,8 +206,8 @@
 
 .btn-premium:hover {
   background-color: transparent;
-  color: var(--color-secondary, #6A0DAD);
-  box-shadow: 0 4px 12px rgba(106, 13, 173, 0.15);
+  color: var(--color-secondary, #134e4a);
+  box-shadow: 0 4px 12px rgba(19, 78, 74, 0.15);
 }
 
 .btn-premium:active {
@@ -218,9 +218,9 @@
   padding: 0.75rem 1.5rem;
   background-color: transparent;
   color: var(--color-tertiary, #000000);
-  border: 1px solid var(--color-accent, #C0C0C0);
+  border: 1px solid var(--color-accent, #94a3b8);
   border-radius: 0.25rem;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -258,7 +258,7 @@
 }
 
 .avatar-container--edit {
-  border-color: var(--color-secondary, #6A0DAD);
+  border-color: var(--color-secondary, #134e4a);
 }
 
 .hidden-input {
@@ -285,7 +285,7 @@
 }
 
 .permission-list li {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 0.8125rem;
   color: #444;
   padding-left: 1rem;
@@ -296,6 +296,6 @@
   content: '•';
   position: absolute;
   left: 0;
-  color: var(--color-secondary, #6A0DAD);
+  color: var(--color-secondary, #134e4a);
   font-weight: 700;
 }

@@ -73,7 +73,7 @@
 }
 .recommendation-item:hover {
   transform: translateX(3px);
-  box-shadow: 0 3px 12px rgba(106,13,173,.08);
+  box-shadow: 0 3px 12px rgba(19,78,74,.08);
   border-color: #DDD4F5;
 }
 .rec-icon {

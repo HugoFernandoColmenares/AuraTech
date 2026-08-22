@@ -7,8 +7,8 @@
 
 .sidebar-wrapper {
   width: 16rem;
-  background-color: #FAFAFA;
-  border-right: 1px solid #C0C0C0;
+  background-color: var(--sidebar-bg);
+  border-right: 1px solid #94a3b8;
   flex-shrink: 0;
   overflow-y: auto;
 }

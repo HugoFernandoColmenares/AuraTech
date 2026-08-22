@@ -25,13 +25,13 @@
 
 /* Product Name toggle hint bar */
 .style-name-hint {
-  background: #F8F4FF;
+  background: #f0fdfa;
   border-radius: 0.25rem;
   border: 1px dashed #D1C4E9;
 }
 
 .style-name-hint-text {
-  color: var(--primary-color, #6A0DAD);
+  color: var(--primary-color, #134e4a);
   font-style: italic;
   font-size: 0.75rem;
 }
@@ -50,7 +50,7 @@
 }
 
 .group-header {
-  color: var(--primary-color, #6A0DAD);
+  color: var(--primary-color, #134e4a);
   font-weight: 700;
 }
 
@@ -104,11 +104,11 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--primary-color, #6A0DAD);
+  color: var(--primary-color, #134e4a);
   padding: 0.125rem 0.5rem;
-  border: 1px solid rgba(106, 13, 173, 0.25);
+  border: 1px solid rgba(19, 78, 74, 0.25);
   border-radius: 0.25rem;
-  background: rgba(106, 13, 173, 0.05);
+  background: rgba(19, 78, 74, 0.05);
 }
 
 .kpi-value--muted {
@@ -124,8 +124,8 @@
 }
 
 .kpi-card--collapsible:hover {
-  border-color: rgba(106, 13, 173, 0.22);
-  box-shadow: 0 4px 18px rgba(106, 13, 173, 0.07);
+  border-color: rgba(19, 78, 74, 0.22);
+  box-shadow: 0 4px 18px rgba(19, 78, 74, 0.07);
 }
 
 .kpi-card--collapsible.collapsed {
@@ -154,15 +154,15 @@
 }
 
 .kpi-card--collapsible .kpi-toggle-btn:hover {
-  background: rgba(106, 13, 173, 0.08);
-  color: var(--secondary-color, #6a0dad);
+  background: rgba(19, 78, 74, 0.08);
+  color: var(--secondary-color, #134e4a);
 }
 
 .kpi-card--collapsible .kpi-toggle-btn:focus-visible {
   outline: none;
-  background: rgba(106, 13, 173, 0.1);
-  color: var(--secondary-color, #6a0dad);
-  box-shadow: 0 0 0 2px rgba(106, 13, 173, 0.18);
+  background: rgba(19, 78, 74, 0.1);
+  color: var(--secondary-color, #134e4a);
+  box-shadow: 0 0 0 2px rgba(19, 78, 74, 0.18);
 }
 
 .chevron {
@@ -242,10 +242,10 @@
   width: 1.25rem;
   height: 1.25rem;
   padding: 0;
-  border: 1px solid var(--primary-color, #6A0DAD);
+  border: 1px solid var(--primary-color, #134e4a);
   border-radius: 50%;
   background: var(--color-white, #FFF);
-  color: var(--primary-color, #6A0DAD);
+  color: var(--primary-color, #134e4a);
   font-size: 0.75rem;
   font-weight: 700;
   line-height: 1;
@@ -258,7 +258,7 @@
 
 .kpi-info-btn:hover,
 .kpi-info-btn:focus-visible {
-  background: var(--primary-color, #6A0DAD);
+  background: var(--primary-color, #134e4a);
   color: var(--color-white, #FFF);
   outline: none;
 }

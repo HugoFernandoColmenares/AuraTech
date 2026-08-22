@@ -18,7 +18,7 @@ export class AlertService {
       icon: 'success',
       title,
       text,
-      confirmButtonColor: '#D81B60', // Según DESIGN_GUIDELINES.md (Purple)
+      confirmButtonColor: '#0f766e', // Según DESIGN_GUIDELINES.md (Purple)
       timer: 3000,
       timerProgressBar: true
     });
@@ -48,7 +48,7 @@ export class AlertService {
       icon: 'warning',
       title,
       text,
-      confirmButtonColor: '#D81B60'
+      confirmButtonColor: '#0f766e'
     });
   }
 
@@ -62,7 +62,7 @@ export class AlertService {
       icon: 'info',
       title,
       text,
-      confirmButtonColor: '#D81B60'
+      confirmButtonColor: '#0f766e'
     });
   }
 
@@ -77,7 +77,7 @@ export class AlertService {
         ? items
             .map(i => `<li style="display:flex; justify-content:space-between; padding: 0.4rem 0; border-bottom: 1px solid #f0f0f0;">
                 <span style="font-weight:600;">${i.label}</span>
-                <span style="color:#6A0DAD; font-weight:700;">${i.units.toLocaleString('en-US')} units</span>
+                <span style="color:#134e4a; font-weight:700;">${i.units.toLocaleString('en-US')} units</span>
               </li>`)
             .join('')
         : '<li>No data</li>';
@@ -85,7 +85,7 @@ export class AlertService {
     Swal.fire({
       title: productName,
       html: `
-        <div style="font-family:'Montserrat',sans-serif; text-align:left;">
+        <div style="font-family:'Figtree',sans-serif; text-align:left;">
           <div style="display:flex; gap: 0.5rem; margin-bottom: 1.5rem; justify-content:center;">
              <button id="btn-color" class="swal-filter-btn active">Color</button>
              <button id="btn-size" class="swal-filter-btn">Size</button>
@@ -98,11 +98,11 @@ export class AlertService {
         <style>
           .swal-filter-btn {
             background: #f0f0f0; border: 1px solid #ddd; padding: 0.4rem 0.8rem; border-radius: 2rem;
-            cursor: pointer; font-family: 'Montserrat', sans-serif; font-size: 0.75rem; font-weight: 700;
+            cursor: pointer; font-family: 'Figtree', sans-serif; font-size: 0.75rem; font-weight: 700;
             transition: all 0.2s; color: #666;
           }
           .swal-filter-btn.active {
-            background: #6A0DAD; color: white; border-color: #6A0DAD;
+            background: #134e4a; color: white; border-color: #134e4a;
           }
         </style>
       `,
@@ -126,7 +126,7 @@ export class AlertService {
       },
       icon: 'info',
       confirmButtonText: 'Close',
-      confirmButtonColor: '#6A0DAD',
+      confirmButtonColor: '#134e4a',
       width: 500,
     });
   }
@@ -143,8 +143,8 @@ export class AlertService {
       text,
       icon: 'question',
       showCancelButton: true,
-      confirmButtonColor: '#D81B60',
-      cancelButtonColor: '#C0C0C0', // Silver/Chrome
+      confirmButtonColor: '#0f766e',
+      cancelButtonColor: '#94a3b8', // Silver/Chrome
       confirmButtonText: 'Yes, continue',
       cancelButtonText: 'Cancel'
     });
@@ -163,9 +163,9 @@ export class AlertService {
     return Swal.fire({
       title: 'Inventory Status',
       html: `
-        <div style="text-align: left; font-family: 'Montserrat', sans-serif; font-size: 0.9rem; line-height: 1.8;">
+        <div style="text-align: left; font-family: 'Figtree', sans-serif; font-size: 0.9rem; line-height: 1.8;">
           <p style="border-bottom: 1px solid #eee; padding-bottom: 0.5rem;">
-            <strong style="font-size: 1.5rem; color: #6A0DAD;">${totalSKUs.toLocaleString()}</strong> total SKUs loaded
+            <strong style="font-size: 1.5rem; color: #134e4a;">${totalSKUs.toLocaleString()}</strong> total SKUs loaded
           </p>
           <p>
             📦 <strong>${total.toLocaleString()}</strong> total units <strong>Available</strong>
@@ -175,7 +175,7 @@ export class AlertService {
           </p>
           <hr style="border: none; border-top: 1px solid #eee;">
           <p>
-            🚨 <strong style="color: #D81B60;">${urgent}</strong> items are <strong>Urgent</strong> (≤${urgentThreshold} units available)
+            🚨 <strong style="color: #0f766e;">${urgent}</strong> items are <strong>Urgent</strong> (≤${urgentThreshold} units available)
           </p>
           <p>
             ⚠️ <strong style="color: #E65100;">${priority}</strong> items are <strong>Priority</strong> (<${priorityThreshold} units available)
@@ -184,7 +184,7 @@ export class AlertService {
       `,
       icon: urgent > 0 ? 'warning' : 'info',
       confirmButtonText: 'Understood',
-      confirmButtonColor: '#D81B60',
+      confirmButtonColor: '#0f766e',
       width: 480
     });
   }

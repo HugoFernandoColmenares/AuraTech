@@ -11,7 +11,7 @@ import { ViewModeOption } from '@core/interfaces/view-controls.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ViewControlsComponent {
-  /** Page heading (Playfair Display via .page-title) */
+  /** Page heading (Figtree via .page-title) */
   title = input.required<string>();
   subtitle = input<string>('');
   /** View mode toggle buttons; omit or pass [] to hide toggles */

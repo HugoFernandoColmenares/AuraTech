@@ -7,27 +7,27 @@
   align-items: center;
   justify-content: center;
   padding: 0.35rem 0.75rem;
-  border: 1px solid var(--color-secondary, #6A0DAD);
-  border-radius: 0.25rem;
-  font-family: 'Playfair Display', serif;
+  border: none;
+  border-radius: 0.5rem;
+  font-family: 'Figtree', sans-serif;
   font-weight: 700;
   font-size: 0.875rem;
-  letter-spacing: 0.12em;
-  color: var(--color-secondary, #6A0DAD);
+  letter-spacing: 0.02em;
+  color: #f0fdfa;
+  background: var(--color-secondary, #0f766e);
   width: fit-content;
 }
 
 .login-brand__tagline {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 0.75rem;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  color: #4b5563;
+  letter-spacing: 0.01em;
   margin: 0;
 }
 
 .login-title {
-  font-family: 'Playfair Display', serif;
+  font-family: 'Figtree', sans-serif;
   font-size: clamp(1.5rem, 4vw, 2rem);
   color: var(--color-tertiary, #000000);
   letter-spacing: 0.02em;
@@ -39,7 +39,7 @@
 }
 
 .login-lead {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 0.9rem;
   color: #666;
   line-height: 1.5;
@@ -51,7 +51,7 @@ form {
 }
 
 .form-group label {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--color-tertiary, #000000);
@@ -61,9 +61,9 @@ form {
 
 .form-group input {
   padding: 0.75rem 1rem;
-  border: 1px solid var(--color-accent, #C0C0C0);
+  border: 1px solid var(--color-accent, #94a3b8);
   border-radius: 0.25rem;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 0.95rem;
   background-color: var(--color-primary, #FFFFFF);
   color: var(--color-tertiary, #000000);
@@ -74,8 +74,8 @@ form {
 
 .form-group input:focus {
   outline: none;
-  border-color: var(--color-secondary, #6A0DAD);
-  box-shadow: 0 0 0 2px rgba(106, 13, 173, 0.12);
+  border-color: var(--color-secondary, #134e4a);
+  box-shadow: 0 0 0 2px rgba(19, 78, 74, 0.12);
 }
 
 .form-group input.has-icon {
@@ -98,19 +98,19 @@ form {
   left: 0.85rem;
   width: 1.25rem;
   height: 1.25rem;
-  color: var(--color-secondary, #6A0DAD);
+  color: var(--color-secondary, #134e4a);
   pointer-events: none;
   z-index: 1;
 }
 
 .error-text {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 0.75rem;
   color: #dc2626;
 }
 
 .error-summary {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 0.85rem;
   background-color: rgba(220, 38, 38, 0.05);
   border: 1px solid #dc2626;
@@ -132,15 +132,15 @@ form {
 }
 
 .link-secondary {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 0.85rem;
-  color: var(--color-secondary, #6A0DAD);
+  color: var(--color-secondary, #134e4a);
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .link-secondary:hover {
-  color: #520a87;
+  color: #115e59;
   text-decoration: underline;
 }
 
@@ -150,7 +150,7 @@ form {
 }
 
 .login-register {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 0.85rem;
   color: var(--color-tertiary, #000000);
   margin: 0;
@@ -162,7 +162,7 @@ form {
 }
 
 .remember-label {
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 0.85rem;
   user-select: none;
 }
@@ -176,7 +176,7 @@ form {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-secondary, #6A0DAD);
+  color: var(--color-secondary, #134e4a);
   transition: opacity 0.2s ease;
   padding: 0.5rem;
   z-index: 2;
@@ -197,7 +197,7 @@ input[type="checkbox"] {
   width: 1.1rem;
   height: 1.1rem;
   cursor: pointer;
-  accent-color: var(--color-secondary, #6A0DAD);
+  accent-color: var(--color-secondary, #134e4a);
 }
 
 .w-full {

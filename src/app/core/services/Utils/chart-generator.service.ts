@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
 
 export const GLOBAL_CHART_COLORS = [
-  '#D81B60', // Raspberry (Primary)
-  '#1A237E', // Midnight Blue (Tertiary)
-  '#006064', // Deep Teal
-  '#1B5E20', // Emerald
-  '#FFD600', // Amber Gold
-  '#4527A0', // Deep Purple
-  '#0277BD', // Light Blue
-  '#C2185B', // Dark Pink
-  '#2E7D32', // Medium Green
-  '#37474F'  // Blue Grey
+  '#0f766e',
+  '#1d4ed8',
+  '#0e7490',
+  '#3f6212',
+  '#b45309',
+  '#334155',
+  '#0369a1',
+  '#115e59',
+  '#4d7c0f',
+  '#475569'
 ];
 
 @Injectable({

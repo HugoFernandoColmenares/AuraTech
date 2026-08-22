@@ -12,7 +12,7 @@
 }
 
 .art-deco-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Figtree', sans-serif;
     font-size: 3rem;
     color: var(--primary-color);
     margin-bottom: 0.5rem;
@@ -21,7 +21,7 @@
 }
 
 .subtitle {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Figtree', sans-serif;
     color: #666;
     font-size: 1.1rem;
 }
@@ -61,11 +61,11 @@
 }
 
 .accordion-header:hover {
-    background: rgba(216, 27, 96, 0.02);
+    background: rgba(15, 118, 110, 0.02);
 }
 
 .section-title {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Figtree', sans-serif;
     font-size: 1.4rem;
     font-weight: 700;
     color: #333;
@@ -113,7 +113,7 @@
 .guide-note {
     padding: 0.75rem 1rem;
     border-left: 3px solid var(--primary-color);
-    background: rgba(216, 27, 96, 0.04);
+    background: rgba(15, 118, 110, 0.04);
 }
 
 .about-header .btn-sm {
@@ -121,7 +121,7 @@
 }
 
 .accordion-content p {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Figtree', sans-serif;
     line-height: 1.8;
     color: #444;
     font-size: 1rem;

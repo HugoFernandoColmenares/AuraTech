@@ -11,8 +11,8 @@
   gap: 0.75rem;
   width: 100%;
   padding: 1rem;
-  background: rgba(106, 13, 173, 0.03);
-  border: 1px solid rgba(106, 13, 173, 0.12);
+  background: rgba(19, 78, 74, 0.03);
+  border: 1px solid rgba(19, 78, 74, 0.12);
   border-radius: 0.25rem;
 }
 
@@ -39,7 +39,7 @@
 }
 
 .chart-title {
-  font-family: var(--font-secondary, 'Playfair Display', serif);
+  font-family: var(--font-secondary, 'Figtree', sans-serif);
   font-size: 1.125rem;
   font-weight: 700;
   color: var(--color-tertiary, #000);

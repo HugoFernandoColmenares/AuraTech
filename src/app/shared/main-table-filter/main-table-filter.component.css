@@ -41,7 +41,7 @@
 
 .filter-calendar .p-inputtext {
   width: 100%;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Figtree', sans-serif;
   font-size: 0.875rem;
   padding: 0.5rem 0.75rem;
   border: 1px solid #D0D0D0;
@@ -50,5 +50,5 @@
 }
 
 .filter-calendar .p-datepicker-trigger {
-  color: var(--primary-color, #D81B60);
+  color: var(--primary-color, #0f766e);
 }

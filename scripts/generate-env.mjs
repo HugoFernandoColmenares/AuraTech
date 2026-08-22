@@ -66,6 +66,7 @@ export const environment = {
   supabaseUrl: '${env('NG_APP_SUPABASE_URL', '')}',
   supabaseAnonKey: '${env('NG_APP_SUPABASE_ANON_KEY', '')}',
   debugMode: ${envBool('NG_APP_DEBUG_MODE', true)},
+  demoMode: ${envBool('NG_APP_DEMO_MODE', true)},
 } as const;
 `;
 

@@ -48,7 +48,7 @@ export class HealthService {
   }
 
   private async runStartupProbe(): Promise<boolean> {
-    if (!this.env.supabaseConfigured) {
+    if (this.env.demoMode || !this.env.supabaseConfigured) {
       this._isHealthy.set(false);
       this._isReady.set(true);
       this.writeSessionCache(false);

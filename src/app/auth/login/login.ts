@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '@core/services/auth/auth';
 import { LoadingService } from '@core/services/Utils/loading.service';
+import { EnvConfig } from '@core/config/env.config';
 
 @Component({
   selector: 'app-login',
@@ -18,8 +19,8 @@ export class Login {
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
   private readonly loadingService = inject(LoadingService);
+  readonly env = inject(EnvConfig);
 
-  // Signals for state management
   loading = signal(false);
   errorMessage = signal<string | null>(null);
   passwordVisible = signal(false);
@@ -28,8 +29,14 @@ export class Login {
   );
 
   loginForm = this.fb.nonNullable.group({
-    email: [localStorage.getItem('rememberedEmail') || '', [Validators.required, Validators.email]],
-    password: [localStorage.getItem('rememberedPassword') || '', [Validators.required, Validators.minLength(6)]],
+    email: [
+      localStorage.getItem('rememberedEmail') || (this.env.demoMode ? 'admin@auratech.dev' : ''),
+      [Validators.required, Validators.email],
+    ],
+    password: [
+      localStorage.getItem('rememberedPassword') || (this.env.demoMode ? 'demo123' : ''),
+      [Validators.required, Validators.minLength(6)],
+    ],
     remember: [this.rememberMe()]
   });
 

@@ -35,7 +35,7 @@ export interface MockUserRecord {
 export const INITIAL_USERS: MockUserRecord[] = [
   {
     email: 'admin@auratech.dev',
-    password: 'demo',
+    password: 'demo123',
     user: {
       id: 'admin-id-123',
       firstName: 'Aura',
@@ -54,7 +54,7 @@ export const INITIAL_USERS: MockUserRecord[] = [
   },
   {
     email: 'user@auratech.dev',
-    password: 'demo',
+    password: 'demo123',
     user: {
       id: 'user-id-789',
       firstName: 'Aura',

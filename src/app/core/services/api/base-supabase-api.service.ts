@@ -18,6 +18,7 @@ import {
   ACCESS_DENIED_MESSAGE,
   isForbiddenSupabaseError,
 } from '@core/auxiliar/supabase-error.util';
+import { LocalStorageEntityStore } from '@core/data/local-storage-entity.store';
 
 /**
  * Supabase PostgREST-backed API base for domain entities.
@@ -150,10 +151,11 @@ export abstract class BaseSupabaseApiService<T extends object> {
     await this.health.whenReady();
 
     if (!this.useSupabaseTransport()) {
-      if (this.useListCache && !this.cacheManager.isCacheReady) {
-        this.cacheManager.setCache([]);
+      const local = this.loadLocalRows();
+      if (this.useListCache) {
+        this.cacheManager.setCache(local);
       }
-      return this.cacheManager.getCache();
+      return local;
     }
 
     if (!this.useListCache) {
@@ -183,7 +185,16 @@ export abstract class BaseSupabaseApiService<T extends object> {
     pageSize = 2000
   ): Promise<T[]> {
     await this.health.whenReady();
-    if (!this.useSupabaseTransport()) return [];
+    if (!this.useSupabaseTransport()) {
+      const field = this.toCamelField(dateColumn);
+      const minTime = new Date(minValue).getTime();
+      return this.loadLocalRows().filter(row => {
+        const value = (row as Record<string, unknown>)[field];
+        if (!value) return true;
+        const time = value instanceof Date ? value.getTime() : new Date(String(value)).getTime();
+        return Number.isFinite(time) && time >= minTime;
+      });
+    }
     return this.fetchAllFromSupabase(pageSize, query => query.gte(dateColumn, minValue));
   }
 
@@ -195,7 +206,7 @@ export abstract class BaseSupabaseApiService<T extends object> {
 
     await this.health.whenReady();
     if (!this.useSupabaseTransport()) {
-      return this.emptyPage(page, limit);
+      return this.slicePage(this.loadLocalRows(), page, limit);
     }
 
     this.beginTransport('read', `Loading ${this.tableLabel}…`);
@@ -214,7 +225,7 @@ export abstract class BaseSupabaseApiService<T extends object> {
   ): Promise<IApiResponse<T[]>> {
     await this.health.whenReady();
     if (!this.useSupabaseTransport()) {
-      return this.emptyPage(page, limit);
+      return this.slicePage(this.loadLocalRows(), page, limit);
     }
 
     return this.getPaginatedFromSupabase(page, limit, applyListFilters);
@@ -228,7 +239,7 @@ export abstract class BaseSupabaseApiService<T extends object> {
 
     await this.health.whenReady();
     if (!this.useSupabaseTransport()) {
-      return null;
+      return this.loadLocalRows().find(row => this.matchesId(row, id)) ?? null;
     }
 
     return this.getByIdFromSupabase(id);
@@ -237,7 +248,7 @@ export abstract class BaseSupabaseApiService<T extends object> {
   async create(data: Partial<T>): Promise<T> {
     await this.health.whenReady();
     if (!this.useSupabaseTransport()) {
-      throw new Error('Supabase is not available.');
+      return this.createLocal(data);
     }
 
     this.beginTransport('write', `Saving ${this.tableLabel}…`);
@@ -265,7 +276,7 @@ export abstract class BaseSupabaseApiService<T extends object> {
   async update(id: string, data: Partial<T>): Promise<T> {
     await this.health.whenReady();
     if (!this.useSupabaseTransport()) {
-      throw new Error('Supabase is not available.');
+      return this.updateLocal(id, data);
     }
 
     this.beginTransport('write', `Updating ${this.tableLabel}…`);
@@ -294,7 +305,8 @@ export abstract class BaseSupabaseApiService<T extends object> {
   async remove(id: string): Promise<void> {
     await this.health.whenReady();
     if (!this.useSupabaseTransport()) {
-      throw new Error('Supabase is not available.');
+      this.removeLocal(id);
+      return;
     }
 
     this.beginTransport('write', `Deleting ${this.tableLabel}…`);
@@ -325,12 +337,7 @@ export abstract class BaseSupabaseApiService<T extends object> {
 
     await this.health.whenReady();
     if (!this.useSupabaseTransport()) {
-      return {
-        success: false,
-        statusCode: 503,
-        message: 'Supabase is not available.',
-        data: { total: 0, persisted: 0, batches: 0, errors: [] },
-      };
+      return this.bulkUploadLocal(data);
     }
 
     this.beginTransport(
@@ -602,5 +609,83 @@ export abstract class BaseSupabaseApiService<T extends object> {
   private async refreshListCache(): Promise<void> {
     this.cacheManager.invalidate();
     await this.ensureListCache();
+  }
+
+  private loadLocalRows(): T[] {
+    return LocalStorageEntityStore.load<T>(this.tableKey);
+  }
+
+  private persistLocalRows(rows: T[]): void {
+    LocalStorageEntityStore.save(this.tableKey, rows);
+  }
+
+  private toCamelField(column: string): string {
+    return column.replace(/_([a-z])/g, (_, char: string) => char.toUpperCase());
+  }
+
+  private createLocal(data: Partial<T>): T {
+    const id = (data as { id?: string }).id || crypto.randomUUID();
+    const mapped = { ...(data as object), id, isLocal: false } as T;
+    const rows = this.loadLocalRows();
+    rows.unshift(mapped);
+    this.persistLocalRows(rows);
+    this.onListMutated('create', mapped);
+    this.reportCache.invalidateReportForTable(this.tableKey);
+    return mapped;
+  }
+
+  private updateLocal(id: string, data: Partial<T>): T {
+    const rows = this.loadLocalRows();
+    const index = rows.findIndex(row => this.matchesId(row, id));
+    if (index < 0) {
+      throw new Error(`${this.tableLabel} record not found.`);
+    }
+    const mapped = { ...rows[index], ...data, id } as T;
+    rows[index] = mapped;
+    this.persistLocalRows(rows);
+    this.onListMutated('update', mapped);
+    this.reportCache.invalidateReportForTable(this.tableKey);
+    return mapped;
+  }
+
+  private removeLocal(id: string): void {
+    const rows = this.loadLocalRows().filter(row => !this.matchesId(row, id));
+    this.persistLocalRows(rows);
+    this.onListMutated('remove', id);
+    this.reportCache.invalidateReportForTable(this.tableKey);
+  }
+
+  private bulkUploadLocal(data: T[]): IApiResponse<BulkUpsertResult> {
+    const incoming = data.map(row => {
+      const id = (row as { id?: string }).id || crypto.randomUUID();
+      return { ...row, id, isLocal: false } as T;
+    });
+    const existing = this.loadLocalRows();
+
+    for (const row of incoming) {
+      const id = (row as { id: string }).id;
+      const index = existing.findIndex(item => this.matchesId(item, id));
+      if (index >= 0) {
+        existing[index] = { ...existing[index], ...row } as T;
+      } else {
+        existing.unshift(row);
+      }
+    }
+
+    this.persistLocalRows(existing);
+    this.onListMutated('bulk');
+    this.reportCache.invalidateReportForTable(this.tableKey);
+
+    return {
+      success: true,
+      statusCode: 200,
+      message: 'Saved to local demo storage.',
+      data: {
+        total: incoming.length,
+        persisted: incoming.length,
+        batches: 1,
+        errors: [],
+      },
+    };
   }
 }

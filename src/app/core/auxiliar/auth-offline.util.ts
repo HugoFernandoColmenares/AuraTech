@@ -7,10 +7,10 @@ import { HealthService } from '@core/services/bootstrap/health.service';
  * even if the startup health probe failed — otherwise login never hits the network.
  */
 export function shouldUseMockAuth(env: EnvConfig, _health: HealthService): boolean {
-  return !env.supabaseConfigured;
+  return env.demoMode || !env.supabaseConfigured;
 }
 
 /** True when Supabase Auth is the active transport. */
 export function shouldUseSupabaseAuth(env: EnvConfig, _health: HealthService): boolean {
-  return env.supabaseConfigured;
+  return !env.demoMode && env.supabaseConfigured;
 }

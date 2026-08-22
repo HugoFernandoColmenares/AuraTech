@@ -6,6 +6,9 @@
 
   <h1 class="login-title">Sign in</h1>
   <p class="login-lead">Access your dashboards, reports, and data tools.</p>
+  @if (env.demoMode) {
+    <p class="login-lead">Demo mode uses localStorage — no Supabase traffic. Sign in as <strong>admin&#64;auratech.dev</strong> / <strong>demo123</strong>.</p>
+  }
 
   <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex-column gap-m" novalidate>
     <div class="form-group flex-column gap-s">

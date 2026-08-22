@@ -9,6 +9,7 @@ import {
   PRODUCT_WRITE_SELECT_COLUMNS,
   ProductCatalogIdContext,
 } from '@core/auxiliar/product-payload.util';
+import { LocalStorageEntityStore } from '@core/data/local-storage-entity.store';
 
 @Injectable({ providedIn: 'root' })
 export class ProductsApiService extends BaseSupabaseApiService<IProductDto> {
@@ -56,7 +57,6 @@ export class ProductsApiService extends BaseSupabaseApiService<IProductDto> {
     return this.withCatalogContext(catalogCtx, () => super.create(data));
   }
 
-  /** Updates every SKU row that shares the same parent style code. */
   async updateByParent(
     parent: string,
     data: Partial<IProductDto>,
@@ -64,7 +64,12 @@ export class ProductsApiService extends BaseSupabaseApiService<IProductDto> {
   ): Promise<void> {
     await this.health.whenReady();
     if (!this.useSupabaseTransport()) {
-      throw new Error('Supabase is not available.');
+      const rows = LocalStorageEntityStore.load<IProductDto>('products').map(row =>
+        row.parent === parent ? { ...row, ...data, parent } : row
+      );
+      LocalStorageEntityStore.save('products', rows);
+      this.invalidateListCache();
+      return;
     }
 
     await this.withCatalogContext(catalogCtx, async () => {
@@ -86,11 +91,15 @@ export class ProductsApiService extends BaseSupabaseApiService<IProductDto> {
     });
   }
 
-  /** Soft-deactivates every SKU row for a parent style code. */
   async deactivateByParent(parent: string): Promise<void> {
     await this.health.whenReady();
     if (!this.useSupabaseTransport()) {
-      throw new Error('Supabase is not available.');
+      const rows = LocalStorageEntityStore.load<IProductDto>('products').map(row =>
+        row.parent === parent ? { ...row, isActive: false } : row
+      );
+      LocalStorageEntityStore.save('products', rows);
+      this.invalidateListCache();
+      return;
     }
 
     this.beginTransport('write', `Deactivating products for ${parent}…`);

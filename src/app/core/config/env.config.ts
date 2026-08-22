@@ -13,14 +13,15 @@ export class EnvConfig {
   readonly supabaseUrl = environment.supabaseUrl;
   readonly supabaseAnonKey = environment.supabaseAnonKey;
   readonly debugMode = environment.debugMode;
+  readonly demoMode = 'demoMode' in environment ? Boolean(environment.demoMode) : true;
 
   /** True when Supabase URL and anon key are configured. */
   get supabaseConfigured(): boolean {
     return Boolean(this.supabaseUrl && this.supabaseAnonKey);
   }
 
-  /** Supabase is the active data source when credentials are present. */
+  /** Live Supabase is used only when credentials exist and demo mode is off. */
   get supabaseActive(): boolean {
-    return this.supabaseConfigured;
+    return this.supabaseConfigured && !this.demoMode;
   }
 }

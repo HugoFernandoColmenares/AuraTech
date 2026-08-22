@@ -4,4 +4,6 @@ export const environment = {
   supabaseUrl: '',
   supabaseAnonKey: '',
   debugMode: true,
+  /** Skip live Supabase I/O and persist demo data in localStorage. */
+  demoMode: true,
 } as const;

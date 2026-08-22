@@ -635,19 +635,9 @@ export class SalesReportComponent implements OnInit {
     try {
       let newRecords: ISaleRecordDto[] = [];
 
-      // INTERCEPTACIÓN ESTRATÉGICA: Si la tienda seleccionada es Walmart,
-      // evitamos el parser genérico y saltamos directo a la pestaña específica 'WFS'
-      const resolvedType =
-        storeType === 'walmart-wfs' || String(storeType).toUpperCase() === 'WALMART'
-          ? 'walmart-wfs'
-          : storeType;
+      const rawData = await this.excelHandler.parseExcelFile(this.pendingFile);
 
-      const rawData =
-        resolvedType === 'walmart-wfs'
-          ? await this.excelHandler.parseExcelSheetByName(this.pendingFile, 'WFS')
-          : await this.excelHandler.parseExcelFile(this.pendingFile);
-
-      const records = this.fileHandler.processFile(resolvedType as StoreType, rawData);
+      const records = this.fileHandler.processFile(storeType, rawData);
       newRecords = records.map(r => ({ ...r, isLocal: true }));
 
       this.clearFilters();
@@ -716,7 +706,7 @@ export class SalesReportComponent implements OnInit {
           res.map(r => ({ ...r } as Record<string, unknown>))
         ),
       sheetName: 'Sales',
-      filePrefix: 'ymi_sales_export',
+      filePrefix: 'auratech_sales_export',
       entityLabel: 'sales records',
     });
   }
@@ -732,7 +722,7 @@ export class SalesReportComponent implements OnInit {
     const url = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `ymi_sales_export_${DateUtils.formatToDateString(DateUtils.now())}.json`;
+    link.download = `auratech_sales_export_${DateUtils.formatToDateString(DateUtils.now())}.json`;
     link.click();
     window.URL.revokeObjectURL(url);
     

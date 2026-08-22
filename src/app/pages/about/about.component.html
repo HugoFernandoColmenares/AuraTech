@@ -2,7 +2,7 @@
   <header class="about-header mb-l">
     <h1 class="art-deco-title">User Guide & Technical Overview</h1>
     <p class="subtitle">
-      Welcome to the YmiProject Management Platform. This guide explains how Excel uploads,
+      Welcome to AuraTech, a sales analytics demo. This guide explains how Excel uploads,
       browser session data, and Supabase persistence work together.
     </p>
     <a routerLink="/layout/home" class="btn btn-secondary btn-sm">Back to Dashboard tutorial</a>
@@ -43,7 +43,7 @@
                 workflow: open a report, upload Excel, review parsed rows, and export session data to Supabase.
               </p>
               <p>
-                Each report module (Sales, Inventory, Credit Card, Products, Reference Sheet) follows the same
+                Each report module (Sales, Products) follows the same
                 coordinator pattern: filters and analytics at the top, detailed tables below, and toolbar actions
                 for upload, export, and database sync.
               </p>
@@ -53,8 +53,8 @@
               <ol class="guide-list">
                 <li>
                   <strong>Prepare your Excel file.</strong>
-                  Use the format expected by each channel (Amazon Retail, Fashion Go, inventory dashboard,
-                  Amex statement, etc.). Column headers must match the parser for that module.
+                  Use the generic sales template or Custom Excel mapping. Column headers must match the parser
+                  or the mapping you define.
                 </li>
                 <li>
                   <strong>Navigate to the report module</strong> and switch to the <em>Data</em> or table view
@@ -62,8 +62,8 @@
                 </li>
                 <li>
                   <strong>Click Upload Data</strong> in the table toolbar (requires bulk-upload permission).
-                  Choose the file from your computer. For Sales and Inventory you may need to pick the store or
-                  account type before parsing begins.
+                  Choose the file from your computer. For Sales you pick Generic or Custom Excel
+                  before parsing begins.
                 </li>
                 <li>
                   <strong>Wait for parsing to finish.</strong>
@@ -91,8 +91,8 @@
 
             @case ('custom-excel') {
               <p>
-                <strong>Custom Excel</strong> is for sales spreadsheets that do not match a preset store parser
-                (Amazon, Fashion Go, Walmart, etc.). You map your own column headers to YMI sales fields in a
+                <strong>Custom Excel</strong> is for sales spreadsheets that do not match the generic template.
+                You map your own column headers to AuraTech sales fields in a
                 four-step modal, preview the parsed rows, then load them into the browser session like any other upload.
               </p>
               <ol class="guide-list">
@@ -145,7 +145,7 @@
                 <li>The button stays <strong>disabled</strong> when there are zero session rows pending export.</li>
                 <li>Sales records are curated before upload (cancelled/refunded rows removed, Shopify summary deduped).</li>
                 <li>On success you will see a confirmation toast and the table reloads from Supabase.</li>
-                <li>On failure, check Data Management → Test Database Connection and verify Supabase env vars on Vercel.</li>
+                <li>On failure, verify Supabase environment variables locally or on Vercel.</li>
               </ul>
               <p>
                 Excel export and JSON export are separate actions: they download a file from your current view or
@@ -168,8 +168,7 @@
 
             @case ('sales-reporting') {
               <p>
-                Import sales from Amazon Dropshipping, Amazon Retail, Fashion Go, wholesale channels, and internal
-                exports. Select the store format, upload Excel/CSV, then explore Analytics, Data, and Insights views.
+                Import sales with the generic template or Custom Excel mapping, then explore Analytics and Data views.
               </p>
               <p>
                 For non-standard layouts, use <strong>Custom Excel</strong> to map columns manually and save reusable
@@ -183,8 +182,8 @@
 
             @case ('catalog') {
               <p>
-                The Product Catalog and Reference Sheet provide master style data (parent, style name, brand,
-                division, type, collection, fit) used when normalizing sales and inventory SKUs.
+                The Product Catalog stores style data (parent, style name, brand,
+                division, type, collection, fit) used when normalizing sales SKUs.
               </p>
             }
 
@@ -197,8 +196,8 @@
 
             @case ('credits') {
               <p>
-                This platform was developed by Hugo Colmenares to streamline sales operations and inventory
-                management with a focus on elegant design and automated data processing.
+                This demo was prepared by Hugo Colmenares as a portfolio MVP for sales reporting
+                with Angular 19, Signals, and Supabase.
               </p>
             }
           }

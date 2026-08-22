@@ -10,7 +10,7 @@
       </button>
     </div>
     <nav class="sidebar-nav flex-column gap-s p-m">
-      @for (item of menuItems(); track item.path) {
+      @for (item of menuItems; track item.path) {
         <a [routerLink]="item.path" 
            routerLinkActive="active" 
            [routerLinkActiveOptions]="{ exact: false }"

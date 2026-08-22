@@ -7,7 +7,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { providePrimeNG } from 'primeng/config';
 import { loadingInterceptor } from '@core/interceptors/loading.interceptor';
 import { forbiddenInterceptor } from '@core/interceptors/forbidden.interceptor';
-import { YmiPrimeNgPreset } from '@core/theme/ymi-primeng.preset';
+import { AuraTechPrimeNgPreset } from '@core/theme/auratech-primeng.preset';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,7 +17,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     providePrimeNG({
       theme: {
-        preset: YmiPrimeNgPreset,
+        preset: AuraTechPrimeNgPreset,
         options: {
           darkModeSelector: false,
         },

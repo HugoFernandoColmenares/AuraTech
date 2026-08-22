@@ -27,9 +27,9 @@ export class HomeComponent {
   readonly workflowSteps: WorkflowStep[] = [
     {
       step: 1,
-      title: 'Open a report module',
+      title: 'Open Sales Report',
       description:
-        'Go to Sales Report, Inventory, Credit Card Report, Products, or Reference Sheet depending on the dataset you need to manage.',
+        'Start in Sales Report to upload a generic Excel template or map your own columns with Custom Excel.',
       icon: '📂',
       link: '/layout/sales-report',
       linkLabel: 'Open Sales Report',
@@ -57,12 +57,12 @@ export class HomeComponent {
     },
     {
       step: 5,
-      title: 'Verify connectivity (optional)',
+      title: 'Explore the catalog (optional)',
       description:
-        'Administrators can open Data Management to test the database connection, run sales curation, or refresh analytics materialized views.',
-      icon: '🔌',
-      link: '/layout/data-management',
-      linkLabel: 'Data Management',
+        'Use Products to review a simple catalog. This demo does not include internal data-management tools.',
+      icon: '📦',
+      link: '/layout/products',
+      linkLabel: 'Open Products',
     },
   ];
 
@@ -70,27 +70,12 @@ export class HomeComponent {
     {
       title: 'Sales Report',
       path: '/layout/sales-report',
-      uploadHint: 'Preset store formats plus Custom Excel mapping for non-standard layouts.',
-    },
-    {
-      title: 'Inventory',
-      path: '/layout/inventory',
-      uploadHint: 'Inventory dashboards and warehouse-specific stock files.',
-    },
-    {
-      title: 'Credit Card Report',
-      path: '/layout/credit-card-report',
-      uploadHint: 'Amex or corporate card statement spreadsheets.',
+      uploadHint: 'Generic template plus Custom Excel mapping for non-standard layouts.',
     },
     {
       title: 'Products',
       path: '/layout/products',
       uploadHint: 'Product catalog Excel import and manual CRUD.',
-    },
-    {
-      title: 'Reference Sheet',
-      path: '/layout/reference-sheet',
-      uploadHint: 'Master style reference used across sales parsing.',
     },
   ];
 }

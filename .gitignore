@@ -1,5 +1,3 @@
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
-
 # Compiled output
 /dist
 /tmp
@@ -28,8 +26,12 @@ yarn-error.log
 !.vscode/extensions.json
 .history/*
 
-# Miscellaneous
+# Cursor / local agent scratch (never publish)
+.cursor/
+.agents/
+.zcode/
 
+# Angular / tooling cache
 /.angular/cache
 .sass-cache/
 /connect.lock
@@ -37,45 +39,48 @@ yarn-error.log
 /libpeerconnection.log
 testem.log
 /typings
-DESIGN_GUIDELINES.md
-architecture_guidelines.md
-SUPABASE_MIGRATION_PLAN.md
-SERVER_OPTIMIZATION_PLAN.md
-.cursor/
-.cursor/skills/
-.agents/skills/
-.env
-.env.local
-.env.*.local
-.env.keys
-/src/environments/environment.ts
-
-# Supabase CLI — local link state (never commit)
-/supabase/.temp/
-/supabase/.branches/
-
-# Supabase — generated demo-data SQL (regenerate: npm run db:seed:generate)
-/supabase/seed/*.sql
-/supabase/seed/generated/*.sql
-/supabase/seed/MANIFEST.txt
-/supabase/seed/.seed-progress.json
-
-# Deploy / build artifacts
-.vercel/
 *.tsbuildinfo
 
-# Credentials (safety net)
+# Secrets and environment
+.env
+.env.*
+!.env.template
+!.env.vercel.example
+.env.keys
+.env.local
 *.pem
 *.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
 credentials.json
 secrets.json
+serviceAccount*.json
+**/google-services.json
+**/GoogleService-Info.plist
+/src/environments/environment.ts
+
+# Client/ops SQL and seed pipelines (not for the public MVP)
+/supabase/
+/scripts/*
+!/scripts/generate-env.mjs
+
+# sql.js leftovers
+*.wasm
+/public/assets/sql-wasm*
+
+# Deploy artifacts
+.vercel/
+
+# Internal planning docs that may name the original client
+DESIGN_GUIDELINES.md
+architecture_guidelines.md
+architecture_optimization_plan.md
+SUPABASE_MIGRATION_PLAN.md
+SERVER_OPTIMIZATION_PLAN.md
+SUPABASE_JSON_CSV_IMPORT_GUIDE.md
 
 # System files
 .DS_Store
 Thumbs.db
-
-SUPABASE_JSON_CSV_IMPORT_GUIDE.md
-supabase/
-scripts/*
-
-architecture_optimization_plan.md

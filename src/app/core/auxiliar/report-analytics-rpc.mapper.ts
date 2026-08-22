@@ -1,22 +1,7 @@
 import { DateUtils } from '@core/auxiliar/date.utils';
-import {
-  CreditCardLastMonthSummary,
-  CreditCardKpiSummary,
-  CreditCardYearComparison,
-} from '@core/auxiliar/credit-card-kpi.util';
-import {
-  RpcKpiTotals,
-  SalesMonthlyAggregateRpc,
-  CreditCardMonthlyAggregateRpc,
-} from '@core/interfaces/report-analytics-rpc.interface';
+import { RpcKpiTotals, SalesMonthlyAggregateRpc } from '@core/interfaces/report-analytics-rpc.interface';
 import { YoyKpiSummary, YearScopeComparison, YoyDataStatus } from '@core/auxiliar/sales-yoy.util';
-import { ISaleRecordDto } from '@core/interfaces/ISaleRecordDto.interface';
-import { ICreditCardTransactionDto } from '@core/interfaces/ICreditCardTransactionDto.interface';
-import { SalesFilters } from '@core/interfaces/ISaleRecordDto.interface';
-import {
-  INVENTORY_PRIORITY_THRESHOLD,
-  INVENTORY_URGENT_THRESHOLD,
-} from '@core/constants/inventory-thresholds.const';
+import { ISaleRecordDto, SalesFilters } from '@core/interfaces/ISaleRecordDto.interface';
 
 function resolveStatus(
   currentTotal: number,
@@ -81,38 +66,6 @@ export function salesFiltersToRpcPayload(filters: SalesFilters): Record<string, 
   };
 }
 
-export function creditCardFiltersToRpcPayload(options: {
-  search: string;
-  startDate: string;
-  endDate: string;
-  focusYear: number;
-}): Record<string, unknown> {
-  return {
-    search: options.search ?? '',
-    start_date: options.startDate ?? '',
-    end_date: options.endDate ?? '',
-    focus_year: options.focusYear,
-  };
-}
-
-export function inventoryFiltersToRpcPayload(filters: {
-  search: string;
-  division: string;
-  type: string;
-  excludeZeroAvailable: boolean;
-  excludeZeroOnHand: boolean;
-}): Record<string, unknown> {
-  return {
-    search: filters.search ?? '',
-    division: filters.division ?? '',
-    type: filters.type ?? '',
-    exclude_zero_available: filters.excludeZeroAvailable ?? true,
-    exclude_zero_on_hand: filters.excludeZeroOnHand ?? true,
-    urgent_threshold: INVENTORY_URGENT_THRESHOLD,
-    priority_threshold: INVENTORY_PRIORITY_THRESHOLD,
-  };
-}
-
 export function salesAggregatesToRecords(rows: SalesMonthlyAggregateRpc[]): ISaleRecordDto[] {
   return rows.map((row, index) => ({
     id: `agg-${row.audit_year}-${row.audit_month}-${row.account}-${row.channel ?? 'na'}-${row.category ?? 'na'}-${index}`,
@@ -132,61 +85,4 @@ export function salesAggregatesToRecords(rows: SalesMonthlyAggregateRpc[]): ISal
     auditMonth: row.audit_month,
     isLocal: false,
   }));
-}
-
-export function creditCardAggregatesToTransactions(
-  rows: CreditCardMonthlyAggregateRpc[]
-): ICreditCardTransactionDto[] {
-  return rows.map((row, index) => ({
-    id: `agg-${row.year}-${row.month}-${row.category}-${row.channel}-${row.control ?? 'na'}-${index}`,
-    date: new Date(Date.UTC(row.year, row.month, 1)),
-    receipt: null,
-    description: row.category,
-    cardMember: '',
-    accountNumberSuffix: '',
-    amount: Number(row.amount) || 0,
-    extendedDetails: '',
-    statementDescription: '',
-    address: '',
-    cityState: '',
-    zipCode: '',
-    country: '',
-    referenceNumber: '',
-    category: row.category,
-    channel: row.channel,
-    salesChannel: row.channel,
-    dept: '',
-    control: row.control,
-    auditYear: row.year,
-    auditMonth: row.month + 1,
-  }));
-}
-
-export function mapRpcLastMonthKpi(raw: {
-  amount: number;
-  year: number;
-  month: number;
-  transaction_count: number;
-}): CreditCardLastMonthSummary {
-  const amount = Number(raw.amount) || 0;
-  return {
-    amount,
-    year: raw.year,
-    month: raw.month,
-    transactionCount: Number(raw.transaction_count) || 0,
-    periodLabel:
-      raw.year && raw.month
-        ? `${DateUtils.getMonthLabel(raw.month)} ${raw.year}`
-        : 'No data',
-    status: amount === 0 ? 'no_current_data' : 'complete',
-    statusMessage: amount === 0 ? 'No spend recorded for the prior statement month.' : null,
-  };
-}
-
-export function mapRpcCreditCardTrend(raw: RpcKpiTotals): CreditCardKpiSummary {
-  return mapRpcTotalsToYoyKpi(raw, false);
-}
-
-export function mapRpcCreditCardYearComparison(raw: RpcKpiTotals): CreditCardYearComparison {
-  return { ...mapRpcCreditCardTrend(raw), scopeLabel: 'SPEND' };
 }

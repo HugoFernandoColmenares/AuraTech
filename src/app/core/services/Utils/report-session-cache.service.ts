@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { IApiResponse } from '@core/interfaces/IApiResponse.interface';
 import { SupabaseTableKey } from '@core/constants/supabase-tables.const';
 
-export type ReportCacheKey = 'sales' | 'inventory' | 'creditCard';
-export type AnalyticsCacheKey = 'salesAnalytics' | 'creditCardAnalytics' | 'inventoryAnalytics';
+export type ReportCacheKey = 'sales';
+export type AnalyticsCacheKey = 'salesAnalytics';
 
 interface ReportCacheBucket<T> {
   paginated: Map<string, IApiResponse<T[]>>;
@@ -13,14 +13,10 @@ interface ReportCacheBucket<T> {
 /** Maps entity table keys to report session cache buckets (GET cache invalidation on writes). */
 export const REPORT_CACHE_BY_TABLE: Partial<Record<SupabaseTableKey, ReportCacheKey>> = {
   saleRecords: 'sales',
-  creditCardTransactions: 'creditCard',
-  inventoryRecords: 'inventory',
 };
 
 const ANALYTICS_BY_REPORT: Partial<Record<ReportCacheKey, AnalyticsCacheKey>> = {
   sales: 'salesAnalytics',
-  creditCard: 'creditCardAnalytics',
-  inventory: 'inventoryAnalytics',
 };
 
 /**

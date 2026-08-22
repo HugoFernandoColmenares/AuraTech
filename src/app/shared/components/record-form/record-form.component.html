@@ -6,8 +6,7 @@
       @else { Create New Record }
     </h2>
     <p class="form-subtitle">
-      @if (type() === 'sale') { Sales performance and transaction details. }
-      @else { Inventory levels and product categorization. }
+      Sales performance and transaction details.
     </p>
   </header>
 
@@ -25,7 +24,7 @@
         </div>
         <div class="form-group flex-column gap-xs">
           <label for="account">Account / Platform</label>
-          <input id="account" type="text" formControlName="account" placeholder="e.g. AMAZON DS">
+          <input id="account" type="text" formControlName="account" placeholder="e.g. Marketplace">
         </div>
         <div class="form-group flex-column gap-xs">
           <label for="orderStatus">Order Status</label>
@@ -61,47 +60,6 @@
             <option value="Retail">Retail</option>
             <option value="Wholesale">Wholesale</option>
           </select>
-        </div>
-      } @else {
-        <div class="form-group flex-column gap-xs">
-          <label for="sku">SKU</label>
-          <input id="sku" type="text" formControlName="sku" placeholder="e.g. SKU-COLOR-SIZE">
-        </div>
-        <div class="form-group flex-column gap-xs">
-          <label for="productName">Product Name</label>
-          <input id="productName" type="text" formControlName="productName">
-        </div>
-        <div class="form-group flex-column gap-xs">
-          <label for="available">Available Stock</label>
-          <input id="available" type="number" formControlName="available">
-        </div>
-        <div class="form-group flex-column gap-xs">
-          <label for="onHand">On Hand</label>
-          <input id="onHand" type="number" formControlName="onHand">
-        </div>
-        <div class="form-group flex-column gap-xs">
-          <label for="committed">Committed</label>
-          <input id="committed" type="number" formControlName="committed">
-        </div>
-        <div class="form-group flex-column gap-xs">
-          <label for="type">Item Group / Type</label>
-          <input id="type" type="text" formControlName="type">
-        </div>
-        <div class="form-group flex-column gap-xs">
-          <label for="division">Division / Class</label>
-          <input id="division" type="text" formControlName="division">
-        </div>
-        <div class="form-group flex-column gap-xs">
-          <label for="collection">Collection</label>
-          <input id="collection" type="text" formControlName="collection">
-        </div>
-        <div class="form-group flex-column gap-xs">
-          <label for="fit">Fit</label>
-          <input id="fit" type="text" formControlName="fit">
-        </div>
-        <div class="form-group flex-column gap-xs">
-          <label for="sourceFile">Source Context</label>
-          <input id="sourceFile" type="text" formControlName="sourceFile">
         </div>
       }
     </div>

@@ -8,7 +8,7 @@ import {
   optimizeImageForAvatar,
 } from '@core/auxiliar/avatar-image.util';
 
-const MOCK_AVATAR_KEY = 'ymi_mock_avatar';
+const MOCK_AVATAR_KEY = 'auratech_mock_avatar';
 
 @Injectable({ providedIn: 'root' })
 export class AvatarStorageService {

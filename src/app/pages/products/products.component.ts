@@ -312,7 +312,7 @@ export class ProductsComponent implements OnInit {
         fit: this.catalogLabel(row.fit),
       }),
       sheetName: 'Catalog',
-      filePrefix: 'ymi_catalog_export',
+      filePrefix: 'auratech_catalog_export',
       entityLabel: 'products',
     });
   }

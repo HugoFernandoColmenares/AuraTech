@@ -19,7 +19,7 @@ export interface ISaleRecordDto {
   auditYear?: number | string;
 }
 
-export type StoreType = 'amazon-dropshipping' | 'amazon-retail' | 'fashion-go' | 'ymi-retail' | 'faire' | 'ymi-internal' | 'ymi-wholesale' | 'rmf-website' | 'generic-sales-report' | 'walmart-wfs' | 'custom-excel';
+export type StoreType = 'generic-sales-report' | 'custom-excel';
 
 export interface ISaleRecordView extends ISaleRecordDto {
   parent?: string;

@@ -9,10 +9,9 @@ import {
 import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators, FormGroup } from '@angular/forms';
 import { ISaleRecordDto } from '@core/interfaces/ISaleRecordDto.interface';
-import { IInventoryRecordDto } from '@core/interfaces/IInventoryRecordDto.interface';
 
-export type RecordType = 'sale' | 'inventory';
-type RecordFormValue = Partial<ISaleRecordDto> | Partial<IInventoryRecordDto>;
+export type RecordType = 'sale';
+type RecordFormValue = Partial<ISaleRecordDto>;
 
 @Component({
   selector: 'app-record-form',
@@ -32,15 +31,15 @@ export class RecordFormComponent {
   save = output<RecordFormValue>();
   cancel = output<void>();
 
-  form: FormGroup = this.createForm('sale');
+  form: FormGroup = this.createForm();
 
   constructor() {
     effect(() => {
-      const recordType = this.type();
+      this.type();
       const rec = this.record();
       const mode = this.mode();
 
-      this.form = this.createForm(recordType);
+      this.form = this.createForm();
       if (rec) {
         this.form.patchValue(rec);
       }
@@ -52,41 +51,22 @@ export class RecordFormComponent {
     });
   }
 
-  private createForm(recordType: RecordType): FormGroup {
-    if (recordType === 'sale') {
-      return this.fb.group({
-        orderId: ['', Validators.required],
-        idx: [0],
-        orderStatus: [''],
-        warehouseCode: [''],
-        account: ['', Validators.required],
-        channel: [''],
-        category: ['Retail', Validators.required],
-        orderPlaceDate: [null],
-        sku: ['', Validators.required],
-        itemCost: [0, [Validators.required, Validators.min(0)]],
-        itemQuantity: [0, [Validators.required, Validators.min(0)]],
-        total: [0],
-        brand: [''],
-        collection: [''],
-      });
-    }
-
+  private createForm(): FormGroup {
     return this.fb.group({
+      orderId: ['', Validators.required],
+      idx: [0],
+      orderStatus: [''],
+      warehouseCode: [''],
+      account: ['', Validators.required],
+      channel: [''],
+      category: ['Retail', Validators.required],
+      orderPlaceDate: [null],
       sku: ['', Validators.required],
-      productName: [''],
-      available: [0, [Validators.required, Validators.min(0)]],
-      onHand: [0, [Validators.required, Validators.min(0)]],
-      committed: [0],
-      onOrder: [0],
-      onOrderAllocated: [0],
-      onOrderAvailable: [0],
-      type: [''],
-      division: [''],
+      itemCost: [0, [Validators.required, Validators.min(0)]],
+      itemQuantity: [0, [Validators.required, Validators.min(0)]],
+      total: [0],
+      brand: [''],
       collection: [''],
-      sourceFile: [''],
-      syncDate: [null],
-      fit: [''],
     });
   }
 

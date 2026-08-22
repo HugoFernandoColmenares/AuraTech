@@ -1,7 +1,7 @@
 import { Injectable, inject, signal, computed } from '@angular/core';
 import { EnvConfig } from '@core/config/env.config';
 
-const HEALTH_SESSION_KEY = 'ymi_supabase_health';
+const HEALTH_SESSION_KEY = 'auratech_supabase_health';
 const HEALTH_PROBE_TIMEOUT_MS = 2_500;
 const HEALTH_PROBE_RETRIES = 1;
 

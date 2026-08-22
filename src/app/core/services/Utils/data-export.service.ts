@@ -4,10 +4,8 @@ import { AlertService } from '@core/services/Utils/alert.service';
 import { HealthService } from '@core/services/bootstrap/health.service';
 import { EnvConfig } from '@core/config/env.config';
 import * as XLSX from 'xlsx';
-import { InventoryService } from '../Excel/inventory.service';
 import { SalesProcessingService } from '../Excel/sales-processing.service';
 import { ProductService } from '../Excel/product.service';
-import { CreditCardReportService } from '../Excel/credit-card-report.service';
 
 export interface ExcelExportOptions {
   rows: Record<string, unknown>[];
@@ -20,10 +18,8 @@ export interface ExcelExportOptions {
   providedIn: 'root',
 })
 export class DataExportService {
-  private inventoryService = inject(InventoryService);
   private salesService = inject(SalesProcessingService);
   private productService = inject(ProductService);
-  private creditCardService = inject(CreditCardReportService);
   private alertService = inject(AlertService);
   private healthService = inject(HealthService);
   private env = inject(EnvConfig);
@@ -75,31 +71,8 @@ export class DataExportService {
     this.exportRowsToExcel({
       rows: data as unknown as Record<string, unknown>[],
       sheetName: 'Sales',
-      filePrefix: 'ymi_sales_export',
+      filePrefix: 'auratech_sales_export',
       entityLabel: 'sales records',
-    });
-  }
-
-  exportInventorySessionToExcel(): void {
-    const data = this.inventoryService.inventoryData();
-    this.exportRowsToExcel({
-      rows: data as unknown as Record<string, unknown>[],
-      sheetName: 'Inventory',
-      filePrefix: 'ymi_inventory_export',
-      entityLabel: 'inventory records',
-    });
-  }
-
-  exportCreditCardSessionToExcel(): void {
-    const data = this.creditCardService.transactions().map(t => ({
-      ...t,
-      date: t.date instanceof Date ? t.date.toISOString() : t.date,
-    }));
-    this.exportRowsToExcel({
-      rows: data as unknown as Record<string, unknown>[],
-      sheetName: 'Transactions',
-      filePrefix: 'ymi_credit_card_export',
-      entityLabel: 'transactions',
     });
   }
 
@@ -108,7 +81,7 @@ export class DataExportService {
     this.exportRowsToExcel({
       rows: data as unknown as Record<string, unknown>[],
       sheetName: 'Catalog',
-      filePrefix: 'ymi_catalog_export',
+      filePrefix: 'auratech_catalog_export',
       entityLabel: 'products',
     });
   }
@@ -119,34 +92,8 @@ export class DataExportService {
       return;
     }
 
-    this.downloadJson(rows, `ymi_sales_export_${this.getTimestamp()}.json`);
+    this.downloadJson(rows, `auratech_sales_export_${this.getTimestamp()}.json`);
     this.alertService.exportComplete('sales records', rows.length);
-  }
-
-  exportInventoryToJSON(): void {
-    const data = this.inventoryService.inventoryData();
-    if (!data.length) {
-      this.alertService.exportEmpty('inventory records');
-      return;
-    }
-
-    this.downloadJson(data, `ymi_inventory_export_${this.getTimestamp()}.json`);
-    this.alertService.exportComplete('inventory records', data.length);
-  }
-
-  exportCreditCardToJSON(): void {
-    const data = this.creditCardService.transactions();
-    if (!data.length) {
-      this.alertService.exportEmpty('transactions');
-      return;
-    }
-
-    const serializable = data.map(t => ({
-      ...t,
-      date: t.date instanceof Date ? t.date.toISOString() : t.date,
-    }));
-    this.downloadJson(serializable, `ymi_credit_card_export_${this.getTimestamp()}.json`);
-    this.alertService.exportComplete('transactions', data.length);
   }
 
   private canReachDatabase(): boolean {

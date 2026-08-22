@@ -1,8 +1,7 @@
 import { definePreset } from '@primeng/themes';
 import Aura from '@primeng/themes/aura';
 
-/** Art Deco palette aligned with DESIGN_GUIDELINES.md */
-export const YmiPrimeNgPreset = definePreset(Aura, {
+export const AuraTechPrimeNgPreset = definePreset(Aura, {
   semantic: {
     primary: {
       50: '#fce4ec',

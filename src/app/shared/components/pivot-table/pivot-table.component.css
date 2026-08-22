@@ -30,7 +30,7 @@
   margin-inline-start: 0.25rem;
   font-size: 0.65rem;
   line-height: 1;
-  color: #999;
+  color: var(--text-muted);
   vertical-align: middle;
   transition: color 0.2s ease;
 }

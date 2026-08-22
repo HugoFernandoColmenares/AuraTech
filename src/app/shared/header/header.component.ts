@@ -6,6 +6,7 @@ import { AuthService } from '@core/services/auth/auth';
 import { ProfileService } from '@core/services/auth/profile';
 import { RolePermissionService } from '@core/services/auth/role-permission.service';
 import { buildUserInitials } from '@core/auxiliar/avatar-image.util';
+import { ThemeService } from '@core/theme/theme.service';
 
 @Component({
   selector: 'app-header',
@@ -19,6 +20,7 @@ export class HeaderComponent {
   private authService = inject(AuthService);
   private profileService = inject(ProfileService);
   readonly rolePermissions = inject(RolePermissionService);
+  readonly themeService = inject(ThemeService);
 
   displayUser = computed(() => this.profileService.profile() ?? this.authService.currentUser());
 

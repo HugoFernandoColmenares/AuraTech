@@ -4,7 +4,7 @@
     <div class="flex-between align-start">
       <div class="flex-column gap-s">
         <h1 class="title">Product Catalog</h1>
-        <p class="subtitle">Manage your style database and master product records with elegance.</p>
+        <p class="subtitle">Review catalog styles and keep product records ready for sales mapping.</p>
       </div>
       <div class="header-actions flex gap-m">
         @if (rolePermissions.canCreate()) {
@@ -77,7 +77,7 @@
       <form [formGroup]="productForm" (ngSubmit)="saveProduct()" class="grid-form gap-m">
         <div class="form-group">
           <label for="parent">Parent Code*</label>
-          <input id="parent" type="text" formControlName="parent" class="input-deco" placeholder="Ex: P748931AM">
+          <input id="parent" type="text" formControlName="parent" class="input-deco" placeholder="Ex: HX-104">
           @if (productForm.get('parent')?.touched && productForm.get('parent')?.invalid) {
             <span class="error-text" role="alert">Code is required.</span>
           }
@@ -85,7 +85,7 @@
 
         <div class="form-group">
           <label for="styleName">Style Name*</label>
-          <input id="styleName" type="text" formControlName="styleName" class="input-deco" placeholder="Ex: High Rise Flare">
+          <input id="styleName" type="text" formControlName="styleName" class="input-deco" placeholder="Ex: Desk Organizer">
           @if (productForm.get('styleName')?.touched && productForm.get('styleName')?.invalid) {
             <span class="error-text" role="alert">Name is required.</span>
           }

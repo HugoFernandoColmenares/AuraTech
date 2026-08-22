@@ -13,9 +13,9 @@
 
 /* Table panel */
 .table-panel {
-  background: var(--color-white, #FFF);
-  border-radius: var(--radius-m, 0.5rem);
-  border: 1px solid var(--color-border, #E0E0E0);
+  background: var(--surface);
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
 }
 
 /* YoY Pivot table container */
@@ -25,15 +25,15 @@
 
 /* Product Name toggle hint bar */
 .style-name-hint {
-  background: #f0fdfa;
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--surface));
   border-radius: 0.25rem;
-  border: 1px dashed #D1C4E9;
+  border: 1px dashed var(--border);
 }
 
 .style-name-hint-text {
-  color: var(--primary-color, #134e4a);
+  color: var(--text-color);
   font-style: italic;
-  font-size: 0.75rem;
+  font-size: var(--fs-label, 0.8125rem);
 }
 
 /* Dropdown menus */
@@ -59,19 +59,19 @@
 }
 
 .advanced-filters {
-  background: #F9FAFB;
+  background: var(--surface-muted);
 }
 
 .filters-bar--collapsible {
   padding: 1.25rem;
-  background: #fcfcfc;
-  border: 1px solid #eee;
+  background: var(--surface);
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 1.25rem !important;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
 }
 
 .filters-bar__trailing {
@@ -146,7 +146,7 @@
   border: none;
   border-radius: 50%;
   background: transparent;
-  color: var(--color-text-subtle, #666);
+  color: var(--text-muted);
   line-height: 0;
   flex-shrink: 0;
   cursor: pointer;

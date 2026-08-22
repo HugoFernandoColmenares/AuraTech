@@ -7,21 +7,30 @@
 .home-header {
   text-align: center;
   padding: 2rem;
-  background: linear-gradient(135deg, rgba(15, 118, 110, 0.05) 0%, rgba(19, 78, 74, 0.08) 100%);
-  border-radius: 0.5rem;
-  border: 1px solid var(--color-silver, #94a3b8);
+  background: color-mix(in srgb, var(--primary-color) 8%, var(--surface));
+  border-radius: 0.75rem;
+  border: 1px solid var(--border);
 }
 
 .home-header .title {
   font-family: 'Figtree', sans-serif;
-  font-size: 2.5rem;
-  color: var(--color-black, #000);
+  font-size: 1.75rem;
+  color: var(--text-color);
   margin: 0;
+}
+
+.product-brief {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--text-color);
+  margin: 0;
+  max-width: 46rem;
+  align-self: center;
 }
 
 .home-header .subtitle {
   font-size: 1.05rem;
-  color: var(--color-gray-dark, #555);
+  color: var(--text-muted);
   margin: 0;
   max-width: 42rem;
   align-self: center;
@@ -37,9 +46,9 @@
 .workflow-panel,
 .tip-panel,
 .custom-excel-panel {
-  border: 1px solid var(--color-silver, #94a3b8);
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
-  background: var(--color-white, #fff);
+  background: var(--surface);
 }
 
 .custom-excel-panel {
@@ -50,7 +59,7 @@
 .custom-excel-panel p {
   margin: 0;
   line-height: 1.7;
-  color: #444;
+  color: var(--text-color);
 }
 
 .workflow-steps {
@@ -60,9 +69,9 @@
 }
 
 .workflow-step {
-  border: 1px dashed var(--color-border, #e0e0e0);
+  border: 1px dashed var(--border);
   border-radius: 0.35rem;
-  background: rgba(15, 118, 110, 0.02);
+  background: color-mix(in srgb, var(--primary-color) 6%, transparent);
 }
 
 .workflow-step__number {
@@ -87,7 +96,7 @@
 
 .workflow-step__text {
   margin: 0;
-  color: var(--color-gray-dark, #555);
+  color: var(--text-muted);
   line-height: 1.6;
 }
 
@@ -97,9 +106,9 @@
 }
 
 .module-card {
-  border: 1px solid var(--color-silver, #94a3b8);
+  border: 1px solid var(--border);
   border-radius: 0.5rem;
-  background: var(--color-white, #fff);
+  background: var(--surface);
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
@@ -117,7 +126,7 @@
 .module-card__text {
   margin: 0;
   flex: 1;
-  color: var(--color-gray-dark, #555);
+  color: var(--text-muted);
   font-size: 0.95rem;
   line-height: 1.5;
 }
@@ -125,7 +134,7 @@
 .tip-panel p {
   margin: 0;
   line-height: 1.7;
-  color: #444;
+  color: var(--text-color);
 }
 
 .btn-sm {

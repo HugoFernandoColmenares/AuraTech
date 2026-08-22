@@ -1,4 +1,4 @@
-const ACCESS_TOKEN_KEY = 'ymi_access_token';
+const ACCESS_TOKEN_KEY = 'auratech_access_token';
 
 export function getStoredAccessToken(): string | null {
   return localStorage.getItem(ACCESS_TOKEN_KEY);

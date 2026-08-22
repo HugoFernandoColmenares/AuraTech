@@ -7,19 +7,40 @@
     </svg>
   </button>
 
-  @if (displayUser(); as user) {
-    <a routerLink="/layout/profile" class="user-profile flex-center gap-s" aria-label="Open profile">
-      <div class="user-profile__text flex-column">
-        <span class="user-name">{{ headerName() }}</span>
-        <span class="user-meta">{{ headerRole() }} · {{ headerEmail() }}</span>
-      </div>
-      <div class="avatar flex-center" [class.avatar--photo]="avatarUrl()">
-        @if (avatarUrl()) {
-          <img [src]="avatarUrl()" alt="" class="avatar-img" />
-        } @else {
-          <span aria-hidden="true">{{ avatarInitials() }}</span>
-        }
-      </div>
-    </a>
-  }
+  <div class="header-actions flex-center gap-s">
+    <button
+      type="button"
+      class="theme-toggle"
+      (click)="themeService.toggle()"
+      [attr.aria-label]="themeService.theme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+      [attr.aria-pressed]="themeService.theme() === 'dark'"
+    >
+      @if (themeService.theme() === 'dark') {
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"></path>
+        </svg>
+      } @else {
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M21 14.5A8.38 8.38 0 0 1 9.5 3 7 7 0 1 0 21 14.5z"></path>
+        </svg>
+      }
+    </button>
+
+    @if (displayUser(); as user) {
+      <a routerLink="/layout/profile" class="user-profile flex-center gap-s" aria-label="Open profile">
+        <div class="user-profile__text flex-column">
+          <span class="user-name">{{ headerName() }}</span>
+          <span class="user-meta">{{ headerRole() }} · {{ headerEmail() }}</span>
+        </div>
+        <div class="avatar flex-center" [class.avatar--photo]="avatarUrl()">
+          @if (avatarUrl()) {
+            <img [src]="avatarUrl()" alt="" class="avatar-img" />
+          } @else {
+            <span aria-hidden="true">{{ avatarInitials() }}</span>
+          }
+        </div>
+      </a>
+    }
+  </div>
 </header>

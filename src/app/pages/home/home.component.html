@@ -1,9 +1,14 @@
 <main class="home-container flex-column gap-l p-l">
   <header class="home-header flex-column gap-s">
     <h1 class="title">Dashboard</h1>
+    <p class="product-brief">
+      AuraTech is a sales intelligence workspace: upload Excel orders, review KPIs and charts,
+      then persist cleaned records. It is built for merchandisers, operations analysts, and
+      independent operators who need a lightweight reporting loop without a full data warehouse.
+    </p>
     <p class="subtitle">
-      Quick guide to uploading Excel data, reviewing session rows, and sending records to Supabase.
-      Sales Report also supports <strong>Custom Excel</strong> for layouts that do not match a preset store format.
+      Use this demo to upload a generic template or map your own columns with Custom Excel,
+      review session rows, and send records to the database when you are ready.
     </p>
   </header>
 
@@ -59,7 +64,7 @@
     <p>
       Uploaded files are parsed in the browser and flagged as <strong>session data</strong>.
       They are not persisted until you use <strong>Export to DB</strong>.
-      The toolbar icon shows how many rows are still in session versus already stored in Supabase.
+      The toolbar icon shows how many rows are still in session versus already stored.
     </p>
     <a routerLink="/layout/about" class="btn btn-secondary btn-sm">Read the full guide in About</a>
   </section>

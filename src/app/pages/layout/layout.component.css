@@ -8,7 +8,7 @@
 .sidebar-wrapper {
   width: 16rem;
   background-color: var(--sidebar-bg);
-  border-right: 1px solid #94a3b8;
+  border-right: 1px solid var(--border);
   flex-shrink: 0;
   overflow-y: auto;
 }
@@ -67,9 +67,8 @@
     animation: fadeIn 0.3s ease forwards;
   }
 
-  .main-content {
-    width: 100%;
-    flex: 1;
+  .page-content {
+    padding: 1rem;
   }
 }
 

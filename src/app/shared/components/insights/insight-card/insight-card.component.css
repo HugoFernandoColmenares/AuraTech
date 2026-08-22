@@ -1,9 +1,9 @@
 /* ── Card base ─────────────────────────────────────────────────────────── */
 .insight-card {
-  border: 1px solid #E8E8E8;
-  border-radius: 0.25rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
   padding: 1rem 1.1rem;
-  background: #FFF;
+  background: var(--surface);
   transition: transform 0.2s, box-shadow 0.2s;
   position: relative;
   overflow: hidden;
@@ -14,20 +14,18 @@
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 3px;
-  border-radius: 0.25rem 0 0 0.25rem;
+  border-radius: 0.75rem 0 0 0.75rem;
 }
 .insight-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(0,0,0,.07);
 }
 
-/* severity left-bar colours */
 .insight-card--positive::before { background: #22C55E; }
 .insight-card--warning::before  { background: #F59E0B; }
-.insight-card--neutral::before  { background: #94A3B8; }
+.insight-card--neutral::before  { background: var(--accent-color); }
 .insight-card--info::before     { background: var(--primary-color); }
 
-/* ── Card header ───────────────────────────────────────────────────────── */
 .insight-card-header {
   display: flex;
   align-items: center;
@@ -38,8 +36,8 @@
 .insight-title {
   flex: 1;
   font-weight: 700;
-  font-size: 0.875rem;
-  color: #111;
+  font-size: 0.95rem;
+  color: var(--text-color);
 }
 .insight-severity-dot {
   width: 8px; height: 8px;
@@ -48,33 +46,31 @@
 }
 .dot--positive { background: #22C55E; }
 .dot--warning  { background: #F59E0B; }
-.dot--neutral  { background: #94A3B8; }
+.dot--neutral  { background: var(--accent-color); }
 .dot--info     { background: var(--primary-color); }
 
-/* ── Card body ─────────────────────────────────────────────────────────── */
 .insight-body {
   margin: 0;
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
   line-height: 1.65;
-  color: #444;
+  color: var(--text-muted);
 }
-::ng-deep .insight-body strong { color: #000; font-weight: 700; }
+::ng-deep .insight-body strong { color: var(--text-color); font-weight: 700; }
 
-/* ── Recommendations list ──────────────────────────────────────────────── */
 .recommendation-item {
   display: flex;
   gap: 1rem;
   padding: 1rem 1.1rem;
-  background: #FFF;
-  border: 1px solid #E8E8E8;
-  border-radius: 0.25rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
   transition: box-shadow 0.2s, transform 0.2s;
   height: 100%;
 }
 .recommendation-item:hover {
   transform: translateX(3px);
   box-shadow: 0 3px 12px rgba(19,78,74,.08);
-  border-color: #DDD4F5;
+  border-color: var(--primary-color);
 }
 .rec-icon {
   font-size: 1.4rem;
@@ -85,13 +81,13 @@
 .rec-content { flex: 1; display: flex; flex-direction: column; gap: 0.5rem; }
 .rec-title {
   font-weight: 700;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
   color: var(--primary-color);
 }
 .rec-body {
   margin: 0;
-  font-size: 0.8125rem;
+  font-size: 0.9375rem;
   line-height: 1.65;
-  color: #555;
+  color: var(--text-muted);
 }
-::ng-deep .rec-body strong { color: #000; }
+::ng-deep .rec-body strong { color: var(--text-color); }

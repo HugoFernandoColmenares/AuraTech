@@ -1,9 +1,33 @@
 .header {
   justify-content: flex-end;
-  background-color: #ffffff;
-  border-bottom: 1px solid #e0e0e0;
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border);
   height: 4rem;
   padding: 0 1.5rem;
+}
+
+.header-actions {
+  margin-left: auto;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface-muted);
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.theme-toggle:hover,
+.theme-toggle:focus-visible {
+  border-color: var(--primary-color);
+  outline: 2px solid var(--primary-color);
+  outline-offset: 2px;
 }
 
 .menu-toggle {
@@ -11,7 +35,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #333;
+  color: var(--text-color);
   padding: 0.5rem;
   margin-right: auto;
 }
@@ -38,15 +62,14 @@
   font-family: 'Figtree', sans-serif;
   font-weight: 600;
   font-size: 0.875rem;
-  color: #000;
+  color: var(--text-color);
 }
 
 .user-meta {
   font-family: 'Figtree', sans-serif;
-  font-size: 0.6875rem;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
 }
 
 .avatar {

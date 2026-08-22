@@ -3,9 +3,9 @@
 
 .insights-header {
   padding: 1.25rem 1.5rem;
-  background: linear-gradient(135deg, #f0fdfa 0%, #FFF 100%);
-  border: 1px solid #DDD4F5;
-  border-radius: 0.25rem;
+  background: color-mix(in srgb, var(--primary-color) 10%, var(--surface));
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
 }
 .insights-title-row {
   display: flex;
@@ -17,8 +17,8 @@
   display: inline-block;
   padding: 0.2rem 0.6rem;
   background: var(--primary-color);
-  color: #FFF;
-  font-size: 0.6rem;
+  color: var(--on-primary);
+  font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -28,25 +28,25 @@
   font-family: 'Figtree', sans-serif;
   font-size: 1.5rem;
   margin: 0;
-  color: #000;
+  color: var(--text-color);
 }
 .insights-meta {
   margin: 0;
-  font-size: 0.8125rem;
-  color: #666;
+  font-size: 0.875rem;
+  color: var(--text-muted);
 }
 .insights-meta strong { color: var(--primary-color); }
 
 /* ── Section titles ────────────────────────────────────────────────────── */
 .insights-section {
-  border-top: 1px solid #F0F0F0;
+  border-top: 1px solid var(--border);
   padding-top: 0.25rem;
 }
 .insights-section-title {
   font-family: 'Figtree', sans-serif;
   font-size: 1.125rem;
   margin: 0;
-  color: #000;
+  color: var(--text-color);
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -62,8 +62,8 @@
 
 /* ── Recommendations list ──────────────────────────────────────────────── */
 .insights-section--recommendations {
-  background: #FAFAFA;
-  border: 1px solid #EBEBEB;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
   border-radius: 0.25rem;
   padding: 1.25rem 1.5rem;
 }
@@ -73,7 +73,7 @@
 .insights-empty {
   padding: 2rem;
   text-align: center;
-  color: #888;
+  color: var(--text-muted);
   font-size: 0.875rem;
 }
 

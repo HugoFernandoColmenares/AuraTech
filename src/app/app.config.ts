@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
       theme: {
         preset: AuraTechPrimeNgPreset,
         options: {
-          darkModeSelector: false,
+          darkModeSelector: '[data-theme="dark"]',
         },
       },
       ripple: true,

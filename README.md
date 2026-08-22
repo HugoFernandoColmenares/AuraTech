@@ -148,7 +148,7 @@ Configured in `app.config.ts` via `providePrimeNG()`. Date filters use `p-datepi
    npm run build
    ```
 
-   Output: `dist/ymi-project/browser`
+   Output: `dist/auratech/browser`
 
 ## Documentation
 

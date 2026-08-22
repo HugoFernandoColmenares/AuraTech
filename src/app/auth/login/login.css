@@ -21,15 +21,15 @@
 .login-brand__tagline {
   font-family: 'Figtree', sans-serif;
   font-size: 0.75rem;
-  color: #4b5563;
+  color: var(--text-muted);
   letter-spacing: 0.01em;
   margin: 0;
 }
 
 .login-title {
   font-family: 'Figtree', sans-serif;
-  font-size: clamp(1.5rem, 4vw, 2rem);
-  color: var(--color-tertiary, #000000);
+  font-size: 1.75rem;
+  color: var(--text-color);
   letter-spacing: 0.02em;
   margin: 0;
   border: none;
@@ -41,7 +41,7 @@
 .login-lead {
   font-family: 'Figtree', sans-serif;
   font-size: 0.9rem;
-  color: #666;
+  color: var(--text-muted);
   line-height: 1.5;
   margin: 0;
 }
@@ -52,21 +52,20 @@ form {
 
 .form-group label {
   font-family: 'Figtree', sans-serif;
-  font-size: 0.8rem;
+  font-size: 0.875rem;
   font-weight: 600;
-  color: var(--color-tertiary, #000000);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  color: var(--text-color);
+  letter-spacing: 0.01em;
 }
 
 .form-group input {
   padding: 0.75rem 1rem;
-  border: 1px solid var(--color-accent, #94a3b8);
+  border: 1px solid var(--border);
   border-radius: 0.25rem;
   font-family: 'Figtree', sans-serif;
   font-size: 0.95rem;
-  background-color: var(--color-primary, #FFFFFF);
-  color: var(--color-tertiary, #000000);
+  background-color: var(--surface);
+  color: var(--text-color);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   width: 100%;
   box-sizing: border-box;
@@ -152,7 +151,7 @@ form {
 .login-register {
   font-family: 'Figtree', sans-serif;
   font-size: 0.85rem;
-  color: var(--color-tertiary, #000000);
+  color: var(--text-color);
   margin: 0;
   line-height: 1.5;
 }

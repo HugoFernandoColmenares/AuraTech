@@ -10,12 +10,10 @@
 
 /* Premium Art Deco Glassmorphism Card */
 .profile-card {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid var(--color-accent, #94a3b8);
-  border-radius: 0.25rem;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
   width: 100%;
   max-width: 32rem;
   transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
@@ -63,20 +61,19 @@
   background-color: rgba(19, 78, 74, 0.05);
 }
 
-.art-deco-title {
+.page-heading {
   font-family: 'Figtree', sans-serif;
-  font-size: 2rem;
+  font-size: var(--fs-title, 1.75rem);
   font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  color: var(--color-tertiary, #000000);
+  letter-spacing: -0.02em;
+  color: var(--text-color);
 }
 
 .subtitle {
   font-family: 'Figtree', sans-serif;
-  font-size: 0.9rem;
-  color: #666666;
-  letter-spacing: 0.03em;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  letter-spacing: 0.01em;
 }
 
 /* Detail Rows (Read-Only) */
@@ -111,7 +108,7 @@
 .value {
   font-family: 'Figtree', sans-serif;
   font-size: 0.95rem;
-  color: #333333;
+  color: var(--text-color);
 }
 
 /* Custom premium badge and links */
@@ -252,7 +249,7 @@
 
 .avatar-hint {
   font-size: 0.75rem;
-  color: #666;
+  color: var(--text-muted);
   text-align: center;
   margin: 0;
 }
@@ -287,7 +284,7 @@
 .permission-list li {
   font-family: 'Figtree', sans-serif;
   font-size: 0.8125rem;
-  color: #444;
+  color: var(--text-muted);
   padding-left: 1rem;
   position: relative;
 }

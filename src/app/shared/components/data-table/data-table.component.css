@@ -13,7 +13,7 @@
   cursor: pointer;
   padding: 0.4rem;
   border-radius: 0.25rem;
-  color: #666;
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -21,7 +21,7 @@
 }
 
 .btn-icon:hover {
-  background: #f0f0f0;
+  background: var(--surface-muted);
   color: var(--primary-color);
 }
 
@@ -39,7 +39,7 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  color: #999;
+  color: var(--text-muted);
   transition: transform 0.3s ease;
   padding: 0.25rem;
 }
@@ -51,7 +51,7 @@
 
 .detail-row td {
   padding: 0;
-  background-color: #fdfdfd;
+  background-color: var(--surface-muted);
 }
 
 .detail-content {
@@ -64,12 +64,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #f0f0f0;
+  border-top: 1px solid var(--border);
 }
 
 .pagination-info {
   font-size: 0.85rem;
-  color: #666;
+  color: var(--text-muted);
 }
 
 .pagination-controls {
@@ -81,7 +81,7 @@
 .empty-cell {
   text-align: center;
   padding: 3rem !important;
-  color: #999;
+  color: var(--text-muted);
   font-style: italic;
 }
 

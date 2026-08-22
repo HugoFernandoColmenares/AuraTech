@@ -2,8 +2,15 @@
 <a href="#auth-content" class="skip-link">Skip to main content</a>
 
 <div class="auth-wrapper flex-center p-l">
+  <button
+    type="button"
+    class="auth-theme-toggle"
+    (click)="themeService.toggle()"
+    [attr.aria-label]="themeService.theme() === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'"
+  >
+    {{ themeService.theme() === 'dark' ? 'Light mode' : 'Dark mode' }}
+  </button>
   <main id="auth-content" class="auth-container card">
-    <!-- Nested router outlet for login, register, forgot-password -->
     <router-outlet></router-outlet>
   </main>
 </div>

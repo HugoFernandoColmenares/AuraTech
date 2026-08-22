@@ -30,7 +30,7 @@ describe('product-catalog.util', () => {
         id: '1',
         parent: 'A1',
         styleName: 'Style A',
-        brand: { id: 'b1', name: 'Aura', isActive: true },
+        brand: { id: 'b1', name: 'Northline', isActive: true },
       });
       const sparse = product({ id: '2', parent: 'A1' });
 
@@ -46,7 +46,7 @@ describe('product-catalog.util', () => {
         parent: 'A1',
         isActive: false,
         styleName: 'Rich inactive',
-        brand: 'Aura',
+        brand: 'Northline',
       });
 
       expect(compareParentRepresentatives(active, inactive)).toBeLessThan(0);
@@ -65,7 +65,7 @@ describe('product-catalog.util', () => {
   describe('collapseProductsByParent', () => {
     it('returns one row per parent preferring active SKU with metadata', () => {
       const rows = [
-        product({ id: '1', parent: 'Z100', isActive: false, styleName: 'Inactive rich', brand: 'Aura' }),
+        product({ id: '1', parent: 'Z100', isActive: false, styleName: 'Inactive rich', brand: 'Northline' }),
         product({ id: '2', parent: 'Z100', isActive: true, styleName: 'Active' }),
         product({ id: '3', parent: 'A200', isActive: true, styleName: 'Alpha' }),
       ];
@@ -80,16 +80,16 @@ describe('product-catalog.util', () => {
   });
 
   describe('resolveCatalogItemId', () => {
-    const brands = [{ id: 'brand-1', name: 'Aura', isActive: true }];
+    const brands = [{ id: 'brand-1', name: 'Northline', isActive: true }];
 
     it('resolves object ids', () => {
-      expect(resolveCatalogItemId({ id: 'brand-1', name: 'Aura', isActive: true }, brands)).toBe(
+      expect(resolveCatalogItemId({ id: 'brand-1', name: 'Northline', isActive: true }, brands)).toBe(
         'brand-1'
       );
     });
 
     it('resolves string labels case-insensitively', () => {
-      expect(resolveCatalogItemId('ymi', brands)).toBe('brand-1');
+      expect(resolveCatalogItemId('northline', brands)).toBe('brand-1');
     });
   });
 
@@ -100,7 +100,7 @@ describe('product-catalog.util', () => {
           id: 'ref-1',
           parent: 'A100',
           styleName: 'Ref Style',
-          brand: 'Aura',
+          brand: 'Northline',
           div: 'Women',
           type: 'Top',
           collection: 'Core',
@@ -109,7 +109,7 @@ describe('product-catalog.util', () => {
       ]);
 
       const hydrated = hydrateProductCatalog(product({ id: '1', parent: 'A100' }), {
-        brands: [{ id: 'b1', name: 'Aura', isActive: true }],
+        brands: [{ id: 'b1', name: 'Northline', isActive: true }],
         divisions: [{ id: 'd1', name: 'Women', isActive: true }],
         types: [{ id: 't1', name: 'Top', isActive: true }],
         collections: [{ id: 'c1', name: 'Core', isActive: true }],
@@ -118,7 +118,7 @@ describe('product-catalog.util', () => {
       });
 
       expect(hydrated.styleName).toBe('Ref Style');
-      expect(hydrated.brand).toEqual({ id: 'b1', name: 'Aura', isActive: true });
+      expect(hydrated.brand).toEqual({ id: 'b1', name: 'Northline', isActive: true });
       expect(hydrated.sku).toBe('A100');
     });
   });
@@ -126,7 +126,7 @@ describe('product-catalog.util', () => {
   describe('normalizeProductCatalogRows', () => {
     it('collapses and hydrates in one pass', () => {
       const ctx = {
-        brands: [{ id: 'b1', name: 'Aura', isActive: true }],
+        brands: [{ id: 'b1', name: 'Northline', isActive: true }],
         divisions: [],
         types: [],
         collections: [],
@@ -136,7 +136,7 @@ describe('product-catalog.util', () => {
             id: 'ref-1',
             parent: 'P1',
             styleName: 'From Ref',
-            brand: 'Aura',
+            brand: 'Northline',
           } as IReferenceSheetDto,
         ]),
       };

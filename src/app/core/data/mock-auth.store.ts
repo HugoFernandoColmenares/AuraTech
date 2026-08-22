@@ -1,8 +1,8 @@
 import { IUserDto } from '@core/interfaces/user.interface';
 import { INITIAL_USERS, MockUserRecord } from '@core/data/mock-users.data';
 
-const MOCK_USERS_KEY = 'auratech_users';
-const MOCK_SESSION_KEY = 'auratech_current_user';
+const MOCK_USERS_KEY = 'auratech_users_v2';
+const MOCK_SESSION_KEY = 'auratech_current_user_v2';
 
 function hydrateUserDates(record: MockUserRecord): MockUserRecord {
   return {

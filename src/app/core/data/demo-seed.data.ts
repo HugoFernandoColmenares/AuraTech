@@ -2,13 +2,14 @@ import { ISaleRecordDto } from '@core/interfaces/ISaleRecordDto.interface';
 import { IProductDto } from '@core/interfaces/IProductDto.interface';
 import { generateGuid } from '@core/auxiliar/guid-utils';
 
-const ACCOUNTS = ['Retail Web', 'Wholesale', 'Marketplace'] as const;
-const SKUS = [
-  { sku: 'AT-DENIM-01-32', brand: 'Aura', collection: 'Core', parent: 'AT-DENIM-01' },
-  { sku: 'AT-DENIM-02-30', brand: 'Aura', collection: 'Core', parent: 'AT-DENIM-02' },
-  { sku: 'AT-JOGGER-11-M', brand: 'Lumen', collection: 'Athleisure', parent: 'AT-JOGGER-11' },
-  { sku: 'AT-TEE-20-L', brand: 'Lumen', collection: 'Basics', parent: 'AT-TEE-20' },
-  { sku: 'AT-JACKET-04-S', brand: 'Nimbus', collection: 'Outerwear', parent: 'AT-JACKET-04' },
+/** Fictional office/field catalog — not inherited from any prior client dataset. */
+const ACCOUNTS = ['Direct', 'Partner', 'Outlet'] as const;
+const ITEMS = [
+  { sku: 'HX-1041', brand: 'Northline', collection: 'Launch', parent: 'HX-104', styleName: 'Desk Organizer', type: 'Accessories', division: 'Office' },
+  { sku: 'HX-2210', brand: 'Harbor', collection: 'Core', parent: 'HX-221', styleName: 'LED Task Lamp', type: 'Lighting', division: 'Office' },
+  { sku: 'FK-8803', brand: 'Fieldkit', collection: 'Trail', parent: 'FK-880', styleName: 'Utility Carry Case', type: 'Storage', division: 'Field' },
+  { sku: 'NL-3308', brand: 'Northline', collection: 'Core', parent: 'NL-330', styleName: 'Monitor Stand', type: 'Furniture', division: 'Office' },
+  { sku: 'HB-4412', brand: 'Harbor', collection: 'Seasonal', parent: 'HB-441', styleName: 'Cable Hub', type: 'Accessories', division: 'Office' },
 ] as const;
 
 /** Synthetic sales for the current and prior year so KPIs and charts look populated. */
@@ -24,29 +25,29 @@ export function buildDemoSaleRecords(): ISaleRecordDto[] {
     const volume = 6 + ((monthsBack * 3) % 5);
 
     for (let i = 0; i < volume; i++) {
-      const sku = SKUS[(idx + i) % SKUS.length];
+      const item = ITEMS[(idx + i) % ITEMS.length];
       const account = ACCOUNTS[(idx + i) % ACCOUNTS.length];
       const qty = 2 + ((idx + i) % 8);
-      const cost = 18 + ((idx + i) % 12) * 3.5;
+      const cost = 22 + ((idx + i) % 12) * 4.25;
       const day = 4 + ((idx + i) % 22);
       const orderPlaceDate = new Date(Date.UTC(year, month - 1, day));
 
       rows.push({
         id: generateGuid(),
-        orderId: `AT-${year}${String(month).padStart(2, '0')}-${String(idx + i).padStart(4, '0')}`,
+        orderId: `ORD-${year}${String(month).padStart(2, '0')}-${String(idx + i).padStart(4, '0')}`,
         idx: i + 1,
         orderStatus: 'Shipped',
-        warehouseCode: 'WH-DEMO',
+        warehouseCode: 'DC-EAST',
         account,
-        channel: account === 'Wholesale' ? 'B2B' : 'DTC',
-        category: account === 'Wholesale' ? 'Wholesale' : 'Retail',
+        channel: account === 'Partner' ? 'Wholesale' : 'DTC',
+        category: account === 'Partner' ? 'Wholesale' : 'Retail',
         orderPlaceDate,
-        sku: sku.sku,
+        sku: item.sku,
         itemCost: Number(cost.toFixed(2)),
         itemQuantity: qty,
         total: Number((cost * qty).toFixed(2)),
-        brand: sku.brand,
-        collection: sku.collection,
+        brand: item.brand,
+        collection: item.collection,
         isLocal: false,
         auditMonth: month,
         auditYear: year,
@@ -59,23 +60,17 @@ export function buildDemoSaleRecords(): ISaleRecordDto[] {
 }
 
 export function buildDemoProducts(): IProductDto[] {
-  return SKUS.map((item, i) => ({
+  return ITEMS.map(item => ({
     id: generateGuid(),
     sku: item.sku,
     parent: item.parent,
-    styleName: item.sku.startsWith('AT-JOGGER')
-      ? 'Everyday Jogger'
-      : item.sku.startsWith('AT-TEE')
-        ? 'Essential Tee'
-        : item.sku.startsWith('AT-JACKET')
-          ? 'City Jacket'
-          : 'Stretch Denim',
+    styleName: item.styleName,
     isActive: true,
     brand: item.brand,
-    division: i % 2 === 0 ? 'Womens' : 'Mens',
-    type: item.sku.includes('TEE') ? 'Tops' : 'Bottoms',
+    division: item.division,
+    type: item.type,
     collection: item.collection,
-    fit: 'Regular',
+    fit: 'Standard',
     isLocal: false,
   }));
 }

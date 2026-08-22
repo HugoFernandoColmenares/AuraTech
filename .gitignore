@@ -19,11 +19,7 @@ yarn-error.log
 *.sublime-workspace
 
 # Visual Studio Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode/
 .history/*
 
 # Cursor / local agent scratch (never publish)
@@ -70,10 +66,13 @@ serviceAccount*.json
 *.wasm
 /public/assets/sql-wasm*
 
-# Deploy artifacts
+# Deploy artifacts (vercel.json still pointed at the old dist/ymi-project path)
 .vercel/
+vercel.json
 
 # Internal planning docs that may name the original client
+MVP.md
+PLAN-MVP.md
 DESIGN_GUIDELINES.md
 architecture_guidelines.md
 architecture_optimization_plan.md

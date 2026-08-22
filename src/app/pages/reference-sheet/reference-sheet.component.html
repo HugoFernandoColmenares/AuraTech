@@ -1,0 +1,67 @@
+<div class="reference-container flex-column gap-l p-l">
+
+  <header class="report-header flex-column gap-s">
+    <div class="flex-between align-start">
+      <div class="flex-column gap-s">
+        <h1 class="title">Reference Intelligence</h1>
+        <p class="subtitle">Master data reference for products and styles with unified visibility.</p>
+      </div>
+      <div class="header-actions flex gap-m">
+        <button
+          type="button"
+          class="btn btn-ghost"
+          [disabled]="isRefreshing()"
+          (click)="refreshReferenceData(true)"
+        >
+          {{ isRefreshing() ? 'Refreshing…' : 'Refresh' }}
+        </button>
+        @if (filteredData().length > 0) {
+          <button class="btn btn-primary" (click)="exportToDatabase()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+            </svg>
+            Export to DB
+          </button>
+        }
+      </div>
+    </div>
+  </header>
+
+  @if (!initialDataReady() && isRefreshing()) {
+    <div class="loading-state flex-center p-l">
+      <div class="spinner"></div>
+      <p>{{ transportMessage() || 'Loading reference data…' }}</p>
+    </div>
+  } @else {
+    @if (isRefreshing()) {
+      <p class="cache-hint">{{ transportMessage() || 'Refreshing reference data…' }}</p>
+    }
+
+    <app-main-table-filter
+      [showDates]="false"
+      [(searchQuery)]="searchFilter"
+      (clearFilters)="clearFilters()">
+      
+      <div class="filter-group">
+        <label class="filter-label">Brand</label>
+        <select id="brand-filter" class="filter-select"
+                [ngModel]="brandFilter()"
+                (ngModelChange)="brandFilter.set($event)">
+          <option value="">All Brands</option>
+          @for (b of availableBrands(); track b) {
+            <option [value]="b">{{ b }}</option>
+          }
+        </select>
+      </div>
+      <span class="results-count" style="margin-left: 1rem;"><strong>{{ filteredData().length }}</strong> items</span>
+    </app-main-table-filter>
+
+    <section class="table-section">
+      <app-data-table 
+        [columns]="columns" 
+        [data]="filteredData()" 
+        [pageSize]="25">
+      </app-data-table>
+    </section>
+  }
+</div>

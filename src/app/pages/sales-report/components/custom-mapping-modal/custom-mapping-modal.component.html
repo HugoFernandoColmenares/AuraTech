@@ -1,0 +1,294 @@
+<div class="modal-overlay flex-center" role="dialog" aria-modal="true" aria-labelledby="cmm-title">
+  <div class="modal-card custom-mapping-card flex-column fade-in">
+    <div class="custom-mapping-top flex-column gap-m">
+      <header class="modal-header">
+        <h2 id="cmm-title" class="modal-title">Custom Excel Mapping</h2>
+        <p class="modal-subtitle">
+          Map an Excel layout to sales fields, then load the records.
+        </p>
+      </header>
+
+      <ol class="step-indicator flex gap-s" aria-label="Mapping steps">
+        <li [class.active]="step() >= 1">1. File</li>
+        <li [class.active]="step() >= 2">2. Sheet</li>
+        <li [class.active]="step() >= 3">3. Mapping</li>
+        <li [class.active]="step() >= 4">4. Preview</li>
+      </ol>
+    </div>
+
+    <main class="custom-mapping-body flex-column gap-m">
+      @if (busy()) {
+        <p class="muted" role="status">Reading file…</p>
+      }
+
+      <!-- Step 1: upload -->
+      @if (step() === 1) {
+        <section class="flex-column gap-m">
+          <label class="file-drop flex-column gap-s align-center">
+            <span class="file-drop__icon" aria-hidden="true">📄</span>
+            <span class="file-drop__text">
+              @if (activeFile(); as file) {
+                <strong>{{ file.name }}</strong>
+              } @else {
+                Choose an Excel file to begin
+              }
+            </span>
+            <span class="muted small">.xlsx, .xls accepted</span>
+          </label>
+          <input
+            #fileInput
+            type="file"
+            accept=".xlsx,.xls"
+            hidden
+            (change)="onFileChosen($event)"
+          />
+          @if (activeFile(); as file) {
+            <p class="muted small">Selected: <strong>{{ file.name }}</strong></p>
+          }
+          <button type="button" class="btn btn-secondary" (click)="triggerFilePicker(fileInput)">
+            {{ activeFile() ? 'Choose a different file' : 'Choose file' }}
+          </button>
+        </section>
+      }
+
+      <!-- Step 2: sheet selection -->
+      @if (step() === 2) {
+        <section class="flex-column gap-m">
+          <label class="field-label" for="cmm-sheet">Worksheet</label>
+          <p-select
+            inputId="cmm-sheet"
+            [options]="sheetOptions()"
+            optionLabel="label"
+            optionValue="value"
+            [ngModel]="selectedSheet()"
+            (onChange)="selectedSheet.set($event.value)"
+            [filter]="true"
+            filterBy="label"
+            filterPlaceholder="Search worksheets…"
+            [resetFilterOnHide]="true"
+            styleClass="w-full"
+            placeholder="Select a worksheet"
+          />
+        </section>
+      }
+
+      <!-- Step 3: metadata + mapping grid -->
+      @if (step() === 3) {
+        <section class="flex-column gap-m">
+          @if (savedTemplateOptions().length) {
+            <div class="flex-column gap-xs">
+              <label class="field-label" for="cmm-saved">Load saved template</label>
+              <p-select
+                inputId="cmm-saved"
+                [options]="savedTemplateOptions()"
+                optionLabel="label"
+                optionValue="value"
+                [showClear]="true"
+                placeholder="Select a saved mapping (optional)"
+                (onChange)="onSavedTemplateSelected($event.value)"
+                [filter]="true"
+                filterBy="label"
+                filterPlaceholder="Search templates…"
+                [resetFilterOnHide]="true"
+                styleClass="w-full"
+              />
+            </div>
+          }
+
+          <div class="meta-grid" [formGroup]="metaForm">
+            <div class="flex-column gap-xs">
+              <label class="field-label" for="cmm-account">Account name</label>
+              <input
+                id="cmm-account"
+                type="text"
+                class="text-input"
+                placeholder="e.g. Walmart WFS Alternative"
+                formControlName="accountName"
+                (blur)="onAccountNameBlur()"
+              />
+            </div>
+            <div class="flex-column gap-xs">
+              <label class="field-label" for="cmm-category">Category</label>
+              <p-select
+                inputId="cmm-category"
+                [options]="categoryOptions"
+                optionLabel="label"
+                optionValue="value"
+                formControlName="category"
+                styleClass="w-full"
+                placeholder="Select category"
+              />
+            </div>
+            <div class="flex-column gap-xs">
+              <label class="field-label" for="cmm-date">Date format (optional)</label>
+              <input
+                id="cmm-date"
+                type="text"
+                class="text-input"
+                placeholder="DD/MM/YYYY"
+                formControlName="dateFormat"
+              />
+            </div>
+          </div>
+
+          <div class="audit-period-section flex-column gap-s">
+            <div class="audit-period-section__head">
+              <span class="field-label">Audit period (optional)</span>
+              <p class="muted small audit-period-section__hint">
+                Applied to every imported row when the Excel file has no month or year column.
+              </p>
+            </div>
+            <div class="audit-period-grid">
+              <div class="flex-column gap-xs">
+                <label class="field-label" for="cmm-audit-month">Audit month</label>
+                <p-datepicker
+                  inputId="cmm-audit-month"
+                  styleClass="audit-calendar w-full"
+                  inputStyleClass="text-input"
+                  view="month"
+                  dateFormat="mm/yy"
+                  [ngModel]="auditMonthDate()"
+                  (ngModelChange)="onAuditMonthChange($event)"
+                  [showIcon]="true"
+                  [showButtonBar]="true"
+                  [readonlyInput]="true"
+                  placeholder="Select month"
+                  appendTo="body"
+                />
+              </div>
+              <div class="flex-column gap-xs">
+                <label class="field-label" for="cmm-audit-year">Audit year</label>
+                <p-datepicker
+                  inputId="cmm-audit-year"
+                  styleClass="audit-calendar w-full"
+                  inputStyleClass="text-input"
+                  view="year"
+                  dateFormat="yy"
+                  [ngModel]="auditYearDate()"
+                  (ngModelChange)="onAuditYearChange($event)"
+                  [showIcon]="true"
+                  [showButtonBar]="true"
+                  [readonlyInput]="true"
+                  placeholder="Select year"
+                  appendTo="body"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="mapping-grid" [formGroup]="mappingForm">
+            <div class="mapping-grid__head">
+              <span>Sale field</span>
+              <span>Excel column</span>
+            </div>
+            @for (field of fields; track field.key) {
+              <div class="mapping-row">
+                <span class="mapping-row__label">
+                  {{ field.label }}
+                  @if (!field.optional) { <span class="required" aria-hidden="true">*</span> }
+                </span>
+                <p-select
+                  [inputId]="'cmm-' + field.key"
+                  [options]="columnOptionsFor(field.key)"
+                  optionLabel="label"
+                  optionValue="value"
+                  [formControlName]="field.key"
+                  [filter]="true"
+                  filterBy="label"
+                  filterPlaceholder="Search columns…"
+                  [resetFilterOnHide]="true"
+                  styleClass="w-full"
+                  [placeholder]="field.optional ? '(optional)' : 'Select column'"
+                  [showClear]="field.optional"
+                />
+              </div>
+            }
+          </div>
+
+          @if (mappingErrors().length) {
+            <ul class="error-list flex-column gap-xs" role="alert">
+              @for (error of mappingErrors(); track error) {
+                <li>{{ error }}</li>
+              }
+            </ul>
+          }
+        </section>
+      }
+
+      <!-- Step 4: preview -->
+      @if (step() === 4) {
+        <section class="flex-column gap-m">
+          <p class="muted">
+            Showing the first {{ previewRecords().length }} of {{ totalMappedCount() }} mapped record(s).
+            {{ totalMappedCount() === 0 ? 'No rows matched the mapping.' : '' }}
+          </p>
+          <div class="preview-table-wrapper">
+            <table class="preview-table">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>SKU</th>
+                  <th>Qty</th>
+                  <th>Total</th>
+                  <th>Date</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (record of previewRecords(); track record.id) {
+                  <tr>
+                    <td>{{ record.orderId }}</td>
+                    <td>{{ record.sku }}</td>
+                    <td>{{ record.itemQuantity }}</td>
+                    <td>{{ record.total | number }}</td>
+                    <td>{{ record.orderPlaceDate | date: 'MM/dd/yyyy' }}</td>
+                  </tr>
+                } @empty {
+                  <tr><td colspan="5" class="empty-cell">No records produced.</td></tr>
+                }
+              </tbody>
+            </table>
+          </div>
+
+          <label class="save-template flex align-center gap-s">
+            <input type="checkbox" [checked]="saveTemplate()" (change)="saveTemplate.set($any($event.target).checked)" />
+            Save this mapping template for future uploads
+          </label>
+        </section>
+      }
+    </main>
+
+    <footer class="modal-footer custom-mapping-footer flex gap-m flex-between">
+      <button type="button" class="btn btn-ghost" (click)="cancelEmit()">Cancel</button>
+      <div class="flex gap-s custom-mapping-footer__actions">
+        @if (step() > 1) {
+          <button type="button" class="btn btn-secondary" (click)="back()">Back</button>
+        }
+        @if (step() === 1 && activeFile()) {
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="bootstrapFromFile(activeFile()!)"
+            [disabled]="busy()"
+          >
+            Continue with file
+          </button>
+        }
+        @if (step() === 2) {
+          <button type="button" class="btn btn-primary" (click)="loadSheet()" [disabled]="!selectedSheet()">
+            Load sheet
+          </button>
+        }
+        @if (step() === 3) {
+          <button type="button" class="btn btn-primary" (click)="buildPreview()" [disabled]="!canPreview()">
+            Preview mapped data
+          </button>
+        }
+        @if (step() === 4) {
+          <button type="button" class="btn btn-primary" (click)="finish()">
+            Load {{ totalMappedCount() }} records
+          </button>
+        }
+      </div>
+    </footer>
+  </div>
+</div>

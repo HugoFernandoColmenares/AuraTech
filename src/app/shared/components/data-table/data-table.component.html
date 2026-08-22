@@ -1,0 +1,171 @@
+<div class="table-wrapper">
+  @if (showBulkToolbar()) {
+    <div class="bulk-toolbar flex-between align-center" role="region" aria-label="Bulk actions">
+      <span class="bulk-toolbar__count">{{ selectedCount() }} selected</span>
+      <div class="bulk-toolbar__actions flex gap-s align-center">
+        <button type="button" class="btn btn-ghost btn-sm" (click)="clearSelection()">
+          Clear selection
+        </button>
+        <button type="button" class="btn btn-danger btn-sm" (click)="onBulkDelete()">
+          Delete selected
+        </button>
+      </div>
+    </div>
+  }
+
+  <div class="table-responsive">
+    <table class="data-table">
+      <thead>
+        <tr>
+          @if (showSelection()) {
+            <th class="select-col" scope="col">
+              <input
+                #selectAllCheckbox
+                type="checkbox"
+                class="row-select-checkbox"
+                [checked]="allPageSelected()"
+                (change)="onHeaderSelectChange($event)"
+                aria-label="Select all rows on this page"
+              />
+            </th>
+          }
+          @for (col of columns(); track col.key) {
+            <th
+              [class]="col.cssClass"
+              [class.sortable]="col.sortable"
+              scope="col"
+              [attr.aria-sort]="col.sortable && activeSortKey() === col.key ? (activeSortDir() === 'asc' ? 'ascending' : 'descending') : null"
+            >
+              @if (col.sortable) {
+                <button type="button" class="sort-btn" (click)="toggleSort(col)">
+                  {{ col.label }}{{ sortIndicator(col) }}
+                </button>
+              } @else {
+                {{ col.label }}
+              }
+            </th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (row of pagedData(); track trackRow($index, row); let rowIndex = $index) {
+          <tr
+            [class.row-clickable]="clickableRows()"
+            [class.row-selected]="isSelected(row, rowIndex)"
+            (click)="onRowClick(row)"
+          >
+            @if (showSelection()) {
+              <td class="select-col">
+                <input
+                  type="checkbox"
+                  class="row-select-checkbox"
+                  [checked]="isSelected(row, rowIndex)"
+                  (click)="$event.stopPropagation()"
+                  (change)="toggleRow(row, rowIndex, $any($event.target).checked)"
+                  [attr.aria-label]="'Select row ' + (rowIndex + 1)"
+                />
+              </td>
+            }
+            @for (col of columns(); track col.key) {
+              <td [class]="col.cssClass">
+                @switch (col.type) {
+                  @case ('currency') {
+                    {{ row[col.key] | currency }}
+                  }
+                  @case ('date') {
+                    {{ row[col.key] | date:'MM/dd/yyyy' }}
+                  }
+                  @case ('badge') {
+                    <span class="badge" [class]="getBadgeClass(row[col.key])">
+                      {{ row[col.key] }}
+                    </span>
+                  }
+                  @case ('percent') {
+                    <span class="badge" [class]="getBadgeClass(row[col.key])">
+                      {{ row[col.key] }}%
+                    </span>
+                  }
+                  @case ('action') {
+                    <div class="action-cell">
+                      @if (showViewAction()) {
+                        <button class="btn-icon" (click)="$event.stopPropagation(); onAction('view', row)" title="View" aria-label="View record">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                          </svg>
+                        </button>
+                      }
+                      @if (canEdit()) {
+                        <button class="btn-icon" (click)="$event.stopPropagation(); onAction('edit', row)" title="Edit" aria-label="Edit record">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                          </svg>
+                        </button>
+                      }
+                      @if (canDelete()) {
+                        <button class="btn-icon btn-icon--danger" (click)="$event.stopPropagation(); onAction('delete', row)" title="Delete" aria-label="Delete record">
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                          </svg>
+                        </button>
+                      }
+                    </div>
+                  }
+                  @default {
+                    {{ formatValue(row[col.key]) }}
+                  }
+                }
+              </td>
+            }
+          </tr>
+        } @empty {
+          <tr>
+            <td [attr.colspan]="columnCount()" class="empty-cell">
+              No data available
+            </td>
+          </tr>
+        }
+      </tbody>
+      @if (footer()) {
+        <tfoot>
+          <tr class="footer-row">
+            @if (showSelection()) {
+              <td class="select-col"></td>
+            }
+            @for (col of columns(); track col.key) {
+              <td [class]="col.cssClass" class="font-bold">
+                @switch (col.type) {
+                  @case ('currency') {
+                    {{ footer()[col.key] | currency }}
+                  }
+                  @case ('number') {
+                    {{ footer()[col.key] | number }}
+                  }
+                  @case ('percent') {
+                    {{ footer()[col.key] }}%
+                  }
+                  @case ('badge') {
+                    {{ footer()[col.key] }}
+                  }
+                  @default {
+                    {{ footer()[col.key] }}
+                  }
+                }
+              </td>
+            }
+          </tr>
+        </tfoot>
+      }
+    </table>
+  </div>
+
+  @if (totalPages() > 1) {
+    <app-pagination 
+      [currentPage]="currentPage()" 
+      [totalPages]="totalPages()" 
+      (pageChange)="goToPage($event)"
+    />
+  }
+</div>

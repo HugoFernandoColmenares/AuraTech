@@ -1,0 +1,93 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Sales Table — Component-Specific Styles
+   (Generic styles: buttons, checkboxes, badges → styles.css)
+════════════════════════════════════════════════════════════════════════ */
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+:host ::ng-deep app-table-header-actions,
+:host ::ng-deep .table-header-actions {
+  display: block;
+  width: 100%;
+}
+
+.table-options {
+  width: 100%;
+  align-items: stretch;
+}
+
+/* Small vertical divider inside the options bar */
+.v-divider-sm {
+  height: 2.5rem;
+  width: 1px;
+  background: var(--color-border, #E0E0E0);
+  flex-shrink: 0;
+}
+
+/* Pushes the Create Record button to the right edge */
+.create-btn {
+  margin-inline-start: auto;
+}
+
+/* Options labels */
+.options-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #888;
+  font-weight: 700;
+}
+
+/* Results count */
+.results-count {
+  font-size: 0.875rem;
+  color: #333;
+}
+
+/* Compact Data Table overrides (scoped to this component only) */
+:host ::ng-deep .data-table {
+  font-size: 0.8rem;
+}
+
+:host ::ng-deep .data-table th,
+:host ::ng-deep .data-table td {
+  padding: 0.45rem 0.6rem;
+}
+
+:host ::ng-deep .data-table tr {
+  height: auto;
+}
+
+/* Table section container */
+.table-section {
+  width: 100%;
+  background: var(--color-white, #FFF);
+  border-radius: 0 0 var(--radius-s, 0.25rem) var(--radius-s, 0.25rem);
+  overflow: hidden;
+  padding-top: 0.5rem;
+}
+
+:host ::ng-deep .table-wrapper {
+  width: 100%;
+  max-width: 100%;
+}
+
+:host ::ng-deep .table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Record form modal overlay */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,0 +1,41 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+.sortable-th {
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+}
+
+.sortable-th:hover {
+  background: rgba(106, 13, 173, 0.06);
+}
+
+.sortable-th--active {
+  background: rgba(106, 13, 173, 0.08);
+}
+
+.sortable-th__label {
+  vertical-align: middle;
+}
+
+.sortable-th__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1rem;
+  margin-inline-start: 0.25rem;
+  font-size: 0.65rem;
+  line-height: 1;
+  color: #999;
+  vertical-align: middle;
+  transition: color 0.2s ease;
+}
+
+.sortable-th:hover .sortable-th__icon,
+.sortable-th--active .sortable-th__icon {
+  color: var(--color-secondary, #6A0DAD);
+}

@@ -1,0 +1,108 @@
+<div class="modal-overlay flex-center" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-subtitle">
+  <div class="modal-card flex-column gap-l p-l fade-in">
+    <!-- Header section for the modal -->
+    <header class="modal-header">
+      <h2 id="modal-title" class="modal-title">Select Store Format</h2>
+      <p id="modal-subtitle" class="modal-subtitle">Choose the source store for <strong>{{ pendingFileName() }}</strong></p>
+    </header>
+
+    <!-- Scrollable content area for store options -->
+    <main class="store-categories flex-column gap-l">
+      <!-- Retail category -->
+      <section class="category-group flex-column gap-m">
+        <h3 class="category-title">Retail</h3>
+        <div class="store-options grid-auto gap-m">
+          @for (store of retailStores; track store.value) {
+            <label class="store-option" [class.active]="selectedStore() === store.value">
+              <!-- Radio input for keyboard interaction and state management -->
+              <input 
+                type="radio" 
+                name="store" 
+                [value]="store.value" 
+                [ngModel]="selectedStore()" 
+                (ngModelChange)="selectedStore.set($event)" />
+              <div class="store-card flex-column gap-s">
+                <span class="store-icon" aria-hidden="true">{{ store.icon }}</span>
+                <span class="store-name">{{ store.name }}</span>
+                <span class="store-desc">{{ store.description }}</span>
+              </div>
+            </label>
+          }
+        </div>
+      </section>
+
+      <!-- Wholesale category -->
+      <section class="category-group flex-column gap-m">
+        <h3 class="category-title">Wholesale & B2B</h3>
+        <div class="store-options grid-auto gap-m">
+          @for (store of wholesaleStores; track store.value) {
+            <label class="store-option" [class.active]="selectedStore() === store.value">
+              <input 
+                type="radio" 
+                name="store" 
+                [value]="store.value" 
+                [ngModel]="selectedStore()" 
+                (ngModelChange)="selectedStore.set($event)" />
+              <div class="store-card flex-column gap-s">
+                <span class="store-icon" aria-hidden="true">{{ store.icon }}</span>
+                <span class="store-name">{{ store.name }}</span>
+                <span class="store-desc">{{ store.description }}</span>
+              </div>
+            </label>
+          }
+        </div>
+      </section>
+
+      <!-- Internal / Support category -->
+      <section class="category-group flex-column gap-m">
+        <h3 class="category-title">Internal / Support</h3>
+        <div class="store-options grid-auto gap-m">
+          @for (store of internalStores; track store.value) {
+            <label class="store-option" [class.active]="selectedStore() === store.value">
+              <input
+                type="radio"
+                name="store"
+                [value]="store.value"
+                [ngModel]="selectedStore()"
+                (ngModelChange)="selectedStore.set($event)" />
+              <div class="store-card flex-column gap-s">
+                <span class="store-icon" aria-hidden="true">{{ store.icon }}</span>
+                <span class="store-name">{{ store.name }}</span>
+                <span class="store-desc">{{ store.description }}</span>
+              </div>
+            </label>
+          }
+        </div>
+      </section>
+
+      <!-- Custom mapping category -->
+      <section class="category-group flex-column gap-m">
+        <h3 class="category-title">Custom</h3>
+        <div class="store-options grid-auto gap-m">
+          @for (store of customStores; track store.value) {
+            <label class="store-option" [class.active]="selectedStore() === store.value">
+              <input
+                type="radio"
+                name="store"
+                [value]="store.value"
+                [ngModel]="selectedStore()"
+                (ngModelChange)="selectedStore.set($event)" />
+              <div class="store-card flex-column gap-s">
+                <span class="store-icon" aria-hidden="true">{{ store.icon }}</span>
+                <span class="store-name">{{ store.name }}</span>
+                <span class="store-desc">{{ store.description }}</span>
+              </div>
+            </label>
+          }
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal footer with action buttons -->
+    <footer class="modal-footer flex gap-m flex-end">
+      <!-- Accessibility Strategy: Standard buttons for clear actions -->
+      <button class="btn btn-secondary" (click)="cancel.emit()">Cancel</button>
+      <button class="btn btn-primary" (click)="confirm.emit(selectedStore())">Process File</button>
+    </footer>
+  </div>
+</div>

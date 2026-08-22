@@ -1,0 +1,17 @@
+<section class="chart-panel flex-column gap-m" [class.p-m]="padded()">
+  @if (showHeader()) {
+    <div class="chart-panel-header flex-column gap-m">
+      <div class="chart-panel-header__main">
+        <div class="chart-panel-header__row chart-panel-header__row--primary">
+          <ng-content select="[panelPrimary]" />
+        </div>
+        <div class="chart-panel-header__row chart-panel-header__row--secondary">
+          <ng-content select="[panelSecondary]" />
+        </div>
+      </div>
+      <ng-content select="[panelFilters]" />
+    </div>
+  }
+
+  <ng-content />
+</section>

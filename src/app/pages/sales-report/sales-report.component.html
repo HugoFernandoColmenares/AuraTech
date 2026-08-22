@@ -1,0 +1,136 @@
+<div class="sales-report-container flex-column gap-l">
+
+
+  @if (!initialDataReady()) {
+    <section class="report-skeleton flex-column flex-center gap-m p-l" aria-hidden="true">
+      <div class="spinner"></div>
+      <p class="subtitle">Preparing sales intelligence…</p>
+    </section>
+  }
+
+  @if (!showUpload() && initialDataReady()) {
+    <app-view-controls
+      title="Sales Trends"
+      [options]="viewOptions"
+      [activeMode]="viewMode()"
+      (modeChange)="setViewMode($event)"
+    />
+  }
+
+  <input type="file" #fileInput (change)="onFileSelected($event)" accept=".xlsx,.xls,.csv" class="hidden-input" />
+
+  @if (showUpload() && initialDataReady()) {
+    <app-report-upload-placeholder
+      icon="📊"
+      title="No Sales Data Active"
+      description="Import a POS Excel file to view Analytics, Pivot Tables, and generate AI Insights."
+      (browse)="triggerFileInput()"
+    />
+  } @else if (initialDataReady()) {
+
+  <!-- ════════════ GLOBAL DATA CONTROLS (hidden in Analytics — filters live in sales-analytics) ═══ -->
+  @if (viewMode() !== 'charts') {
+  <app-main-table-filter [availableAccounts]="availableAccounts()" [(selectedAccounts)]="accountFilter"
+    [(searchQuery)]="searchFilter" [(startDate)]="startDate" [(endDate)]="endDate" (clearFilters)="clearFilters()">
+  </app-main-table-filter>
+  }
+
+  <!-- ════════════ CHARTS ════════════════════════════════════════════ -->
+
+  @if (viewMode() === 'charts') {
+  <app-sales-analytics 
+    [isLoading]="analyticsLoading()"
+    [availableAccounts]="availableAccounts()"
+    [accountFilter]="accountFilter()"
+    (accountFilterChange)="accountFilter.set($event)"
+    [searchFilter]="searchFilter()"
+    (searchFilterChange)="searchFilter.set($event)"
+    [startDate]="startDate()"
+    (startDateChange)="startDate.set($event)"
+    [endDate]="endDate()"
+    (endDateChange)="endDate.set($event)"
+    (clearFiltersRequest)="clearFilters()"
+    [showStyleName]="showStyleName()" 
+    (toggleStyleName)="showStyleName.set($event)"
+    [selectedMonths]="monthsFilter()"
+    (selectedMonthsChange)="monthsFilter.set($event)"
+    [filteredData]="filteredData()"
+    [salesData]="salesData()"
+    [referenceData]="referenceData()"
+    [salesFilters]="salesFilters()"
+    [totalRevenue]="totalRevenue()"
+    [revenueTrend]="revenueTrend()"
+    [unitsTrend]="unitsTrend()"
+    [yearRevenueComparison]="yearRevenueComparison()"
+    [yearUnitsComparison]="yearUnitsComparison()">
+  </app-sales-analytics>
+  }
+
+  <!-- ════════════ TABLE ════════════════════════════════════════════ -->
+
+  @if (viewMode() === 'table') {
+  <app-sales-table 
+    [showStyleName]="showStyleName()" 
+    (toggleStyleName)="showStyleName.set($event)"
+    [totalRecords]="tableDisplayTotal()"
+    [filteredRows]="tableFilteredRows()"
+    [serverSide]="tableUseServerSide()"
+    [page]="tableCurrentPage()"
+    [referenceData]="referenceData()"
+    [selectionReset]="tableSelectionReset()"
+    [localCount]="dataSourceCounts().local"
+    [databaseCount]="dataSourceCounts().database"
+    (refreshData)="fetchPaginatedSales($event.page, $event.limit)"
+    (tableAction)="handleTableAction($event)"
+    (bulkActionClick)="handleBulkTableAction($event)"
+    (createRecord)="openCreateForm()"
+    (exportExcel)="exportTableToExcel()"
+    (exportJson)="downloadJson($event)"
+    (exportToDatabase)="exportToDatabase()"
+    (clearData)="resetData()"
+    (fileSelected)="onFileSelected($event)">
+  </app-sales-table>
+  }
+
+  <!-- ════════════ INSIGHTS ════════════════════════════════════════════ -->
+  @if (viewMode() === 'insights') {
+    @if (analyticsLoading()) {
+      <section class="report-skeleton flex-column flex-center gap-m p-l" aria-busy="true">
+        <div class="spinner"></div>
+        <p class="subtitle">Building insights from full sales history…</p>
+      </section>
+    } @else {
+      <app-insights-report [report]="insightsReport()"></app-insights-report>
+    }
+  }
+
+  }<!-- /hasData -->
+
+  <!-- ═══ STORE SELECTION MODAL ═══════════════════════════════════════════ -->
+  @if (showStoreModal()) {
+  <app-store-selection-modal [pendingFileName]="pendingFileName()" (confirm)="confirmUpload($event)"
+    (cancel)="cancelUpload()">
+  </app-store-selection-modal>
+  }
+
+  <!-- ═══ CUSTOM EXCEL MAPPING MODAL ═══════════════════════════════════════ -->
+  @if (showCustomModal()) {
+  <app-custom-mapping-modal
+    [pendingFile]="pendingFile"
+    (confirm)="onCustomMappingConfirm($event)"
+    (cancel)="onCustomMappingCancel()">
+  </app-custom-mapping-modal>
+  }
+
+  @if (showRecordModal()) {
+    <div class="modal-overlay flex-center">
+      <app-record-form
+        [type]="'sale'"
+        [record]="selectedRecord() ?? undefined"
+        [mode]="formMode()"
+        (save)="onFormSave($event)"
+        (cancel)="showRecordModal.set(false)"
+      />
+    </div>
+  }
+</div>

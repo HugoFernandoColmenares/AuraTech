@@ -1,0 +1,11 @@
+<div class="app-layout" [class.sidebar-open]="sidebarService.isOpen()">
+  <div class="sidebar-backdrop" (click)="sidebarService.close()" aria-hidden="true"></div>
+  <app-sidebar class="sidebar-wrapper"></app-sidebar>
+  <div class="main-content flex-column">
+    <app-header></app-header>
+    <main class="page-content">
+      <router-outlet></router-outlet>
+    </main>
+    <app-footer></app-footer>
+  </div>
+</div>

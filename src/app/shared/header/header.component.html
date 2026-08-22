@@ -1,0 +1,25 @@
+<header class="header flex-center p-m">
+  <button class="menu-toggle" (click)="sidebarService.toggle()" aria-label="Toggle Menu">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </button>
+
+  @if (displayUser(); as user) {
+    <a routerLink="/layout/profile" class="user-profile flex-center gap-s" aria-label="Open profile">
+      <div class="user-profile__text flex-column">
+        <span class="user-name">{{ headerName() }}</span>
+        <span class="user-meta">{{ headerRole() }} · {{ headerEmail() }}</span>
+      </div>
+      <div class="avatar flex-center" [class.avatar--photo]="avatarUrl()">
+        @if (avatarUrl()) {
+          <img [src]="avatarUrl()" alt="" class="avatar-img" />
+        } @else {
+          <span aria-hidden="true">{{ avatarInitials() }}</span>
+        }
+      </div>
+    </a>
+  }
+</header>

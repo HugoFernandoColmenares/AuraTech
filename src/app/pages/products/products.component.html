@@ -1,0 +1,181 @@
+<main class="products-container flex-column gap-l p-l" role="main">
+
+  <header class="report-header flex-column gap-s">
+    <div class="flex-between align-start">
+      <div class="flex-column gap-s">
+        <h1 class="title">Product Catalog</h1>
+        <p class="subtitle">Manage your style database and master product records with elegance.</p>
+      </div>
+      <div class="header-actions flex gap-m">
+        @if (rolePermissions.canCreate()) {
+          <button class="btn btn-primary" (click)="toggleForm()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            {{ showForm() ? 'Cancel' : 'New Product' }}
+          </button>
+        }
+      </div>
+    </div>
+  </header>
+
+  <app-main-table-filter
+    [showDates]="false"
+    [(searchQuery)]="searchFilter"
+    (clearFilters)="searchFilter.set(''); brandFilter.set('')">
+    
+    <div class="filter-group">
+      <label class="filter-label">Brand</label>
+      <select 
+        id="brandFilter"
+        [ngModel]="brandFilter()"
+        (ngModelChange)="brandFilter.set($event)"
+        class="filter-select"
+      >
+        <option value="">All Brands</option>
+        @for (brand of brands(); track brand.id) {
+          <option [value]="brand.id">{{ brand.name }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="header-actions flex gap-m" style="margin-left: 1rem;">
+      <button type="button" class="btn btn-secondary" (click)="exportTableToExcel()">
+        📊 Export Excel
+      </button>
+    </div>
+
+    @if (rolePermissions.canBulkUpload()) {
+      <div class="header-actions flex gap-m" style="margin-left: 1rem;">
+        <button class="btn btn-primary" (click)="exportToDatabase()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+          </svg>
+          Export to DB
+        </button>
+        <label class="btn btn-secondary flex-center cursor-pointer">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+          </svg>
+          Import Excel
+          <input 
+            type="file" 
+            (change)="onFileSelected($event)" 
+            accept=".xlsx, .xls" 
+            class="hidden"
+          >
+        </label>
+      </div>
+    }
+  </app-main-table-filter>
+
+  <!-- Product Form -->
+  @if (showForm()) {
+    <section id="productFormSection" class="form-container p-m mb-l" aria-labelledby="formTitle">
+      <h2 id="formTitle" class="mb-m">{{ isEditing() ? 'Edit Product' : 'New Product' }}</h2>
+      
+      <form [formGroup]="productForm" (ngSubmit)="saveProduct()" class="grid-form gap-m">
+        <div class="form-group">
+          <label for="parent">Parent Code*</label>
+          <input id="parent" type="text" formControlName="parent" class="input-deco" placeholder="Ex: P748931AM">
+          @if (productForm.get('parent')?.touched && productForm.get('parent')?.invalid) {
+            <span class="error-text" role="alert">Code is required.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="styleName">Style Name*</label>
+          <input id="styleName" type="text" formControlName="styleName" class="input-deco" placeholder="Ex: High Rise Flare">
+          @if (productForm.get('styleName')?.touched && productForm.get('styleName')?.invalid) {
+            <span class="error-text" role="alert">Name is required.</span>
+          }
+        </div>
+
+        <!-- Dynamic Dropdowns -->
+        <div class="form-group">
+          <div class="flex-between align-center mb-xs">
+            <label for="brand">Brand*</label>
+            <button type="button" class="btn-link" (click)="addNewItem('Brand')" aria-label="Add new brand">+ New</button>
+          </div>
+          <select id="brand" formControlName="brand" class="select-deco" [compareWith]="compareById">
+            <option [ngValue]="null">Select...</option>
+            @for (item of brands(); track item.id) {
+              <option [ngValue]="item">{{ item.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div class="flex-between align-center mb-xs">
+            <label for="division">Division*</label>
+            <button type="button" class="btn-link" (click)="addNewItem('Division')" aria-label="Add new division">+ New</button>
+          </div>
+          <select id="division" formControlName="division" class="select-deco" [compareWith]="compareById">
+            <option [ngValue]="null">Select...</option>
+            @for (item of divisions(); track item.id) {
+              <option [ngValue]="item">{{ item.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div class="flex-between align-center mb-xs">
+            <label for="type">Type*</label>
+            <button type="button" class="btn-link" (click)="addNewItem('Type')" aria-label="Add new type">+ New</button>
+          </div>
+          <select id="type" formControlName="type" class="select-deco" [compareWith]="compareById">
+            <option [ngValue]="null">Select...</option>
+            @for (item of types(); track item.id) {
+              <option [ngValue]="item">{{ item.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div class="flex-between align-center mb-xs">
+            <label for="collection">Collection*</label>
+            <button type="button" class="btn-link" (click)="addNewItem('Collection')" aria-label="Add new collection">+ New</button>
+          </div>
+          <select id="collection" formControlName="collection" class="select-deco" [compareWith]="compareById">
+            <option [ngValue]="null">Select...</option>
+            @for (item of collections(); track item.id) {
+              <option [ngValue]="item">{{ item.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div class="flex-between align-center mb-xs">
+            <label for="fit">Fit</label>
+            <button type="button" class="btn-link" (click)="addNewItem('Fit')" aria-label="Add new fit">+ New</button>
+          </div>
+          <select id="fit" formControlName="fit" class="select-deco" [compareWith]="compareById">
+            <option [ngValue]="null">None / Select...</option>
+            @for (item of fits(); track item.id) {
+              <option [ngValue]="item">{{ item.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-actions flex-center gap-m mt-m">
+          <button type="button" class="btn-secondary" (click)="toggleForm()">Cancel</button>
+          <button type="submit" class="btn-primary" [disabled]="productForm.invalid">
+            {{ isEditing() ? 'Update' : 'Save' }}
+          </button>
+        </div>
+      </form>
+    </section>
+  }
+
+  <!-- Data Table -->
+  <section class="table-container" aria-label="Lista de productos">
+    <app-data-table
+      [columns]="columns"
+      [data]="tableData()"
+      [pageSize]="10"
+      [selectionReset]="tableSelectionReset()"
+      (actionClick)="handleTableAction($event)"
+      (bulkActionClick)="handleBulkTableAction($event)">
+    </app-data-table>
+  </section>
+</main>

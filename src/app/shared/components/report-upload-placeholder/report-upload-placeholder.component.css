@@ -1,0 +1,31 @@
+.upload-placeholder {
+  padding: 3rem 2rem;
+  border: 2px dashed var(--border-color, #e2e8f0);
+  border-radius: var(--radius-lg, 12px);
+  background: var(--surface-muted, #f8fafc);
+  text-align: center;
+}
+
+.upload-placeholder--clickable {
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.upload-placeholder--clickable:hover,
+.upload-placeholder--clickable:focus-visible {
+  border-color: var(--primary-color, #3b82f6);
+  background: var(--surface-hover, #f1f5f9);
+  outline: none;
+}
+
+.upload-title {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.upload-desc {
+  margin: 0;
+  max-width: 32rem;
+  color: var(--text-muted, #64748b);
+  line-height: 1.5;
+}

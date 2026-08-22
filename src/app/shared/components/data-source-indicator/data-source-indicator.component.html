@@ -1,0 +1,53 @@
+<div class="data-source-indicator">
+  <button
+    type="button"
+    class="data-source-indicator__trigger flex-center gap-xs"
+    [class.data-source-indicator__trigger--session]="mode() === 'session'"
+    [class.data-source-indicator__trigger--database]="mode() === 'database'"
+    [class.data-source-indicator__trigger--mixed]="mode() === 'mixed'"
+    [attr.aria-expanded]="panelOpen()"
+    aria-haspopup="dialog"
+    [title]="summaryLabel()"
+    (click)="togglePanel()"
+  >
+    @switch (mode()) {
+      @case ('session') { <span class="data-source-indicator__icon" aria-hidden="true">💻</span> }
+      @case ('database') { <span class="data-source-indicator__icon" aria-hidden="true">☁️</span> }
+      @case ('mixed') { <span class="data-source-indicator__icon" aria-hidden="true">🔀</span> }
+      @default { <span class="data-source-indicator__icon" aria-hidden="true">📋</span> }
+    }
+    <span class="data-source-indicator__label">{{ summaryLabel() }}</span>
+    @if (localCount() > 0) {
+      <span class="data-source-indicator__badge">{{ localCount() }}</span>
+    }
+  </button>
+
+  @if (panelOpen()) {
+    <div class="data-source-indicator__backdrop" (click)="closePanel()" aria-hidden="true"></div>
+    <section class="data-source-indicator__panel flex-column gap-s p-m" role="dialog" aria-label="Data source breakdown">
+      <header class="flex-between align-center">
+        <h3 class="data-source-indicator__panel-title">Data sources</h3>
+        <button type="button" class="btn btn-ghost btn-sm" (click)="closePanel()" aria-label="Close">✕</button>
+      </header>
+      <ul class="data-source-indicator__list flex-column gap-s">
+        <li class="data-source-indicator__row flex-between align-center">
+          <span class="flex-center gap-xs">
+            <span aria-hidden="true">💻</span>
+            Session / cache (not in DB yet)
+          </span>
+          <strong>{{ localCount() }}</strong>
+        </li>
+        <li class="data-source-indicator__row flex-between align-center">
+          <span class="flex-center gap-xs">
+            <span aria-hidden="true">☁️</span>
+            Database (Supabase)
+          </span>
+          <strong>{{ databaseCount() }}</strong>
+        </li>
+      </ul>
+      <p class="data-source-indicator__hint">
+        Use <strong>Export to DB</strong> to upload session rows to Supabase. The button is enabled only when session rows are pending.
+      </p>
+    </section>
+  }
+</div>

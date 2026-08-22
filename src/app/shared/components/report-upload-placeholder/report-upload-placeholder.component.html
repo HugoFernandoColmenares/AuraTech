@@ -1,0 +1,20 @@
+<section
+  class="upload-placeholder flex-column flex-center fade-in gap-m"
+  [class.upload-placeholder--clickable]="clickable()"
+  [attr.role]="clickable() ? 'button' : null"
+  [attr.tabindex]="clickable() ? 0 : null"
+  (click)="clickable() && browse.emit()"
+  (keydown.enter)="onActivate($event)"
+  (keydown.space)="onActivate($event)"
+>
+  <div class="upload-icon" aria-hidden="true">{{ icon() }}</div>
+  <h2 class="upload-title">{{ title() }}</h2>
+  <p class="upload-desc">{{ description() }}</p>
+  <button
+    type="button"
+    class="btn btn-primary btn-lg shadow-sm"
+    (click)="$event.stopPropagation(); browse.emit()"
+  >
+    {{ buttonLabel() }}
+  </button>
+</section>

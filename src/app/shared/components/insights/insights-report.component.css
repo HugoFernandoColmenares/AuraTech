@@ -1,0 +1,84 @@
+/* ── Container & header ────────────────────────────────────────────────── */
+.insights-container { width: 100%; }
+
+.insights-header {
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, #F8F4FF 0%, #FFF 100%);
+  border: 1px solid #DDD4F5;
+  border-radius: 0.25rem;
+}
+.insights-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+.insights-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  background: var(--primary-color);
+  color: #FFF;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 1rem;
+}
+.insights-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  margin: 0;
+  color: #000;
+}
+.insights-meta {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #666;
+}
+.insights-meta strong { color: var(--primary-color); }
+
+/* ── Section titles ────────────────────────────────────────────────────── */
+.insights-section {
+  border-top: 1px solid #F0F0F0;
+  padding-top: 0.25rem;
+}
+.insights-section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.125rem;
+  margin: 0;
+  color: #000;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.section-icon { font-size: 1.15rem; }
+
+/* ── Insight card grid ─────────────────────────────────────────────────── */
+.insight-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr));
+  gap: 1rem;
+}
+
+/* ── Recommendations list ──────────────────────────────────────────────── */
+.insights-section--recommendations {
+  background: #FAFAFA;
+  border: 1px solid #EBEBEB;
+  border-radius: 0.25rem;
+  padding: 1.25rem 1.5rem;
+}
+.recommendations-list { padding: 0; }
+
+/* ── Empty state ───────────────────────────────────────────────────────── */
+.insights-empty {
+  padding: 2rem;
+  text-align: center;
+  color: #888;
+  font-size: 0.875rem;
+}
+
+/* ── Responsive insights ───────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .insight-cards-grid { grid-template-columns: 1fr; }
+  .insights-section--recommendations { padding: 1rem; }
+}

@@ -1,0 +1,56 @@
+<div class="table-header-actions p-m flex-between align-center flex-wrap gap-m">
+  <h2 class="section-title">{{ title() }}</h2>
+  <div class="table-header-actions__buttons flex gap-s align-center flex-wrap">
+    <app-data-source-indicator
+      [localCount]="localCount()"
+      [databaseCount]="databaseCount()"
+    />
+    <button
+      type="button"
+      class="btn btn-secondary flex-center gap-xs"
+      title="Export all records to Excel"
+      (click)="exportExcel.emit()"
+    >
+      📊 Export Excel
+    </button>
+    <button
+      type="button"
+      class="btn btn-secondary flex-center gap-xs"
+      title="Download raw JSON"
+      (click)="exportJson.emit()"
+    >
+      💾 Export JSON
+    </button>
+    @if (canBulkUpload()) {
+      <button
+        type="button"
+        class="btn btn-primary flex-center gap-xs"
+        [disabled]="!canExportToDatabase()"
+        [title]="canExportToDatabase() ? 'Upload session rows to Supabase' : 'No session rows pending export'"
+        (click)="exportToDatabase.emit()"
+      >
+        ☁️ Export to DB
+      </button>
+      <button type="button" class="btn btn-ghost btn-sm" (click)="clearData.emit()">
+        Clear Data
+      </button>
+      <button type="button" class="btn btn-primary flex-center gap-xs" (click)="triggerUpload()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+          <polyline points="17 8 12 3 7 8" />
+          <line x1="12" y1="3" x2="12" y2="15" />
+        </svg>
+        Upload Data
+      </button>
+      <input
+        #fileInput
+        type="file"
+        class="hidden-input"
+        [accept]="accept()"
+        (change)="onFileSelected($event)"
+      />
+      <div class="v-divider"></div>
+    }
+    <ng-content />
+  </div>
+</div>

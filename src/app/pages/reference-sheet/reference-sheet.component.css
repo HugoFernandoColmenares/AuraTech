@@ -1,0 +1,117 @@
+.reference-container {
+  width: 100%;
+  max-width: 87.5rem; /* 1400px */
+  margin-inline: auto;
+}
+
+.reference-header .title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-black, #000);
+}
+
+.reference-header .subtitle {
+  font-size: 1rem;
+  color: var(--color-gray-dark, #555);
+}
+
+/* Spinner */
+.spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 0.25rem solid rgba(216, 27, 96, 0.2);
+  border-left-color: var(--color-purple, var(--primary-color));
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-state {
+  flex-direction: column;
+  color: var(--color-gray-dark, #555);
+}
+
+.cache-hint {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-gray-dark, #555);
+}
+
+/* Filters */
+.filters-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--color-white, #FFF);
+  border: 0.0625rem solid var(--color-silver, #C0C0C0);
+  border-radius: 0.25rem;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.filter-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-gray-dark, #555);
+}
+
+.search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.5rem;
+  color: var(--color-gray-dark, #555);
+}
+
+.filter-input {
+  padding: 0.5rem 0.5rem 0.5rem 2rem;
+  border: 0.0625rem solid var(--color-silver, #C0C0C0);
+  border-radius: 0.25rem;
+  font-family: inherit;
+  font-size: 0.875rem;
+  min-width: 15.625rem;
+}
+
+.filter-input:focus {
+  outline: none;
+  border-color: var(--color-purple, var(--primary-color));
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 0.0625rem solid var(--color-silver, #C0C0C0);
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-ghost:hover {
+  background: rgba(106, 13, 173, 0.05);
+  border-color: var(--color-purple, #6A0DAD);
+}
+
+.results-count {
+  margin-left: auto;
+  font-size: 0.875rem;
+  color: var(--color-gray-dark, #555);
+}
+
+.mono {
+  font-family: monospace;
+}

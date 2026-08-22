@@ -1,0 +1,81 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+DESIGN_GUIDELINES.md
+architecture_guidelines.md
+SUPABASE_MIGRATION_PLAN.md
+SERVER_OPTIMIZATION_PLAN.md
+.cursor/
+.cursor/skills/
+.agents/skills/
+.env
+.env.local
+.env.*.local
+.env.keys
+/src/environments/environment.ts
+
+# Supabase CLI — local link state (never commit)
+/supabase/.temp/
+/supabase/.branches/
+
+# Supabase — generated demo-data SQL (regenerate: npm run db:seed:generate)
+/supabase/seed/*.sql
+/supabase/seed/generated/*.sql
+/supabase/seed/MANIFEST.txt
+/supabase/seed/.seed-progress.json
+
+# Deploy / build artifacts
+.vercel/
+*.tsbuildinfo
+
+# Credentials (safety net)
+*.pem
+*.key
+credentials.json
+secrets.json
+
+# System files
+.DS_Store
+Thumbs.db
+
+SUPABASE_JSON_CSV_IMPORT_GUIDE.md
+supabase/
+scripts/*
+
+architecture_optimization_plan.md

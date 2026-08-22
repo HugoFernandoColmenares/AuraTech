@@ -1,0 +1,136 @@
+
+.about-container {
+    max-width: 900px;
+    margin: 0 auto;
+    animation: fadeIn 0.8s ease-out;
+}
+
+.about-header {
+    text-align: center;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 2rem;
+}
+
+.art-deco-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.subtitle {
+    font-family: 'Montserrat', sans-serif;
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.accordion-container {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.accordion-item {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: border-color 0.3s ease;
+    overflow: hidden;
+}
+
+.accordion-item:hover {
+    border-color: var(--primary-color);
+}
+
+.accordion-item.is-open {
+    border-color: var(--primary-color);
+}
+
+.accordion-header {
+    width: 100%;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    outline: none;
+    transition: background 0.3s;
+}
+
+.accordion-header:hover {
+    background: rgba(216, 27, 96, 0.02);
+}
+
+.section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.accordion-item.is-open .section-title {
+    color: var(--primary-color);
+}
+
+.chevron {
+    color: #999;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.3s;
+}
+
+.chevron.rotated {
+    transform: rotate(180deg);
+    color: var(--primary-color);
+}
+
+.accordion-content {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    border-top: 1px solid transparent;
+}
+
+.accordion-content.visible {
+    max-height: 2400px;
+    opacity: 1;
+    border-top: 1px solid #f0f0f0;
+}
+
+.guide-list {
+    padding-left: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.guide-list--unordered {
+    list-style: disc;
+}
+
+.guide-note {
+    padding: 0.75rem 1rem;
+    border-left: 3px solid var(--primary-color);
+    background: rgba(216, 27, 96, 0.04);
+}
+
+.about-header .btn-sm {
+    margin-top: 1rem;
+}
+
+.accordion-content p {
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.8;
+    color: #444;
+    font-size: 1rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.flex-between { display: flex; justify-content: space-between; }
+.align-center { align-items: center; }

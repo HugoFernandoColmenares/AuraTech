@@ -1,0 +1,75 @@
+<div class="credit-report-page flex-column gap-l">
+
+
+  <input type="file" #addFileInput accept=".xlsx,.xls,.csv" class="hidden-input" (change)="onFileSelected($event)" />
+
+  @if (isInitialLoad()) {
+    <section class="report-skeleton flex-column flex-center gap-m p-l" aria-hidden="true">
+      <div class="spinner"></div>
+      <p class="subtitle">Preparing your statement data…</p>
+    </section>
+  } @else if (showUpload()) {
+    <app-report-upload-placeholder
+      icon="💳"
+      title="No Credit Card Data"
+      description="Upload an Amex or corporate card Excel file to analyze spending."
+      buttonLabel="Browse Statement File"
+      (browse)="triggerAddData()"
+    />
+  } @else {
+    <app-view-controls
+      title="Spending Tracker"
+      [options]="viewOptions"
+      [activeMode]="viewMode()"
+      (modeChange)="setViewMode($event)"
+    />
+
+    <app-main-table-filter [showAccounts]="false" [(searchQuery)]="searchQuery" [(startDate)]="startDate"
+      [(endDate)]="endDate" (clearFilters)="clearFilters()" />
+
+    @if (viewMode() === 'table') {
+      <app-credit-card-table
+        [data]="tableDisplayRows()"
+        [totalRecords]="totalRecords()"
+        [serverSide]="tableUseServerSide()"
+        [selectionReset]="tableSelectionReset()"
+        [localCount]="dataSourceCounts().local"
+        [databaseCount]="dataSourceCounts().database"
+        (pageChange)="fetchPaginatedTable($event.page, $event.limit)"
+        (tableAction)="handleTableAction($event)"
+        (bulkActionClick)="handleBulkTableAction($event)"
+        (exportExcel)="exportTableToExcel()"
+        (exportJson)="downloadJson()"
+        (exportToDatabase)="exportToDatabase()"
+        (clearData)="resetData()"
+        (fileSelected)="onFileSelected($event)"
+      ></app-credit-card-table>
+    }
+
+    @if (viewMode() === 'charts') {
+      <app-credit-card-analytics
+        [isLoading]="analyticsLoading()"
+        [filteredData]="filteredRows()"
+        [allData]="searchFilteredRows()"
+        [hasDateFilter]="hasDateFilter()"
+        [serverLastMonthKpi]="serverLastMonthKpi()"
+        [serverSpendTrendKpi]="serverSpendTrendKpi()"
+        [serverYearComparisonKpi]="serverYearComparisonKpi()"
+      ></app-credit-card-analytics>
+    }
+
+    @if (viewMode() === 'insights') {
+      <section class="insights-panel fade-in">
+        <app-insights-report [report]="insightsReport()" />
+      </section>
+    }
+  }
+
+  @if (showImportModal()) {
+    <app-credit-card-modal
+      [pendingFileName]="pendingFileName()"
+      (confirm)="confirmImport()"
+      (cancel)="cancelImport()"
+    />
+  }
+</div>

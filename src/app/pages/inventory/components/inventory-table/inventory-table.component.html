@@ -1,0 +1,49 @@
+<app-table-header-actions
+  title="Inventory Management"
+  [localCount]="localCount()"
+  [databaseCount]="databaseCount()"
+  (exportExcel)="exportExcel.emit()"
+  (exportJson)="exportJson.emit()"
+  (exportToDatabase)="exportToDatabase.emit()"
+  (clearData)="clearData.emit()"
+  (fileSelected)="fileSelected.emit($event)"
+>
+  <div class="v-divider"></div>
+  @if (canCreate()) {
+    <button type="button" class="btn btn-primary btn-sm" (click)="createRecord.emit()">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+    Create Record
+  </button>
+  }
+</app-table-header-actions>
+
+<div class="table-options p-m flex-between align-center">
+  <div class="flex gap-l align-center">
+    <div class="flex-column gap-xs">
+      <span class="label-tiny">Logic Toggles</span>
+      <label class="checkbox-container">
+        <input type="checkbox" [ngModel]="isSkuSplit()" (ngModelChange)="isSkuSplitChange.emit($event)" />
+        <span class="checkbox-label">Split SKU Details</span>
+      </label>
+    </div>
+    <div class="v-divider-sm"></div>
+    <div class="results-stats flex-column gap-xs">
+      <span class="label-tiny">Summary</span>
+      <span class="results-count"><strong>{{ data().length }}</strong> items found</span>
+    </div>
+  </div>
+</div>
+
+<section class="table-section fade-in">
+  <app-data-table
+    [columns]="columns()"
+    [data]="data()"
+    [pageSize]="20"
+    [selectionReset]="selectionReset()"
+    (actionClick)="actionClick.emit($event)"
+    (bulkActionClick)="bulkActionClick.emit($event)"
+  />
+</section>

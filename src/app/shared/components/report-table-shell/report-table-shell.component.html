@@ -1,0 +1,29 @@
+<app-table-header-actions
+  [title]="title()"
+  [accept]="accept()"
+  [localCount]="localCount()"
+  [databaseCount]="databaseCount()"
+  (exportJson)="exportJson.emit()"
+  (exportExcel)="exportExcel.emit()"
+  (exportToDatabase)="exportToDatabase.emit()"
+  (clearData)="clearData.emit()"
+  (fileSelected)="fileSelected.emit($event)"
+>
+  <ng-content />
+</app-table-header-actions>
+
+<section class="table-panel fade-in">
+  <app-data-table
+    [columns]="columns()"
+    [data]="data()"
+    [pageSize]="pageSize()"
+    [serverSide]="serverSide()"
+    [totalRecords]="totalRecords()"
+    [selectable]="selectable()"
+    [rowKey]="rowKey()"
+    [selectionReset]="selectionReset()"
+    (pageChange)="pageChange.emit($event)"
+    (actionClick)="actionClick.emit($event)"
+    (bulkActionClick)="bulkActionClick.emit($event)"
+  />
+</section>

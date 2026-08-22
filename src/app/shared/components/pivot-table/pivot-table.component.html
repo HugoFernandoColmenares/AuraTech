@@ -1,0 +1,154 @@
+<div class="analytical-table-container">
+  <table class="summary-table">
+    <thead>
+      <tr>
+        <th
+          class="sortable-th"
+          [class.sortable-th--active]="isSorted('label')"
+          (click)="toggleSort('label')"
+        >
+          <span class="sortable-th__label">Row Labels</span>
+          @if (sortable()) {
+            <span class="sortable-th__icon" aria-hidden="true">{{ sortIcon('label') }}</span>
+          }
+        </th>
+        @for (m of months(); track m.value) {
+          @if (selectedMonths().includes(m.value)) {
+            <th
+              class="sortable-th"
+              [class.sortable-th--active]="isSorted('month-' + m.value)"
+              (click)="toggleSort('month-' + m.value)"
+            >
+              <span class="sortable-th__label">{{ m.label }}</span>
+              @if (sortable()) {
+                <span class="sortable-th__icon" aria-hidden="true">{{ sortIcon('month-' + m.value) }}</span>
+              }
+            </th>
+          }
+        }
+        @if (showTotal()) {
+          <th
+            class="sortable-th col-grand-total"
+            [class.sortable-th--active]="isSorted('total')"
+            (click)="toggleSort('total')"
+          >
+            <span class="sortable-th__label">Grand Total</span>
+            @if (sortable()) {
+              <span class="sortable-th__icon" aria-hidden="true">{{ sortIcon('total') }}</span>
+            }
+          </th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (y of sortedData(); track y.year; let yi = $index) {
+        <tr class="row-year" (click)="toggleYear(y.year)">
+          <td>
+            <span class="collapse-icon">{{ collapsedYears().has(y.year) ? '▶' : '▼' }}</span> {{ y.year }}
+          </td>
+          @for (m of months(); track m.value) {
+            @if (selectedMonths().includes(m.value)) {
+              <td>
+                @if (valueType() === 'currency') {
+                  {{ y.monthsTotal[m.value] | appCurrency: currencyDigits() }}
+                } @else {
+                  {{ y.monthsTotal[m.value] | number: format() }}
+                }
+              </td>
+            }
+          }
+          @if (showTotal()) {
+            <td>
+              @if (valueType() === 'currency') {
+                {{ y.yearTotal | appCurrency: currencyDigits() }}
+              } @else {
+                {{ y.yearTotal | number: format() }}
+              }
+            </td>
+          }
+        </tr>
+
+        @if (!collapsedYears().has(y.year)) {
+          @for (r of y.rows; track r.label) {
+            <tr class="row-account">
+              <td>
+                @if (labelFormat() === 'account') {
+                  {{ r.label | channelDisplay }}
+                } @else {
+                  {{ r.label }}
+                }
+              </td>
+              @for (m of months(); track m.value) {
+                @if (selectedMonths().includes(m.value)) {
+                  <td>
+                    @if (valueType() === 'currency') {
+                      {{ r.months[m.value] | appCurrency: currencyDigits() }}
+                    } @else {
+                      {{ r.months[m.value] | number: format() }}
+                    }
+                  </td>
+                }
+              }
+              @if (showTotal()) {
+                <td>
+                  @if (valueType() === 'currency') {
+                    {{ r.total | appCurrency: currencyDigits() }}
+                  } @else {
+                    {{ r.total | number: format() }}
+                  }
+                </td>
+              }
+            </tr>
+          }
+        }
+
+        @if (showTrend() && getTrend(yi)) {
+          @let trend = getTrend(yi);
+          <tr class="row-trend">
+            <td class="text-xs font-bold text-uppercase">Trend vs {{ sortedData()[yi + 1].year }}</td>
+            @for (m of months(); track m.value) {
+              @if (selectedMonths().includes(m.value)) {
+                <td [class]="trend!.months[m.value] | trendHighlight" class="font-semibold">
+                  {{ trend!.months[m.value] | number:'1.1-1' }}%
+                </td>
+              }
+            }
+            @if (showTotal()) {
+              <td [class]="trend!.total | trendHighlight" class="font-semibold">
+                {{ trend!.total | number:'1.1-1' }}%
+              </td>
+            }
+          </tr>
+        }
+      }
+    </tbody>
+    @if (grandTotals()) {
+      @let totals = grandTotals()!;
+      <tfoot>
+        <tr>
+          <td>Total general</td>
+          @for (m of months(); track m.value) {
+            @if (selectedMonths().includes(m.value)) {
+              <td>
+                @if (valueType() === 'currency') {
+                  {{ totals.monthsTotal[m.value] | appCurrency: currencyDigits() }}
+                } @else {
+                  {{ totals.monthsTotal[m.value] | number: format() }}
+                }
+              </td>
+            }
+          }
+          @if (showTotal()) {
+            <td>
+              @if (valueType() === 'currency') {
+                {{ totals.grandTotal | appCurrency: currencyDigits() }}
+              } @else {
+                {{ totals.grandTotal | number: format() }}
+              }
+            </td>
+          }
+        </tr>
+      </tfoot>
+    }
+  </table>
+</div>

@@ -1,0 +1,55 @@
+@if (showStoreSelection()) {
+  <div class="modal-overlay flex-center" role="dialog" aria-modal="true" aria-labelledby="inventory-store-title">
+    <div class="modal-card flex-column gap-l p-l fade-in">
+      <header class="modal-header flex-column gap-s">
+        <h2 id="inventory-store-title" class="modal-title">Select Inventory Source</h2>
+        <p class="modal-subtitle">
+          Choose the matching account format for <strong>{{ pendingFileName() }}</strong>
+        </p>
+      </header>
+
+      <main class="store-categories flex-column gap-l">
+        @for (category of sourceCategories; track category.title) {
+          <section class="category-group flex-column gap-m">
+            <h3 class="category-title">{{ category.title }}</h3>
+            <div class="store-options grid-auto gap-m">
+              @for (option of category.options; track option.value) {
+                <label class="store-option" [class.active]="selectedAccount() === option.value">
+                  <input
+                    type="radio"
+                    name="inventoryAccount"
+                    [value]="option.value"
+                    [ngModel]="selectedAccount()"
+                    (ngModelChange)="selectedAccount.set($event)"
+                  />
+                  <div class="store-card flex-column gap-s">
+                    <span class="store-icon" aria-hidden="true">{{ option.icon }}</span>
+                    <span class="store-name">{{ option.name }}</span>
+                    <span class="store-desc">{{ option.description }}</span>
+                  </div>
+                </label>
+              }
+            </div>
+          </section>
+        }
+      </main>
+
+      <footer class="modal-footer flex-end gap-m">
+        <button type="button" class="btn btn-ghost" (click)="storeCancel.emit()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="storeConfirm.emit()">Process File</button>
+      </footer>
+    </div>
+  </div>
+}
+
+@if (showRecordForm()) {
+  <div class="modal-overlay flex-center" role="dialog" aria-modal="true">
+    <app-record-form
+      [type]="'inventory'"
+      [record]="record()"
+      [mode]="formMode()"
+      (save)="recordSave.emit($event)"
+      (cancel)="recordCancel.emit()"
+    />
+  </div>
+}

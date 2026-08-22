@@ -1,0 +1,160 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Data Table — Specific Layouts
+════════════════════════════════════════════════════════════════════════ */
+
+.action-cell {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.4rem;
+  border-radius: 0.25rem;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.btn-icon:hover {
+  background: #f0f0f0;
+  color: var(--primary-color);
+}
+
+.btn-icon--danger:hover {
+  background: #ffebee;
+  color: #d32f2f;
+}
+
+.expand-col {
+  width: 3rem;
+  text-align: center;
+}
+
+.expand-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #999;
+  transition: transform 0.3s ease;
+  padding: 0.25rem;
+}
+
+.expand-btn.active {
+  transform: rotate(180deg);
+  color: var(--primary-color);
+}
+
+.detail-row td {
+  padding: 0;
+  background-color: #fdfdfd;
+}
+
+.detail-content {
+  padding: 1.5rem 3rem;
+  border-left: 4px solid var(--primary-color);
+}
+
+.pagination {
+  padding: 1rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #f0f0f0;
+}
+
+.pagination-info {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.pagination-controls {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+}
+
+.empty-cell {
+  text-align: center;
+  padding: 3rem !important;
+  color: #999;
+  font-style: italic;
+}
+
+.footer-row {
+  background-color: #f8f9fa;
+  border-top: 2px solid #dee2e6;
+}
+
+.footer-row td {
+  padding: 0.75rem 1rem;
+}
+
+.row-clickable {
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.row-clickable:hover {
+  background: rgba(106, 13, 173, 0.04);
+}
+
+.sort-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.sort-btn:hover,
+.sort-btn:focus-visible {
+  color: var(--primary-color, #6A0DAD);
+  outline: none;
+}
+
+th.sortable {
+  white-space: nowrap;
+}
+
+.select-col {
+  width: 2.75rem;
+  text-align: center;
+  vertical-align: middle;
+}
+
+.row-select-checkbox {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--color-secondary, #6A0DAD);
+  cursor: pointer;
+}
+
+.bulk-toolbar {
+  padding: 0.65rem 1rem;
+  background: rgba(106, 13, 173, 0.06);
+  border-bottom: 1px solid rgba(106, 13, 173, 0.12);
+}
+
+.bulk-toolbar__count {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-secondary, #6A0DAD);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+tr.row-selected {
+  background: rgba(106, 13, 173, 0.05);
+}

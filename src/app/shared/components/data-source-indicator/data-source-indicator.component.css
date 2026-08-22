@@ -1,0 +1,101 @@
+.data-source-indicator {
+  position: relative;
+}
+
+.data-source-indicator__trigger {
+  border: 1px solid var(--color-border, #e0e0e0);
+  background: var(--color-white, #fff);
+  border-radius: var(--radius-s, 0.25rem);
+  padding: 0.4rem 0.65rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.data-source-indicator__trigger:hover,
+.data-source-indicator__trigger:focus-visible {
+  border-color: var(--primary-color, #d81b60);
+  box-shadow: 0 0 0 2px rgba(216, 27, 96, 0.12);
+  outline: none;
+}
+
+.data-source-indicator__trigger--session {
+  border-color: rgba(106, 13, 173, 0.35);
+}
+
+.data-source-indicator__trigger--database {
+  border-color: rgba(33, 150, 243, 0.35);
+}
+
+.data-source-indicator__trigger--mixed {
+  border-color: rgba(216, 27, 96, 0.45);
+}
+
+.data-source-indicator__icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.data-source-indicator__label {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.data-source-indicator__badge {
+  min-width: 1.25rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 999px;
+  background: var(--primary-color, #d81b60);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.data-source-indicator__backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+.data-source-indicator__panel {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  right: 0;
+  z-index: 50;
+  min-width: 18rem;
+  max-width: 22rem;
+  background: var(--color-white, #fff);
+  border: 1px solid var(--color-border, #e0e0e0);
+  border-radius: var(--radius-s, 0.25rem);
+  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.12);
+}
+
+.data-source-indicator__panel-title {
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+}
+
+.data-source-indicator__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.data-source-indicator__row {
+  padding: 0.35rem 0;
+  border-bottom: 1px dashed var(--color-border, #e0e0e0);
+  font-size: 0.9rem;
+}
+
+.data-source-indicator__row:last-child {
+  border-bottom: none;
+}
+
+.data-source-indicator__hint {
+  margin: 0;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--color-gray-dark, #555);
+}

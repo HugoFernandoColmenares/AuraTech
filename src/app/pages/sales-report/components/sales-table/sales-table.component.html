@@ -1,0 +1,27 @@
+<app-table-header-actions
+  title="Data Management"
+  [localCount]="localCount()"
+  [databaseCount]="databaseCount()"
+  (exportExcel)="exportExcel.emit()"
+  (exportJson)="exportJson.emit(tableData())"
+  (exportToDatabase)="exportToDatabase.emit()"
+  (clearData)="clearData.emit()"
+  (fileSelected)="fileSelected.emit($event)"
+/>
+
+<div class="table-options flex-column gap-s">
+  <section class="table-section fade-in">
+    <app-data-table
+      [columns]="columns()"
+      [data]="tableData()"
+      [pageSize]="20"
+      [serverSide]="serverSide()"
+      [totalRecords]="totalRecords()"
+      [page]="page()"
+      [selectionReset]="selectionReset()"
+      (pageChange)="onPageChange($event)"
+      (actionClick)="handleTableAction($event)"
+      (bulkActionClick)="handleBulkAction($event)"
+    />
+  </section>
+</div>

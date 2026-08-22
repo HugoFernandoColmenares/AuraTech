@@ -1,0 +1,10 @@
+<div
+  class="kpi-grid gap-m flex"
+  [class.kpi-grid--compact]="compact()"
+  [class.kpi-grid--cols-1]="columns() === 1"
+  [class.kpi-grid--cols-2]="columns() === 2"
+  [class.kpi-grid--cols-3]="columns() === 3"
+  [class.kpi-grid--cols-4]="columns() === 4"
+>
+  <ng-content />
+</div>

@@ -1,0 +1,376 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   Sales Analytics — Component-Specific Styles
+════════════════════════════════════════════════════════════════════════ */
+
+.chart-panel-primary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+/* Table panel */
+.table-panel {
+  background: var(--color-white, #FFF);
+  border-radius: var(--radius-m, 0.5rem);
+  border: 1px solid var(--color-border, #E0E0E0);
+}
+
+/* YoY Pivot table container */
+.analytical-table-container {
+  overflow-x: auto;
+}
+
+/* Product Name toggle hint bar */
+.style-name-hint {
+  background: #F8F4FF;
+  border-radius: 0.25rem;
+  border: 1px dashed #D1C4E9;
+}
+
+.style-name-hint-text {
+  color: var(--primary-color, #6A0DAD);
+  font-style: italic;
+  font-size: 0.75rem;
+}
+
+/* Dropdown menus */
+.dropdown-container {
+  position: relative;
+}
+
+.category-group {
+  padding: 0.25rem 0;
+}
+
+.category-group:not(:last-child) {
+  border-bottom: 1px solid var(--color-border, #EEE);
+}
+
+.group-header {
+  color: var(--primary-color, #6A0DAD);
+  font-weight: 700;
+}
+
+.group-items {
+  padding-left: 1rem;
+}
+
+.advanced-filters {
+  background: #F9FAFB;
+}
+
+.filters-bar--collapsible {
+  padding: 1.25rem;
+  background: #fcfcfc;
+  border: 1px solid #eee;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+}
+
+.filters-bar__trailing {
+  margin-inline-start: auto;
+}
+
+.analytics-global-filters {
+  width: 100%;
+}
+
+.sub-view-toggles {
+  flex-wrap: wrap;
+}
+
+.kpi-meta--warning {
+  color: #b45309;
+  font-style: italic;
+}
+
+.kpi-revenue-compare {
+  width: 100%;
+}
+
+.kpi-revenue-row {
+  font-size: 0.875rem;
+}
+
+.kpi-revenue-tag {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--primary-color, #6A0DAD);
+  padding: 0.125rem 0.5rem;
+  border: 1px solid rgba(106, 13, 173, 0.25);
+  border-radius: 0.25rem;
+  background: rgba(106, 13, 173, 0.05);
+}
+
+.kpi-value--muted {
+  opacity: 0.85;
+}
+
+.kpi-card--revenue-compare {
+  min-height: 6.5rem;
+}
+
+.kpi-card--collapsible {
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.kpi-card--collapsible:hover {
+  border-color: rgba(106, 13, 173, 0.22);
+  box-shadow: 0 4px 18px rgba(106, 13, 173, 0.07);
+}
+
+.kpi-card--collapsible.collapsed {
+  padding-block: 1rem;
+}
+
+.kpi-header {
+  width: 100%;
+}
+
+.kpi-card--collapsible .kpi-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text-subtle, #666);
+  line-height: 0;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.kpi-card--collapsible .kpi-toggle-btn:hover {
+  background: rgba(106, 13, 173, 0.08);
+  color: var(--secondary-color, #6a0dad);
+}
+
+.kpi-card--collapsible .kpi-toggle-btn:focus-visible {
+  outline: none;
+  background: rgba(106, 13, 173, 0.1);
+  color: var(--secondary-color, #6a0dad);
+  box-shadow: 0 0 0 2px rgba(106, 13, 173, 0.18);
+}
+
+.chevron {
+  transition: transform 0.2s ease;
+}
+
+.chevron.rotated {
+  transform: rotate(180deg);
+}
+
+.chart-type-tags {
+  flex-shrink: 0;
+}
+
+.dropdown-menu-scroll {
+  max-height: 18.75rem;
+  overflow-y: auto;
+}
+
+.filter-label {
+  letter-spacing: 0.05em;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 10;
+  background: var(--color-white, #FFF);
+  border-radius: 0.25rem;
+  min-width: 9.5rem;
+  border: 1px solid var(--color-border, #EEE);
+}
+
+.dropdown-menu-wide {
+  min-width: 12.5rem;
+  max-height: 18.75rem;
+  overflow-y: auto;
+}
+
+/* Select All separator inside dropdown */
+.dropdown-select-all {
+  border-bottom: 1px solid var(--color-border, #EEE);
+  padding-bottom: 0.5rem;
+  font-weight: 700;
+}
+
+/* Chart wrapper — capped height for large viewports */
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  min-height: 14rem;
+  max-height: min(22rem, 42vh);
+  height: clamp(14rem, 24vw, 22rem);
+  border: 1px dashed var(--color-border, #E0E0E0);
+  border-radius: 0.375rem;
+  background: #FAFAFA;
+}
+
+@media (min-width: 90rem) {
+  .chart-wrapper {
+    max-height: 20rem;
+    height: 20rem;
+  }
+}
+
+/* KPI info control */
+.kpi-card--with-info {
+  position: relative;
+  padding-inline-start: 2rem;
+}
+
+.kpi-info-btn {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  border: 1px solid var(--primary-color, #6A0DAD);
+  border-radius: 50%;
+  background: var(--color-white, #FFF);
+  color: var(--primary-color, #6A0DAD);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.kpi-info-btn:hover,
+.kpi-info-btn:focus-visible {
+  background: var(--primary-color, #6A0DAD);
+  color: var(--color-white, #FFF);
+  outline: none;
+}
+
+.kpi-period {
+  font-style: italic;
+}
+
+.analytics-loading {
+  min-height: 12rem;
+  background: var(--color-white, #FFF);
+  border-radius: var(--radius-m, 0.5rem);
+  border: 1px solid var(--color-border, #E0E0E0);
+}
+
+.chart-wrapper--yoy {
+  transition: height 0.3s ease;
+}
+
+/* ── Mobile Responsiveness ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .analytics-layout {
+    gap: var(--gap-m, 1rem);
+  }
+
+  .chart-type-tags {
+    overflow-x: auto;
+    padding-bottom: 0.25rem;
+    -webkit-overflow-scrolling: touch;
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+
+  .primary-controls {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .yoy-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .yoy-controls .toggle-group,
+  .yoy-controls .dropdown-container,
+  .yoy-controls .checkbox-container {
+    width: 100%;
+  }
+
+  .yoy-controls .btn,
+  .yoy-controls .btn-outline {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .yoy-controls .checkbox-container {
+    padding: 0.5rem;
+    border: 1px solid var(--color-border, #EEE);
+    border-radius: 0.25rem;
+    background: #FAFAFA;
+  }
+
+  .filters-bar--collapsible {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .filters-bar--collapsible .toggle-group,
+  .filters-bar--collapsible .dropdown-container,
+  .filters-bar--collapsible .checkbox-container {
+    width: 100%;
+  }
+
+  .filters-bar--collapsible .btn,
+  .filters-bar--collapsible .btn-outline {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .filters-bar__trailing {
+    margin-inline-start: 0;
+  }
+
+  .advanced-filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .advanced-filters .flex {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .advanced-filters .dropdown-container {
+    width: 100%;
+  }
+
+  .advanced-filters .btn-outline {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .v-divider-sm {
+    display: none;
+  }
+
+  .summary-table {
+    font-size: 0.7rem;
+  }
+
+  .summary-table th, 
+  .summary-table td {
+    padding: 0.5rem 0.4rem;
+  }
+}

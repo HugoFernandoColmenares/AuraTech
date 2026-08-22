@@ -1,0 +1,90 @@
+<main class="admin-panel flex-column gap-l p-l" role="main">
+
+
+  <header class="admin-header flex-column gap-m">
+    <h1 class="art-deco-title">Admin Panel</h1>
+    <p class="subtitle">Manage users, roles and permissions. Only administrators can access this area.</p>
+    <div class="role-badge flex-center gap-s">
+      <span class="status-indicator active" aria-hidden="true"></span>
+      Signed in as <strong>{{ permissions.primaryRole() }}</strong>
+    </div>
+  </header>
+
+  <div class="admin-grid">
+    <section class="management-card flex-column" aria-labelledby="permissionsTitle">
+      <div class="card-header flex-center gap-s">
+        <span class="icon" aria-hidden="true">🔐</span>
+        <h2 id="permissionsTitle" class="card-title">Role permissions</h2>
+      </div>
+      <div class="card-body flex-column gap-s">
+        @for (row of rolePermissionSummary; track row.role) {
+          <div class="permission-row flex-between gap-m">
+            <span class="permission-role badge-premium">{{ row.role }}</span>
+            <span class="permission-values">{{ row.permissions }}</span>
+          </div>
+        }
+      </div>
+    </section>
+
+    @if (isEditing()) {
+      <section class="management-card flex-column editor-card" aria-labelledby="editUserTitle">
+        <div class="card-header flex-between align-center">
+          <div class="flex-center gap-s">
+            <span class="icon" aria-hidden="true">✏️</span>
+            <h2 id="editUserTitle" class="card-title">Edit user</h2>
+          </div>
+          <button type="button" class="btn-secondary btn-sm" (click)="closeEditor()">Close</button>
+        </div>
+        <div class="card-body flex-column gap-m">
+          <p class="editor-email">{{ selectedUser()?.email }}</p>
+
+          <form class="editor-form grid-form gap-m" (submit)="$event.preventDefault(); saveUser()">
+            <div class="form-group flex-column gap-xs">
+              <label for="editFirstName">First name</label>
+              <input id="editFirstName" class="input-premium" [ngModel]="editFirstName()" (ngModelChange)="editFirstName.set($event)" name="firstName" />
+            </div>
+            <div class="form-group flex-column gap-xs">
+              <label for="editLastName">Last name</label>
+              <input id="editLastName" class="input-premium" [ngModel]="editLastName()" (ngModelChange)="editLastName.set($event)" name="lastName" />
+            </div>
+            <div class="form-group flex-column gap-xs">
+              <label for="editUserName">Username</label>
+              <input id="editUserName" class="input-premium" [ngModel]="editUserName()" (ngModelChange)="editUserName.set($event)" name="userName" />
+            </div>
+            <div class="form-group flex-column gap-xs">
+              <label for="editRole">Role</label>
+              <select id="editRole" class="input-premium" [ngModel]="editRoleId()" (ngModelChange)="editRoleId.set($event)" name="roleId">
+                @for (role of roles(); track role.id) {
+                  <option [value]="role.id">{{ role.name }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-actions flex gap-m">
+              <button type="button" class="btn-secondary" (click)="closeEditor()">Cancel</button>
+              <button type="submit" class="btn-premium">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    }
+  </div>
+
+  <section class="management-card table-panel flex-column" aria-label="User list">
+    <div class="card-header flex-center gap-s">
+      <span class="icon" aria-hidden="true">👥</span>
+      <h2 class="card-title">Users</h2>
+    </div>
+    <div class="card-body">
+      <app-data-table
+        [columns]="columns"
+        [data]="tableData()"
+        [pageSize]="10"
+        [showEditAction]="true"
+        [showDeleteAction]="true"
+        [selectionReset]="tableSelectionReset()"
+        (actionClick)="handleTableAction($event)"
+        (bulkActionClick)="handleBulkTableAction($event)"
+      />
+    </div>
+  </section>
+</main>

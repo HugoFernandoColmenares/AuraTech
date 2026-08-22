@@ -1,0 +1,94 @@
+<div class="analytical-table-container">
+  <table class="summary-table credit-card-pivot">
+    <thead>
+      <tr>
+        <th
+          scope="col"
+          class="sortable-th"
+          [class.sortable-th--active]="isSorted('label')"
+          (click)="toggleSort('label')"
+        >
+          <span class="sortable-th__label">Row Labels</span>
+          @if (sortable()) {
+            <span class="sortable-th__icon" aria-hidden="true">{{ sortIcon('label') }}</span>
+          }
+        </th>
+        @for (monthIndex of visibleMonthIndices(); track monthIndex) {
+          <th
+            scope="col"
+            class="sortable-th"
+            [class.sortable-th--active]="isSorted('month-' + monthIndex)"
+            (click)="toggleSort('month-' + monthIndex)"
+          >
+            <span class="sortable-th__label">{{ monthLabel(monthIndex) }}</span>
+            @if (sortable()) {
+              <span class="sortable-th__icon" aria-hidden="true">{{ sortIcon('month-' + monthIndex) }}</span>
+            }
+          </th>
+        }
+        <th
+          scope="col"
+          class="sortable-th col-grand-total"
+          [class.sortable-th--active]="isSorted('total')"
+          (click)="toggleSort('total')"
+        >
+          <span class="sortable-th__label">Grand Total</span>
+          @if (sortable()) {
+            <span class="sortable-th__icon" aria-hidden="true">{{ sortIcon('total') }}</span>
+          }
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (block of sortedData(); track block.year) {
+        <tr class="row-year" (click)="toggleYear(block.year)">
+          <td>
+            <span class="collapse-icon" aria-hidden="true">
+              {{ isYearCollapsed(block.year) ? '▶' : '▼' }}
+            </span>
+            {{ block.year }}
+          </td>
+          @for (monthIndex of visibleMonthIndices(); track monthIndex) {
+            <td>{{ monthTotal(block, monthIndex) | appCurrency: currencyDigits() }}</td>
+          }
+          <td class="col-grand-total">{{ block.yearTotal | appCurrency: currencyDigits() }}</td>
+        </tr>
+
+        @if (!isYearCollapsed(block.year)) {
+          @for (category of block.categories; track category.label) {
+            <tr
+              class="row-category"
+              [class.row-category--expandable]="category.subRows.length > 0"
+              [attr.aria-expanded]="!isCategoryCollapsed(block.year, category.label)"
+              (click)="toggleCategory(block.year, category.label, category.subRows.length > 0); $event.stopPropagation()"
+            >
+              <td>
+                @if (category.subRows.length > 0) {
+                  <span class="collapse-icon" aria-hidden="true">
+                    {{ isCategoryCollapsed(block.year, category.label) ? '▶' : '▼' }}
+                  </span>
+                }
+                {{ category.label }}
+              </td>
+              @for (monthIndex of visibleMonthIndices(); track monthIndex) {
+                <td>{{ category.months[monthIndex] | appCurrency: currencyDigits() }}</td>
+              }
+              <td class="col-grand-total">{{ filteredTotal(category.months) | appCurrency: currencyDigits() }}</td>
+            </tr>
+            @if (!isCategoryCollapsed(block.year, category.label)) {
+              @for (sub of category.subRows; track sub.label) {
+                <tr class="row-channel">
+                  <td>{{ sub.label }}</td>
+                  @for (monthIndex of visibleMonthIndices(); track monthIndex) {
+                    <td>{{ sub.months[monthIndex] | appCurrency: currencyDigits() }}</td>
+                  }
+                  <td class="col-grand-total">{{ filteredTotal(sub.months) | appCurrency: currencyDigits() }}</td>
+                </tr>
+              }
+            }
+          }
+        }
+      }
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,79 @@
+.app-layout {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.sidebar-wrapper {
+  width: 16rem;
+  background-color: #FAFAFA;
+  border-right: 1px solid #C0C0C0;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+.main-content {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.page-content {
+  flex: 1;
+  background-color: var(--bg-color);
+  overflow: auto;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 150;
+  backdrop-filter: blur(2px);
+  transition: opacity 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .app-layout {
+    flex-direction: row; /* Desktop like flow but sidebar is hidden */
+  }
+  
+  .sidebar-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    height: 100vh;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 10px 0 25px rgba(0, 0, 0, 0.1);
+    border-right: none;
+  }
+
+  .sidebar-open .sidebar-wrapper {
+    transform: translateX(0);
+  }
+
+  .sidebar-open .sidebar-backdrop {
+    display: block;
+    animation: fadeIn 0.3s ease forwards;
+  }
+
+  .main-content {
+    width: 100%;
+    flex: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

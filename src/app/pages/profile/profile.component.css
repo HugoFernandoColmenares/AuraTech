@@ -1,0 +1,301 @@
+/* Profile Container Layout */
+.profile-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* Premium Art Deco Glassmorphism Card */
+.profile-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--color-accent, #C0C0C0);
+  border-radius: 0.25rem;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02);
+  width: 100%;
+  max-width: 32rem;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+
+.profile-card:hover {
+  border-color: var(--color-secondary, #6A0DAD);
+  box-shadow: 0 20px 40px rgba(106, 13, 173, 0.08);
+}
+
+/* Header & Avatar Styles */
+.profile-header {
+  border-bottom: 1px solid rgba(192, 192, 192, 0.3);
+  padding-bottom: 1.5rem;
+}
+
+.avatar-container {
+  width: 6.5rem;
+  height: 6.5rem;
+  border-radius: 50%;
+  border: 2px solid var(--color-secondary, #6A0DAD);
+  padding: 0.25rem;
+  background-color: var(--color-primary, #FFFFFF);
+  transition: transform 0.3s ease;
+}
+
+.avatar-container:hover {
+  transform: rotate(5deg) scale(1.05);
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  font-size: 3rem;
+  color: var(--color-secondary, #6A0DAD);
+  background-color: rgba(106, 13, 173, 0.05);
+}
+
+.art-deco-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--color-tertiary, #000000);
+}
+
+.subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.9rem;
+  color: #666666;
+  letter-spacing: 0.03em;
+}
+
+/* Detail Rows (Read-Only) */
+.profile-details {
+  width: 100%;
+}
+
+.detail-row {
+  border-bottom: 1px solid rgba(192, 192, 192, 0.25);
+  transition: background-color 0.3s ease;
+  display: flex;
+  justify-content: space-between;
+}
+
+.detail-row:hover {
+  background-color: rgba(106, 13, 173, 0.02);
+}
+
+.detail-row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--color-tertiary, #000000);
+  letter-spacing: 0.06em;
+}
+
+.value {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  color: #333333;
+}
+
+/* Custom premium badge and links */
+.badge-premium {
+  background-color: rgba(106, 13, 173, 0.07);
+  color: var(--color-secondary, #6A0DAD);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(106, 13, 173, 0.15);
+}
+
+.status-indicator {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-indicator.active {
+  background-color: #10b981;
+  box-shadow: 0 0 8px #10b981;
+}
+
+.link-premium {
+  color: var(--color-secondary, #6A0DAD);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
+  border-bottom: 1px solid transparent;
+}
+
+.link-premium:hover {
+  color: #520a87;
+  border-bottom: 1px solid #520a87;
+}
+
+/* Form Styles (Edit Mode) */
+.profile-form {
+  width: 100%;
+}
+
+.form-group {
+  width: 100%;
+}
+
+.form-group label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-tertiary, #000000);
+}
+
+.input-premium {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-accent, #C0C0C0);
+  border-radius: 0.25rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  background-color: var(--color-primary, #FFFFFF);
+  color: var(--color-tertiary, #000000);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-sizing: border-box;
+}
+
+.input-premium:focus {
+  outline: none;
+  border-color: var(--color-secondary, #6A0DAD);
+  box-shadow: 0 0 0 2px rgba(106, 13, 173, 0.1);
+}
+
+/* Button & Action Styles */
+.btn-premium {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-secondary, #6A0DAD);
+  color: var(--color-primary, #FFFFFF);
+  border: 1px solid var(--color-secondary, #6A0DAD);
+  border-radius: 0.25rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.1s ease;
+}
+
+.btn-premium:hover {
+  background-color: transparent;
+  color: var(--color-secondary, #6A0DAD);
+  box-shadow: 0 4px 12px rgba(106, 13, 173, 0.15);
+}
+
+.btn-premium:active {
+  transform: scale(0.98);
+}
+
+.btn-secondary {
+  padding: 0.75rem 1.5rem;
+  background-color: transparent;
+  color: var(--color-tertiary, #000000);
+  border: 1px solid var(--color-accent, #C0C0C0);
+  border-radius: 0.25rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.1s ease;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(0, 0, 0, 0.03);
+  border-color: var(--color-tertiary, #000000);
+}
+
+.btn-secondary:active {
+  transform: scale(0.98);
+}
+
+.avatar-upload-btn {
+  cursor: pointer;
+  position: relative;
+}
+
+.avatar-upload-btn input[type="file"] {
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.avatar-hint {
+  font-size: 0.75rem;
+  color: #666;
+  text-align: center;
+  margin: 0;
+}
+
+.avatar-container--edit {
+  border-color: var(--color-secondary, #6A0DAD);
+}
+
+.hidden-input {
+  display: none;
+}
+
+.permissions-summary {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  text-align: left;
+  max-width: none;
+}
+
+.permissions-block {
+  align-items: stretch;
+}
+
+.permission-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.permission-list li {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.8125rem;
+  color: #444;
+  padding-left: 1rem;
+  position: relative;
+}
+
+.permission-list li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: var(--color-secondary, #6A0DAD);
+  font-weight: 700;
+}

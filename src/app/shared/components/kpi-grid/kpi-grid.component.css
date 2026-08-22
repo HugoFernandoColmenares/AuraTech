@@ -1,0 +1,35 @@
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+
+.kpi-grid--cols-1 {
+  grid-template-columns: 1fr;
+}
+
+.kpi-grid--cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.kpi-grid--cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.kpi-grid--cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.kpi-grid--compact {
+  gap: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .kpi-grid,
+  .kpi-grid--cols-2,
+  .kpi-grid--cols-3,
+  .kpi-grid--cols-4 {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,209 @@
+<main class="about-container p-l">
+  <header class="about-header mb-l">
+    <h1 class="art-deco-title">User Guide & Technical Overview</h1>
+    <p class="subtitle">
+      Welcome to the YmiProject Management Platform. This guide explains how Excel uploads,
+      browser session data, and Supabase persistence work together.
+    </p>
+    <a routerLink="/layout/home" class="btn btn-secondary btn-sm">Back to Dashboard tutorial</a>
+  </header>
+
+  <div class="accordion-container">
+    @for (section of sections(); track section.id) {
+      <div class="accordion-item" [class.is-open]="section.isOpen">
+        <button
+          type="button"
+          class="accordion-header flex-between align-center p-m"
+          (click)="toggleSection(section.id)"
+          [attr.aria-expanded]="section.isOpen"
+        >
+          <span class="section-title">{{ section.title }}</span>
+          <svg
+            class="chevron"
+            [class.rotated]="section.isOpen"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+
+        <div class="accordion-content p-m" [class.visible]="section.isOpen">
+          @switch (section.id) {
+            @case ('dashboard') {
+              <p>
+                The <strong>Dashboard</strong> is your starting point. It summarizes the end-to-end
+                workflow: open a report, upload Excel, review parsed rows, and export session data to Supabase.
+              </p>
+              <p>
+                Each report module (Sales, Inventory, Credit Card, Products, Reference Sheet) follows the same
+                coordinator pattern: filters and analytics at the top, detailed tables below, and toolbar actions
+                for upload, export, and database sync.
+              </p>
+            }
+
+            @case ('upload-workflow') {
+              <ol class="guide-list">
+                <li>
+                  <strong>Prepare your Excel file.</strong>
+                  Use the format expected by each channel (Amazon Retail, Fashion Go, inventory dashboard,
+                  Amex statement, etc.). Column headers must match the parser for that module.
+                </li>
+                <li>
+                  <strong>Navigate to the report module</strong> and switch to the <em>Data</em> or table view
+                  when available.
+                </li>
+                <li>
+                  <strong>Click Upload Data</strong> in the table toolbar (requires bulk-upload permission).
+                  Choose the file from your computer. For Sales and Inventory you may need to pick the store or
+                  account type before parsing begins.
+                </li>
+                <li>
+                  <strong>Wait for parsing to finish.</strong>
+                  The global loader shows progress. Invalid or duplicate rows may be removed according to the
+                  same curation rules used during database export (especially in Sales).
+                </li>
+                <li>
+                  <strong>Review the table.</strong>
+                  Filter, search, and spot-check amounts, SKUs, and dates before sending anything to production.
+                </li>
+                <li>
+                  <strong>Check the data-source indicator</strong> (session vs database icon) to confirm how many
+                  rows are still only in your browser.
+                </li>
+                <li>
+                  <strong>Export to DB</strong> when you are satisfied. Session rows are bulk-upserted to Supabase.
+                  After success, the module refreshes paginated data and analytics from the server.
+                </li>
+              </ol>
+              <p class="guide-note">
+                Uploading does <em>not</em> write to Supabase automatically. Closing the tab or clearing session
+                data removes unpersisted rows unless you exported them first.
+              </p>
+            }
+
+            @case ('custom-excel') {
+              <p>
+                <strong>Custom Excel</strong> is for sales spreadsheets that do not match a preset store parser
+                (Amazon, Fashion Go, Walmart, etc.). You map your own column headers to YMI sales fields in a
+                four-step modal, preview the parsed rows, then load them into the browser session like any other upload.
+              </p>
+              <ol class="guide-list">
+                <li>
+                  <strong>Open Sales Report</strong> and switch to the <em>Data</em> table view.
+                </li>
+                <li>
+                  <strong>Click Upload Data</strong> in the toolbar and choose your <code>.xlsx</code> or
+                  <code>.xls</code> file.
+                </li>
+                <li>
+                  <strong>Select Custom Excel</strong> in the store picker (🧩 icon) and confirm.
+                </li>
+                <li>
+                  <strong>Step 1 — File:</strong> verify the selected workbook, then click
+                  <em>Continue with file</em> in the modal footer.
+                </li>
+                <li>
+                  <strong>Step 2 — Sheet:</strong> pick the worksheet that contains your data. Use the search box
+                  in the dropdown if the workbook has many tabs, then click <em>Load sheet</em>.
+                </li>
+                <li>
+                  <strong>Step 3 — Mapping:</strong> enter the account name and category, optionally set a date
+                  format and audit period, then map each required sales field (Order ID, SKU, Qty, Total, Date, etc.)
+                  to the matching Excel column. Dropdowns are searchable to speed up wide spreadsheets. Optionally
+                  load a saved template or check <em>Save this mapping template</em> for next time.
+                </li>
+                <li>
+                  <strong>Step 4 — Preview:</strong> review the first mapped rows, then click
+                  <em>Load N records</em> to import into the session.
+                </li>
+                <li>
+                  <strong>Review and export:</strong> filter the table, confirm totals, then use
+                  <strong>Export to DB</strong> when you are ready to persist the session rows to Supabase.
+                </li>
+              </ol>
+              <p class="guide-note">
+                Date filters in Sales Report use the <strong>audit period</strong> (audit month/year), not necessarily
+                the order date shown in the table. Set audit month/year in the mapping step when your file has no
+                dedicated audit columns.
+              </p>
+            }
+
+            @case ('export-db') {
+              <p>
+                <strong>Export to DB</strong> uploads rows flagged as session/local data through the module API
+                (bulk upsert). It is available in the table toolbar for users with bulk-upload permission.
+              </p>
+              <ul class="guide-list guide-list--unordered">
+                <li>The button stays <strong>disabled</strong> when there are zero session rows pending export.</li>
+                <li>Sales records are curated before upload (cancelled/refunded rows removed, Shopify summary deduped).</li>
+                <li>On success you will see a confirmation toast and the table reloads from Supabase.</li>
+                <li>On failure, check Data Management → Test Database Connection and verify Supabase env vars on Vercel.</li>
+              </ul>
+              <p>
+                Excel export and JSON export are separate actions: they download a file from your current view or
+                full dataset without modifying the database.
+              </p>
+            }
+
+            @case ('data-sources') {
+              <p>The toolbar <strong>data-source indicator</strong> shows where the current dataset comes from:</p>
+              <ul class="guide-list guide-list--unordered">
+                <li><strong>Session / cache</strong> — rows parsed from Excel or created locally (<code>isLocal</code>). Pending Export to DB.</li>
+                <li><strong>Database (Supabase)</strong> — rows already persisted and loaded via paginated API reads.</li>
+                <li><strong>Mixed</strong> — both session and database rows are present (uncommon; export session rows first).</li>
+              </ul>
+              <p>
+                Read-only GET responses may be cached for the browser session to avoid redundant Supabase calls.
+                Any successful write (Export to DB, CRUD) invalidates that cache for the affected report.
+              </p>
+            }
+
+            @case ('sales-reporting') {
+              <p>
+                Import sales from Amazon Dropshipping, Amazon Retail, Fashion Go, wholesale channels, and internal
+                exports. Select the store format, upload Excel/CSV, then explore Analytics, Data, and Insights views.
+              </p>
+              <p>
+                For non-standard layouts, use <strong>Custom Excel</strong> to map columns manually and save reusable
+                templates. See the <em>Custom Excel Mapping (Sales)</em> section above for the full walkthrough.
+              </p>
+              <p>
+                Filters support account, date range, month selection, and SKU search. Server-side analytics use
+                Supabase RPC functions when the database is reachable.
+              </p>
+            }
+
+            @case ('catalog') {
+              <p>
+                The Product Catalog and Reference Sheet provide master style data (parent, style name, brand,
+                division, type, collection, fit) used when normalizing sales and inventory SKUs.
+              </p>
+            }
+
+            @case ('management') {
+              <p>
+                Manage products manually or via Excel import. Create brands, divisions, and collections inline.
+                Session imports follow the same Export to DB pattern as report modules.
+              </p>
+            }
+
+            @case ('credits') {
+              <p>
+                This platform was developed by Hugo Colmenares to streamline sales operations and inventory
+                management with a focus on elegant design and automated data processing.
+              </p>
+            }
+          }
+        </div>
+      </div>
+    }
+  </div>
+</main>

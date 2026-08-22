@@ -1,0 +1,121 @@
+<div class="form-container p-l flex-column">
+  <header class="form-header flex-column gap-s mb-l">
+    <h2 class="form-title">
+      @if (mode() === 'view') { View Record }
+      @else if (mode() === 'edit') { Edit Record }
+      @else { Create New Record }
+    </h2>
+    <p class="form-subtitle">
+      @if (type() === 'sale') { Sales performance and transaction details. }
+      @else { Inventory levels and product categorization. }
+    </p>
+  </header>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex-column gap-l">
+    <!-- Grid for main fields -->
+    <div class="form-grid">
+      @if (type() === 'sale') {
+        <div class="form-group flex-column gap-xs">
+          <label for="orderId">Order ID</label>
+          <input id="orderId" type="text" formControlName="orderId" placeholder="e.g. ORD-12345">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="sku">SKU</label>
+          <input id="sku" type="text" formControlName="sku" placeholder="e.g. SKU-COLOR-SIZE">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="account">Account / Platform</label>
+          <input id="account" type="text" formControlName="account" placeholder="e.g. AMAZON DS">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="orderStatus">Order Status</label>
+          <input id="orderStatus" type="text" formControlName="orderStatus" placeholder="e.g. SHIPPED">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="itemCost">Item Cost</label>
+          <input id="itemCost" type="number" formControlName="itemCost" step="0.01">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="itemQuantity">Quantity Sold</label>
+          <input id="itemQuantity" type="number" formControlName="itemQuantity">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="total">Total Revenue</label>
+          <input id="total" type="number" formControlName="total" step="0.01">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="warehouseCode">Warehouse / Seller</label>
+          <input id="warehouseCode" type="text" formControlName="warehouseCode">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="brand">Brand</label>
+          <input id="brand" type="text" formControlName="brand">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="collection">Collection</label>
+          <input id="collection" type="text" formControlName="collection">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="category">Category</label>
+          <select id="category" formControlName="category" class="select-deco">
+            <option value="Retail">Retail</option>
+            <option value="Wholesale">Wholesale</option>
+          </select>
+        </div>
+      } @else {
+        <div class="form-group flex-column gap-xs">
+          <label for="sku">SKU</label>
+          <input id="sku" type="text" formControlName="sku" placeholder="e.g. SKU-COLOR-SIZE">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="productName">Product Name</label>
+          <input id="productName" type="text" formControlName="productName">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="available">Available Stock</label>
+          <input id="available" type="number" formControlName="available">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="onHand">On Hand</label>
+          <input id="onHand" type="number" formControlName="onHand">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="committed">Committed</label>
+          <input id="committed" type="number" formControlName="committed">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="type">Item Group / Type</label>
+          <input id="type" type="text" formControlName="type">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="division">Division / Class</label>
+          <input id="division" type="text" formControlName="division">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="collection">Collection</label>
+          <input id="collection" type="text" formControlName="collection">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="fit">Fit</label>
+          <input id="fit" type="text" formControlName="fit">
+        </div>
+        <div class="form-group flex-column gap-xs">
+          <label for="sourceFile">Source Context</label>
+          <input id="sourceFile" type="text" formControlName="sourceFile">
+        </div>
+      }
+    </div>
+
+    <!-- Actions -->
+    <footer class="form-actions flex-end gap-m mt-l">
+      <button type="button" class="btn btn-ghost" (click)="cancel.emit()">
+        {{ mode() === 'view' ? 'Return to Table' : 'Cancel' }}
+      </button>
+      @if (mode() !== 'view') {
+        <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+          {{ mode() === 'edit' ? 'Save Changes' : 'Create Record' }}
+        </button>
+      }
+    </footer>
+  </form>
+</div>

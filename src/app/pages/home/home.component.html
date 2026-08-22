@@ -1,0 +1,66 @@
+<main class="home-container flex-column gap-l p-l">
+  <header class="home-header flex-column gap-s">
+    <h1 class="title">Dashboard</h1>
+    <p class="subtitle">
+      Quick guide to uploading Excel data, reviewing session rows, and sending records to Supabase.
+      Sales Report also supports <strong>Custom Excel</strong> for layouts that do not match a preset store format.
+    </p>
+  </header>
+
+  <section class="workflow-panel flex-column gap-m p-l" aria-labelledby="workflowTitle">
+    <h2 id="workflowTitle" class="panel-title">Data upload workflow</h2>
+    <ol class="workflow-steps flex-column gap-m">
+      @for (step of workflowSteps; track step.step) {
+        <li class="workflow-step flex gap-m p-m">
+          <span class="workflow-step__number flex-center" aria-hidden="true">{{ step.step }}</span>
+          <div class="workflow-step__body flex-column gap-s">
+            <div class="flex-center gap-s">
+              <span class="workflow-step__icon" aria-hidden="true">{{ step.icon }}</span>
+              <h3 class="workflow-step__title">{{ step.title }}</h3>
+            </div>
+            <p class="workflow-step__text">{{ step.description }}</p>
+            @if (step.link) {
+              <a [routerLink]="step.link" class="btn btn-ghost btn-sm">{{ step.linkLabel }}</a>
+            }
+          </div>
+        </li>
+      }
+    </ol>
+  </section>
+
+  <section class="custom-excel-panel flex-column gap-s p-m" aria-labelledby="customExcelTitle">
+    <h2 id="customExcelTitle" class="panel-title">Custom Excel (Sales Report)</h2>
+    <p>
+      When your spreadsheet does not match Amazon, Fashion Go, or other preset parsers, choose
+      <strong>Custom Excel</strong> on upload. A guided modal lets you pick the worksheet, map each
+      sales column visually, preview the result, and optionally save the mapping as a reusable template.
+    </p>
+    <div class="flex gap-s flex-wrap">
+      <a routerLink="/layout/sales-report" class="btn btn-secondary btn-sm">Open Sales Report</a>
+      <a routerLink="/layout/about" class="btn btn-ghost btn-sm">Step-by-step guide</a>
+    </div>
+  </section>
+
+  <section class="modules-panel flex-column gap-m" aria-labelledby="modulesTitle">
+    <h2 id="modulesTitle" class="panel-title">Report modules</h2>
+    <div class="modules-grid grid-auto gap-m">
+      @for (module of reportModules; track module.path) {
+        <article class="module-card flex-column gap-s p-m">
+          <h3 class="module-card__title">{{ module.title }}</h3>
+          <p class="module-card__text">{{ module.uploadHint }}</p>
+          <a [routerLink]="module.path" class="btn btn-ghost">Open module</a>
+        </article>
+      }
+    </div>
+  </section>
+
+  <section class="tip-panel flex-column gap-s p-m" aria-labelledby="tipTitle">
+    <h2 id="tipTitle" class="panel-title">Session vs database</h2>
+    <p>
+      Uploaded files are parsed in the browser and flagged as <strong>session data</strong>.
+      They are not persisted until you use <strong>Export to DB</strong>.
+      The toolbar icon shows how many rows are still in session versus already stored in Supabase.
+    </p>
+    <a routerLink="/layout/about" class="btn btn-secondary btn-sm">Read the full guide in About</a>
+  </section>
+</main>

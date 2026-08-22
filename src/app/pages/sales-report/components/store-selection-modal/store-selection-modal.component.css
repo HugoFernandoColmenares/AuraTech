@@ -1,0 +1,123 @@
+/* Art Deco Minimalist Styles for Store Selection Modal */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(0.25rem); /* Subtle blur for focus */
+  z-index: 1000;
+}
+
+.modal-card {
+  background: var(--bg-primary, #FFFFFF);
+  width: 100%;
+  max-width: 40.625rem; /* 650px */
+  border-radius: 0.5rem;
+  box-shadow: 0 1.25rem 1.5625rem -0.3125rem rgba(0, 0, 0, 0.1);
+  border: 1px solid #E0E0E0;
+}
+
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--text-primary, #000000);
+}
+
+.modal-subtitle {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+/* Store Options Grid */
+.store-categories {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding-inline-end: 0.5rem; /* Padding for scrollbar */
+}
+
+.category-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #888;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 0.5rem;
+}
+
+.store-option {
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+  background: #F9F9F9;
+  position: relative;
+}
+
+.store-option:hover {
+  background: #F0F0F0;
+  transform: translateY(-2px); /* Subtle lift on hover */
+}
+
+.store-option.active {
+  border-color: var(--primary-color, #6A0DAD);
+  background: #F5EEFF;
+  box-shadow: 0 4px 6px -1px rgba(106, 13, 173, 0.1);
+}
+
+/* Hide native radio button but keep it accessible for keyboard */
+.store-option input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Custom focus ring for accessibility */
+.store-option:focus-within {
+  outline: 2px solid var(--primary-color, #6A0DAD);
+  outline-offset: 2px;
+}
+
+.store-card {
+  padding: 1rem;
+  align-items: center;
+  text-align: center;
+}
+
+.store-icon {
+  font-size: 1.5rem;
+}
+
+.store-name {
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--text-primary, #000000);
+}
+
+.store-desc {
+  font-size: 0.65rem;
+  color: #666;
+}
+
+.modal-footer {
+  border-top: 1px solid #E0E0E0;
+  padding-top: 1rem;
+}
+
+/* Custom Scrollbar for Art Deco Elegance */
+.store-categories::-webkit-scrollbar {
+  width: 0.375rem;
+}
+
+.store-categories::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.store-categories::-webkit-scrollbar-thumb {
+  background: #C0C0C0;
+  border-radius: 0.25rem;
+}
+
+.store-categories::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color, #6A0DAD);
+}

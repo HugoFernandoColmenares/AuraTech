@@ -1,0 +1,62 @@
+:host {
+  --color-primary: #FFFFFF;
+  --color-secondary: #6A0DAD;
+  --color-tertiary: #000000;
+  --color-accent: #C0C0C0;
+  --font-primary: 'Montserrat', sans-serif;
+  --font-secondary: 'Playfair Display', serif;
+}
+
+.auth-wrapper {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: clamp(1rem, 4vw, 2rem);
+  background-color: var(--color-primary);
+  background-image:
+    radial-gradient(ellipse at 10% 0%, rgba(106, 13, 173, 0.08), transparent 55%),
+    radial-gradient(ellipse at 90% 100%, rgba(106, 13, 173, 0.06), transparent 50%),
+    linear-gradient(rgba(106, 13, 173, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(106, 13, 173, 0.03) 1px, transparent 1px);
+  background-size: auto, auto, 2rem 2rem, 2rem 2rem;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 26rem;
+  padding: clamp(1.25rem, 4vw, 2rem);
+  background-color: var(--color-primary);
+  border: 1px solid rgba(106, 13, 173, 0.25);
+  border-radius: 0.25rem;
+  box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.08);
+}
+
+.skip-link {
+  position: absolute;
+  top: -3rem;
+  left: 1rem;
+  background: var(--color-secondary);
+  color: var(--color-primary);
+  padding: 0.5rem 1rem;
+  z-index: 100;
+  transition: top 0.3s ease;
+  font-family: var(--font-primary);
+  border-radius: 0.25rem;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+@media (max-width: 480px) {
+  .auth-wrapper {
+    align-items: flex-start;
+    padding-top: 2rem;
+  }
+
+  .auth-container {
+    max-width: 100%;
+    border-left: none;
+    border-right: none;
+    box-shadow: none;
+  }
+}

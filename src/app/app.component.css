@@ -1,0 +1,11 @@
+.app-boot {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.app-boot__text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.875rem;
+  color: #666;
+  margin: 0;
+}

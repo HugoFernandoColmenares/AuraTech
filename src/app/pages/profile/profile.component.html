@@ -1,0 +1,107 @@
+<main class="profile-container p-l flex-center">
+
+  <div class="profile-card shadow-premium p-l flex-column gap-l">
+    <header class="profile-header flex-center flex-column gap-s">
+      <div class="avatar-container flex-center">
+        @if (displayAvatar()) {
+          <img [src]="displayAvatar()" alt="Profile photo" class="avatar-img">
+        } @else {
+          <span class="avatar-placeholder flex-center">👤</span>
+        }
+      </div>
+      <h1 class="art-deco-title text-center">{{ fullName() }}</h1>
+      <p class="subtitle text-center">{{ displayProfile()?.email }}</p>
+    </header>
+
+    @if (!isEditing()) {
+      <!-- Read-only View -->
+      <div class="profile-details flex-column gap-m">
+        <div class="detail-row flex-between p-s">
+          <span class="label">Username</span>
+          <span class="value">{{ displayProfile()?.userName || 'Not set' }}</span>
+        </div>
+        <div class="detail-row flex-between p-s">
+          <span class="label">First Name</span>
+          <span class="value">{{ displayProfile()?.firstName || 'Not set' }}</span>
+        </div>
+        <div class="detail-row flex-between p-s">
+          <span class="label">Last Name</span>
+          <span class="value">{{ displayProfile()?.lastName || 'Not set' }}</span>
+        </div>
+        <div class="detail-row flex-between p-s">
+          <span class="label">System Role</span>
+          <div class="flex gap-s">
+            @for (role of displayProfile()?.roles; track role.id) {
+              <span class="value badge-premium">{{ role.name }}</span>
+            } @empty {
+              <span class="value badge-premium">{{ roleLabel() }}</span>
+            }
+          </div>
+        </div>
+        <div class="detail-row flex-column gap-s p-s permissions-block">
+          <span class="label">Permissions</span>
+          <p class="value permissions-summary">{{ rolePermissions.roleCapabilitySummary() }}</p>
+          <ul class="permission-list">
+            @for (label of rolePermissions.grantedPermissionLabels(); track label) {
+              <li>{{ label }}</li>
+            }
+          </ul>
+        </div>
+        <div class="detail-row flex-between p-s">
+          <span class="label">Account Status</span>
+          <span class="value flex-center gap-s">
+            <span class="status-indicator active"></span> Active
+          </span>
+        </div>
+      </div>
+
+      <div class="profile-actions flex-center">
+        <button class="btn-premium flex-center gap-s" (click)="toggleEdit()" [disabled]="isSaving()">
+          <span>✏️</span> Edit Profile
+        </button>
+      </div>
+    } @else {
+      <!-- Edit Mode -->
+      <form (submit)="$event.preventDefault(); saveProfile()" class="profile-form flex-column gap-m">
+        <div class="avatar-upload flex-column flex-center gap-s">
+          <div class="avatar-container avatar-container--edit flex-center">
+            @if (displayAvatar()) {
+              <img [src]="displayAvatar()" alt="Profile preview" class="avatar-img">
+            } @else {
+              <span class="avatar-placeholder flex-center">👤</span>
+            }
+          </div>
+          <label class="btn-secondary flex-center gap-s avatar-upload-btn">
+            <span>📷</span> Change photo
+            <input type="file" class="hidden-input" accept="image/jpeg,image/png,image/webp,image/gif" (change)="onAvatarSelected($event)" />
+          </label>
+          <p class="avatar-hint">Optimized to WebP · max 256px · under 5 MB</p>
+        </div>
+
+        <div class="form-group flex-column gap-s">
+          <label for="firstName">First Name</label>
+          <input type="text" id="firstName" [ngModel]="editFirstName()" (ngModelChange)="editFirstName.set($event)" name="firstName" placeholder="Enter first name" class="input-premium" required>
+        </div>
+
+        <div class="form-group flex-column gap-s">
+          <label for="lastName">Last Name</label>
+          <input type="text" id="lastName" [ngModel]="editLastName()" (ngModelChange)="editLastName.set($event)" name="lastName" placeholder="Enter last name" class="input-premium" required>
+        </div>
+
+        <div class="form-group flex-column gap-s">
+          <label for="username">Username</label>
+          <input type="text" id="username" [ngModel]="editUsername()" (ngModelChange)="editUsername.set($event)" name="username" placeholder="Enter username" class="input-premium" required>
+        </div>
+
+        <div class="form-actions flex-center gap-m">
+          <button type="button" class="btn-secondary flex-center gap-s" (click)="toggleEdit()">
+            Cancel
+          </button>
+          <button type="submit" class="btn-premium flex-center gap-s" [disabled]="isSaving()">
+            <span>💾</span> Save Changes
+          </button>
+        </div>
+      </form>
+    }
+  </div>
+</main>

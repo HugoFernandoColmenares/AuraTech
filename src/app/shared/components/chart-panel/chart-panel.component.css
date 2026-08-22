@@ -1,0 +1,59 @@
+.chart-panel {
+  background: var(--color-white, #FFF);
+  border-radius: var(--radius-m, 0.5rem);
+  border: 1px solid var(--color-border, #E0E0E0);
+  width: 100%;
+}
+
+.chart-panel-header__main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 1rem;
+  background: rgba(106, 13, 173, 0.03);
+  border: 1px solid rgba(106, 13, 173, 0.12);
+  border-radius: 0.25rem;
+}
+
+.chart-panel-header__row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.chart-panel-header__row--primary {
+  justify-content: space-between;
+}
+
+.chart-panel-header__row--secondary {
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(192, 192, 192, 0.5);
+}
+
+.chart-panel-header__row--secondary:empty {
+  display: none;
+  padding: 0;
+  border: none;
+}
+
+.chart-title {
+  font-family: var(--font-secondary, 'Playfair Display', serif);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-tertiary, #000);
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 768px) {
+  .chart-panel-header__main {
+    padding: 0.75rem;
+  }
+
+  .chart-panel-header__row--primary,
+  .chart-panel-header__row--secondary {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

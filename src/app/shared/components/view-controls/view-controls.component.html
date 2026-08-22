@@ -1,0 +1,33 @@
+<header
+  class="view-controls-host"
+  [class.view-controls-host--bordered]="showBorder()"
+>
+  <div class="header-titles flex-between align-center flex-wrap gap-m">
+    <div class="header-titles__text flex-column gap-s">
+      <h1 class="page-title">{{ title() }}</h1>
+      @if (subtitle()) {
+        <p class="subtitle">{{ subtitle() }}</p>
+      }
+    </div>
+
+    @if (options().length) {
+      <div class="view-toggles toggle-group flex gap-s" role="tablist" [attr.aria-label]="title() + ' views'">
+        @for (opt of options(); track opt.id) {
+          <button
+            type="button"
+            class="btn btn-sm"
+            role="tab"
+            [class.active]="activeMode() === opt.id"
+            [attr.aria-selected]="activeMode() === opt.id"
+            (click)="onSelect(opt.id)"
+          >
+            @if (opt.icon) {
+              <span class="view-toggle-icon" aria-hidden="true">{{ opt.icon }}</span>
+            }
+            {{ opt.label }}
+          </button>
+        }
+      </div>
+    }
+  </div>
+</header>

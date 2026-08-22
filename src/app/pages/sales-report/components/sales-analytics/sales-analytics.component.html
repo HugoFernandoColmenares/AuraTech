@@ -1,0 +1,511 @@
+<section class="analytics-layout flex-column gap-l fade-in">
+  @if (isLoading()) {
+    <div class="analytics-loading flex-column flex-center gap-m p-l" role="status" aria-live="polite">
+      <div class="spinner"></div>
+      <span class="text-sm color-subtle">Loading sales analytics…</span>
+    </div>
+  } @else {
+  <!-- Global filters (Analytics tab only) -->
+  <app-main-table-filter
+    class="analytics-global-filters"
+    [availableAccounts]="availableAccounts()"
+    [selectedAccounts]="accountFilter()"
+    (selectedAccountsChange)="onGlobalAccountChange($event)"
+    [searchQuery]="searchFilter()"
+    (searchQueryChange)="onGlobalSearchChange($event)"
+    [startDate]="startDate()"
+    (startDateChange)="onGlobalStartDateChange($event)"
+    [endDate]="endDate()"
+    (endDateChange)="onGlobalEndDateChange($event)"
+    (clearFilters)="onGlobalClearFilters()"
+  ></app-main-table-filter>
+  <!-- KPI CARDS -->
+  <app-kpi-grid [columns]="2">
+    <div
+      class="kpi-card kpi-card--with-info kpi-card--collapsible flex-column p-m"
+      [class.collapsed]="kpisCollapsed()"
+    >
+      <button
+        type="button"
+        class="kpi-info-btn"
+        (click)="showRevenueTrendInfo(); $event.stopPropagation()"
+        aria-label="More information about Revenue Trend"
+        title="More information"
+      >!</button>
+      <div class="kpi-header flex-between align-center">
+        <span class="kpi-label">{{ salesMetric() === 'units' ? 'Units Trend (YoY)' : 'Revenue Trend (YoY)' }}</span>
+        <button
+          type="button"
+          class="kpi-toggle-btn"
+          (click)="toggleKpisCollapsed()"
+          [attr.aria-expanded]="!kpisCollapsed()"
+          aria-label="Toggle KPI details"
+        >
+          <svg
+            class="chevron"
+            [class.rotated]="!kpisCollapsed()"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+      @if (!kpisCollapsed()) {
+        <span class="kpi-period text-xs color-subtle">{{ revenueTrendPeriodLabel() }}</span>
+        @let trend = activeTrendSummary();
+        <span class="kpi-value" [class.trend-positive]="trend.isPositive" [class.trend-negative]="!trend.isPositive">
+          @if (salesMetric() === 'revenue') {
+            {{ trend.value >= 0 ? '+' : '' }}{{ trend.value | currency }}
+          } @else {
+            {{ trend.value >= 0 ? '+' : '' }}{{ trend.value | number:'1.0-0' }} units
+          }
+          <span class="trend-pct">({{ trend.isPositive ? '▲' : '▼' }} {{ trend.percentage | number:'1.1-2' }}%)</span>
+        </span>
+        @if (trend.statusMessage) {
+          <p class="kpi-meta kpi-meta--warning text-xs">{{ trend.statusMessage }}</p>
+        }
+      }
+    </div>
+    <div
+      class="kpi-card kpi-card--with-info kpi-card--revenue-compare kpi-card--collapsible flex-column p-m"
+      [class.collapsed]="kpisCollapsed()"
+    >
+      <button
+        type="button"
+        class="kpi-info-btn"
+        (click)="showYearRevenueComparisonInfo()"
+        aria-label="More information about Year Revenue Comparison"
+        title="More information"
+      >!</button>
+      <div class="kpi-header flex-between align-center">
+        <span class="kpi-label">{{ salesMetric() === 'units' ? 'Year Units Comparison' : 'Year Revenue Comparison' }}</span>
+        <button
+          type="button"
+          class="kpi-toggle-btn"
+          (click)="toggleKpisCollapsed()"
+          [attr.aria-expanded]="!kpisCollapsed()"
+          aria-label="Toggle KPI details"
+        >
+          <svg
+            class="chevron"
+            [class.rotated]="!kpisCollapsed()"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+      </div>
+      @if (!kpisCollapsed()) {
+        <span class="kpi-period text-xs color-subtle">{{ unitsSoldPeriodLabel() }}</span>
+        @let cmp = activeYearComparison();
+        <div class="kpi-revenue-compare flex-column">
+          <div class="kpi-revenue-row flex align-center flex-wrap">
+            <span class="kpi-revenue-tag">{{ cmp.scopeLabel }} {{ cmp.currentYear }}</span>
+            <span class="kpi-value">
+              @if (salesMetric() === 'revenue') {
+                {{ cmp.currentRevenue | currency }}
+              } @else {
+                {{ cmp.currentRevenue | number:'1.0-0' }}
+              }
+            </span>
+            <span class="trend-pct" [class.trend-positive]="cmp.isPositive" [class.trend-negative]="!cmp.isPositive">
+              ({{ cmp.isPositive ? '▲' : '▼' }}{{ cmp.percentage | number:'1.0-0' }}%)
+            </span>
+          </div>
+          <div class="kpi-revenue-row flex align-center flex-wrap">
+            <span class="kpi-revenue-tag">{{ cmp.scopeLabel }} {{ cmp.compareYear }}</span>
+            <span class="kpi-value kpi-value--muted">
+              @if (salesMetric() === 'revenue') {
+                {{ cmp.compareRevenue | currency }}
+              } @else {
+                {{ cmp.compareRevenue | number:'1.0-0' }}
+              }
+            </span>
+          </div>
+          @if (cmp.statusMessage) {
+            <p class="kpi-meta kpi-meta--warning text-xs">{{ cmp.statusMessage }}</p>
+          }
+        </div>
+      }
+    </div>
+  </app-kpi-grid>
+  <!-- CHART PANEL -->
+  <app-chart-panel>
+    <div panelPrimary class="chart-panel-primary flex-between align-center flex-wrap gap-m">
+          <div class="chart-type-tags flex gap-s" role="tablist" aria-label="Analytics views">
+            @for (cfg of chartConfigs; track cfg.key) {
+              <button
+                type="button"
+                class="chart-btn"
+                role="tab"
+                [class.active]="activeChart() === cfg.key"
+                [attr.aria-selected]="activeChart() === cfg.key"
+                (click)="setActiveChart(cfg.key)"
+              >
+                <span class="chart-btn-icon">{{ cfg.icon }}</span>
+                {{ cfg.label }}
+              </button>
+            }
+          </div>
+          <div class="primary-controls flex gap-s align-center flex-wrap">
+            @if (activeChart() === 'yoy' || activeChart() === 'products') {
+              <button
+                type="button"
+                class="btn btn-sm btn-outline"
+                [class.active]="showMoreFilters()"
+                (click)="showMoreFilters.set(!showMoreFilters())"
+                [attr.aria-expanded]="showMoreFilters()"
+              >
+                {{ showMoreFilters() ? 'Hide Filters' : 'More Filters' }}
+                <span class="dropdown-arrow">{{ showMoreFilters() ? '▲' : '▼' }}</span>
+              </button>
+            }
+            <div class="toggle-group">
+              <button class="btn btn-xs" [class.active]="salesMetric() === 'revenue'" (click)="setSalesMetric('revenue')">Revenue</button>
+              <button class="btn btn-xs" [class.active]="salesMetric() === 'units'" (click)="setSalesMetric('units')">Units</button>
+            </div>
+            <button class="btn btn-sm btn-ghost" [class.active]="showVisualChart()" (click)="showVisualChart.set(!showVisualChart())">
+              📊 {{ showVisualChart() ? 'Hide Chart' : 'Show Chart' }}
+            </button>
+          </div>
+        </div>
+    <div panelSecondary class="flex gap-m align-center flex-wrap">
+          <h3 class="chart-title">{{ activeChartLabel() }}</h3>
+          @if (activeChart() === 'products') {
+            <div class="v-divider-sm"></div>
+            <div class="toggle-group sub-view-toggles">
+              <button class="btn btn-xs" [class.active]="activeSubChart() === 'default'" (click)="setActiveSubChart('default')">Main</button>
+              <button class="btn btn-xs" [class.active]="activeSubChart() === 'account'" (click)="setActiveSubChart('account')">By Account</button>
+              <button class="btn btn-xs" [class.active]="activeSubChart() === 'type'" (click)="setActiveSubChart('type')">By Type</button>
+              <button class="btn btn-xs" [class.active]="activeSubChart() === 'division'" (click)="setActiveSubChart('division')">By Division</button>
+              <button class="btn btn-xs" [class.active]="activeSubChart() === 'collection'" (click)="setActiveSubChart('collection')">By Collection</button>
+            </div>
+          }
+    </div>
+    @if (showMoreFilters() && activeChart() === 'yoy') {
+      <div panelFilters class="filters-bar filters-bar--collapsible">
+          <div class="toggle-group">
+            <button class="btn btn-sm" [class.active]="salesMetric() === 'revenue'" (click)="setSalesMetric('revenue')">Revenue</button>
+            <button class="btn btn-sm" [class.active]="salesMetric() === 'units'" (click)="setSalesMetric('units')">Units</button>
+          </div>
+          <div class="dropdown-container">
+            <button class="btn btn-sm btn-outline"
+              [attr.aria-haspopup]="'true'"
+              [attr.aria-expanded]="showPivotMonthMenu()"
+              (click)="showPivotMonthMenu.set(!showPivotMonthMenu())">
+              Months ({{ selectedMonths().length }})
+              <span class="dropdown-arrow">▼</span>
+            </button>
+            @if (showPivotMonthMenu()) {
+              <div class="dropdown-menu shadow-premium p-s flex-column gap-xs" role="menu">
+                <label class="checkbox-container dropdown-select-all">
+                  <input type="checkbox" [checked]="selectedMonths().length === 12" (change)="toggleAllMonths()" />
+                  <span class="checkbox-label">Select All</span>
+                </label>
+                @for (m of PIVOT_MONTHS; track m.value) {
+                  <label class="checkbox-container">
+                    <input type="checkbox" [checked]="selectedMonths().includes(m.value)" (change)="togglePivotMonth(m.value)" />
+                    <span class="checkbox-label">{{ m.label }}</span>
+                  </label>
+                }
+              </div>
+            }
+          </div>
+          <!-- <div class="dropdown-container">
+            <button class="btn btn-sm btn-outline"
+              [attr.aria-haspopup]="'true'"
+              [attr.aria-expanded]="showPivotCategoryMenu()"
+              (click)="showPivotCategoryMenu.set(!showPivotCategoryMenu())">
+              Category ({{ pivotSelectedCategories().length || 'All' }})
+              <span class="dropdown-arrow">▼</span>
+            </button>
+            @if (showPivotCategoryMenu()) {
+              <div class="dropdown-menu shadow-premium p-s flex-column gap-xs" role="menu">
+                @for (cat of ['Retail', 'Wholesale']; track cat) {
+                  <label class="checkbox-container">
+                    <input type="checkbox" [checked]="pivotSelectedCategories().includes(cat)" (change)="togglePivotCategory(cat)" />
+                    <span class="checkbox-label">{{ cat }}</span>
+                  </label>
+                }
+              </div>
+            }
+          </div> -->
+          <div class="dropdown-container">
+            <button class="btn btn-sm btn-outline"
+              [attr.aria-haspopup]="'true'"
+              [attr.aria-expanded]="showPivotAccountMenu()"
+              (click)="showPivotAccountMenu.set(!showPivotAccountMenu())">
+              Accounts ({{ pivotSelectedAccounts().length || 'All' }})
+              <span class="dropdown-arrow">▼</span>
+            </button>
+            @if (showPivotAccountMenu()) {
+              <div class="dropdown-menu dropdown-menu-wide shadow-premium p-s flex-column gap-xs" role="menu">
+                @for (acc of pivotAvailableAccounts(); track acc) {
+                  <label class="checkbox-container">
+                    <input type="checkbox" [checked]="pivotSelectedAccounts().includes(acc)" (change)="togglePivotAccount(acc)" />
+                    <span class="checkbox-label">{{ acc | channelDisplay }}</span>
+                  </label>
+                }
+              </div>
+            }
+          </div>
+          <div class="v-divider-sm"></div>
+          <label class="checkbox-container">
+            <input type="checkbox" [ngModel]="pivotShowTrend()" (ngModelChange)="pivotShowTrend.set($event)" />
+            <span class="checkbox-label font-semibold">Show YoY Trend</span>
+          </label>
+          <label class="checkbox-container filters-bar__trailing">
+            <input type="checkbox" [ngModel]="pivotShowTotal()" (ngModelChange)="pivotShowTotal.set($event)" />
+            <span class="checkbox-label font-semibold">Show Grand Total</span>
+          </label>
+        </div>
+      }
+    @if (showMoreFilters() && activeChart() === 'products') {
+      <div panelFilters class="filters-bar filters-bar--collapsible">
+          <div class="dropdown-container">
+            <button
+              class="btn btn-sm btn-outline"
+              type="button"
+              [attr.aria-haspopup]="'true'"
+              [attr.aria-expanded]="showTopViewMenu()"
+              (click)="showTopViewMenu.set(!showTopViewMenu())"
+            >
+              {{ activeTopProductsViewLabel() }}
+              <span class="dropdown-arrow">▼</span>
+            </button>
+            @if (showTopViewMenu()) {
+              <div class="dropdown-menu shadow-premium p-s flex-column gap-xs" role="menu">
+                @for (opt of TOP_PRODUCTS_VIEW_OPTIONS; track opt.key) {
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-ghost text-left"
+                    role="menuitem"
+                    [class.active]="topProductsView() === opt.key"
+                    (click)="setTopProductsView(opt.key)"
+                  >{{ opt.label }}</button>
+                }
+              </div>
+            }
+          </div>
+          <span class="filter-label text-xs font-bold text-uppercase color-subtle">Product Filters:</span>
+          <div class="dropdown-container">
+            <button class="btn btn-sm btn-outline"
+              [attr.aria-haspopup]="'true'"
+              [attr.aria-expanded]="showProductMonthMenu()"
+              (click)="showProductMonthMenu.set(!showProductMonthMenu())">
+              Months ({{ productMonthsFilter().length || 'All' }})
+              <span class="dropdown-arrow">▼</span>
+            </button>
+            @if (showProductMonthMenu()) {
+              <div class="dropdown-menu shadow-premium p-s flex-column gap-xs" role="menu">
+                <label class="checkbox-container dropdown-select-all">
+                  <input type="checkbox" [checked]="productMonthsFilter().length === 12" (change)="toggleAllProductMonths()" />
+                  <span class="checkbox-label">Select All</span>
+                </label>
+                @for (m of PIVOT_MONTHS; track m.value) {
+                  <label class="checkbox-container">
+                    <input type="checkbox" [checked]="productMonthsFilter().includes(m.value)" (change)="toggleProductMonth(m.value)" />
+                    <span class="checkbox-label">{{ m.label }}</span>
+                  </label>
+                }
+              </div>
+            }
+          </div>
+          <div class="dropdown-container">
+            <button class="btn btn-sm btn-outline"
+              [attr.aria-haspopup]="'true'"
+              [attr.aria-expanded]="showTypeFilterMenu()"
+              (click)="showTypeFilterMenu.set(!showTypeFilterMenu())">
+              Types ({{ selectedTypes().length || 'All' }})
+              <span class="dropdown-arrow">▼</span>
+            </button>
+            @if (showTypeFilterMenu()) {
+              <div class="dropdown-menu dropdown-menu-wide shadow-premium p-s flex-column gap-xs dropdown-menu-scroll" role="menu">
+                @for (t of availableTypes(); track t) {
+                  <label class="checkbox-container">
+                    <input type="checkbox" [checked]="selectedTypes().includes(t)" (change)="toggleAttributeFilter('type', t)" />
+                    <span class="checkbox-label">{{ t }}</span>
+                  </label>
+                }
+              </div>
+            }
+          </div>
+          <div class="dropdown-container">
+            <button class="btn btn-sm btn-outline"
+              [attr.aria-haspopup]="'true'"
+              [attr.aria-expanded]="showDivisionFilterMenu()"
+              (click)="showDivisionFilterMenu.set(!showDivisionFilterMenu())">
+              Divisions ({{ selectedDivisions().length || 'All' }})
+              <span class="dropdown-arrow">▼</span>
+            </button>
+            @if (showDivisionFilterMenu()) {
+              <div class="dropdown-menu dropdown-menu-wide shadow-premium p-s flex-column gap-xs dropdown-menu-scroll" role="menu">
+                @for (d of availableDivisions(); track d) {
+                  <label class="checkbox-container">
+                    <input type="checkbox" [checked]="selectedDivisions().includes(d)" (change)="toggleAttributeFilter('division', d)" />
+                    <span class="checkbox-label">{{ d }}</span>
+                  </label>
+                }
+              </div>
+            }
+          </div>
+          <div class="dropdown-container">
+            <button class="btn btn-sm btn-outline"
+              [attr.aria-haspopup]="'true'"
+              [attr.aria-expanded]="showCollectionFilterMenu()"
+              (click)="showCollectionFilterMenu.set(!showCollectionFilterMenu())">
+              Collections ({{ selectedCollections().length || 'All' }})
+              <span class="dropdown-arrow">▼</span>
+            </button>
+            @if (showCollectionFilterMenu()) {
+              <div class="dropdown-menu dropdown-menu-wide shadow-premium p-s flex-column gap-xs dropdown-menu-scroll" role="menu">
+                @for (c of availableCollections(); track c) {
+                  <label class="checkbox-container">
+                    <input type="checkbox" [checked]="selectedCollections().includes(c)" (change)="toggleAttributeFilter('collection', c)" />
+                    <span class="checkbox-label">{{ c }}</span>
+                  </label>
+                }
+              </div>
+            }
+          </div>
+          <div class="dropdown-container">
+            <button class="btn btn-sm btn-outline"
+              [attr.aria-haspopup]="'true'"
+              [attr.aria-expanded]="showYearFilterMenu()"
+              (click)="showYearFilterMenu.set(!showYearFilterMenu())">
+              Years ({{ selectedYears().length || 'All' }})
+              <span class="dropdown-arrow">▼</span>
+            </button>
+            @if (showYearFilterMenu()) {
+              <div class="dropdown-menu shadow-premium p-s flex-column gap-xs" role="menu">
+                @for (y of availableYears(); track y) {
+                  <label class="checkbox-container">
+                    <input type="checkbox" [checked]="selectedYears().includes(y)" (change)="toggleYearFilter(y)" />
+                    <span class="checkbox-label">{{ y }}</span>
+                  </label>
+                }
+              </div>
+            }
+          </div>
+          <div class="dropdown-container">
+            <button class="btn btn-sm btn-outline"
+              [attr.aria-haspopup]="'true'"
+              [attr.aria-expanded]="showProductFilterMenu()"
+              (click)="showProductFilterMenu.set(!showProductFilterMenu())">
+              Products ({{ selectedProducts().length || 'All' }})
+              <span class="dropdown-arrow">▼</span>
+            </button>
+            @if (showProductFilterMenu()) {
+              <div class="dropdown-menu dropdown-menu-wide shadow-premium p-s flex-column gap-xs dropdown-menu-scroll" role="menu">
+                <label class="checkbox-container dropdown-select-all">
+                  <input type="checkbox" [checked]="selectedProducts().length === availableProducts().length && availableProducts().length > 0" (change)="toggleAllProducts()" />
+                  <span class="checkbox-label">Select All</span>
+                </label>
+                @for (p of availableProducts(); track p) {
+                  <label class="checkbox-container">
+                    <input type="checkbox" [checked]="selectedProducts().includes(p)" (change)="toggleProductFilter(p)" />
+                    <span class="checkbox-label text-xs">{{ p }}</span>
+                  </label>
+                }
+              </div>
+            }
+          </div>
+          <div class="dropdown-container">
+            <button class="btn btn-sm btn-outline"
+              [attr.aria-haspopup]="'true'"
+              [attr.aria-expanded]="showTopCountMenu()"
+              (click)="showTopCountMenu.set(!showTopCountMenu())">
+              Top: {{ topProductsCount() === 'all' ? 'All' : topProductsCount() }}
+              <span class="dropdown-arrow">▼</span>
+            </button>
+            @if (showTopCountMenu()) {
+              <div class="dropdown-menu shadow-premium p-s flex-column gap-xs" role="menu">
+                <button class="btn btn-sm btn-ghost text-left" role="menuitem" (click)="topProductsCount.set(5); showTopCountMenu.set(false)">Top 5</button>
+                <button class="btn btn-sm btn-ghost text-left" role="menuitem" (click)="topProductsCount.set(10); showTopCountMenu.set(false)">Top 10</button>
+                <button class="btn btn-sm btn-ghost text-left" role="menuitem" (click)="topProductsCount.set('all'); showTopCountMenu.set(false)">All</button>
+              </div>
+            }
+          </div>
+          <label class="checkbox-container">
+            <input type="checkbox" [ngModel]="hideUnknownCategory()" (ngModelChange)="hideUnknownCategory.set($event)" />
+            <span class="checkbox-label font-semibold">Hide "Unknown"</span>
+          </label>
+          <label class="checkbox-container">
+            <input type="checkbox" [ngModel]="pivotShowPercentages()" (ngModelChange)="pivotShowPercentages.set($event)" />
+            <span class="checkbox-label font-semibold">Show % of Total</span>
+          </label>
+          <div class="v-divider-sm"></div>
+          <label class="checkbox-container">
+            <input type="checkbox" [ngModel]="showStyleName()" (ngModelChange)="toggleStyleName.emit($event)" />
+            <span class="checkbox-label font-semibold">Style Mapping</span>
+          </label>
+        </div>
+      }
+    @if (showVisualChart()) {
+    <div
+      class="chart-wrapper"
+      [class.chart-wrapper--yoy]="activeChart() === 'yoy'"
+      [style.height]="activeChart() === 'yoy' ? yoyChartHeight() : null"
+    >
+      <app-chart [type]="chartConfig().type" [data]="chartConfig().data" [options]="chartConfig().options"></app-chart>
+    </div>
+    }
+  </app-chart-panel>
+  
+  <!-- ANALYTICAL TABLE -->
+  <div class="table-panel flex-column gap-m p-m">
+    <div class="analytical-table-container">
+      @if (activeChart() === 'yoy') {
+        <app-pivot-table
+          [data]="yoyPivotData()"
+          [months]="PIVOT_MONTHS"
+          [selectedMonths]="selectedMonths()"
+          [showTotal]="pivotShowTotal()"
+          [showTrend]="pivotShowTrend()"
+          [grandTotals]="yoyGrandTotals()"
+          [labelFormat]="'account'"
+          [valueType]="salesMetric() === 'revenue' ? 'currency' : 'number'"
+          [format]="salesMetric() === 'revenue' ? '1.2-2' : '1.0-0'"
+        ></app-pivot-table>
+      } @else if (activeChart() === 'products') {
+        <app-pivot-table
+          [data]="topProductsPivotData()"
+          [months]="PIVOT_MONTHS"
+          [selectedMonths]="productMonthsFilter().length ? productMonthsFilter() : [0,1,2,3,4,5,6,7,8,9,10,11]"
+          [showTotal]="true"
+          [showTrend]="compareWithLastYear()"
+          [grandTotals]="tableFooterPivotData()"
+          [valueType]="salesMetric() === 'revenue' ? 'currency' : 'number'"
+        ></app-pivot-table>
+      } @else {
+        <app-data-table
+          [columns]="analyticalColumns()"
+          [data]="aggregatedTableData()"
+          [pageSize]="15"
+          [footer]="tableFooterData()"
+          [defaultSortKey]="tableDefaultSortKey"
+          defaultSortDir="desc"
+          [clickableRows]="isProductTableClickable()"
+          (rowClick)="onProductRowClick($event)"
+        ></app-data-table>
+      }
+    </div>
+  </div>
+  }
+</section>

@@ -1,0 +1,133 @@
+.form-container {
+  background: var(--color-primary, #FFFFFF);
+  border: 1px solid var(--color-accent, #C0C0C0);
+  border-radius: 0.25rem;
+  max-width: 65rem;
+  width: 100%;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.form-header {
+  border-bottom: 2px solid var(--color-secondary, #6A0DAD);
+  padding-bottom: 1rem;
+}
+
+.form-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  color: var(--color-tertiary, #000000);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+.form-subtitle {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85rem;
+  color: #666;
+  margin: 0;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+  gap: 1.5rem;
+}
+
+.form-group label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--color-tertiary, #000000);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.form-group input, 
+.form-group select {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--color-accent, #C0C0C0);
+  border-radius: 0.15rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  background: #fdfdfd;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--color-secondary, #6A0DAD);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(106, 13, 173, 0.05);
+}
+
+.form-group input:disabled,
+.form-group select:disabled {
+  background-color: #f5f5f5;
+  color: #555;
+  cursor: not-allowed;
+  border-color: #e0e0e0;
+}
+
+.select-deco {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236A0DAD' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+
+.form-actions {
+  border-top: 1px solid #eee;
+  padding-top: 1.5rem;
+}
+
+/* Button override for Art Deco Minimalist */
+.btn {
+  padding: 0.85rem 1.75rem;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  border-radius: 0.15rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--color-secondary, #6A0DAD);
+  color: #fff;
+  border: none;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #520a87;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(106, 13, 173, 0.2);
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--color-accent, #C0C0C0);
+  color: var(--color-tertiary, #000000);
+}
+
+.btn-ghost:hover {
+  background: #f8f8f8;
+  border-color: var(--color-tertiary, #000000);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.mt-l { margin-top: 2rem; }
+.mb-l { margin-bottom: 2rem; }
+.gap-xs { gap: 0.5rem; }

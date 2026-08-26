@@ -1,13 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { EnvConfig } from '@core/config/env.config';
 import { HealthService } from './health.service';
-import {
-  shouldUseSupabaseData,
-  shouldUseStaticEntityData,
-} from '@core/auxiliar/supabase-transport.util';
+import { shouldUseSupabaseData } from '@core/auxiliar/supabase-transport.util';
 import { withTimeout } from '@core/auxiliar/promise-timeout.util';
-import { CatalogDataService } from '@core/services/catalog/catalog-data.service';
-import { ReferenceSheetDataService } from '@core/services/Excel/reference-sheet-data.service';
 import { ProductService } from '@core/services/Excel/product.service';
 import { ProfileService } from '@core/services/auth/profile';
 import { AuthService } from '@core/services/auth/auth';
@@ -20,8 +15,6 @@ import { AppBootstrapStateService } from './app-bootstrap-state.service';
 export class AppDataBootstrapService {
   private health = inject(HealthService);
   private env = inject(EnvConfig);
-  private catalog = inject(CatalogDataService);
-  private referenceData = inject(ReferenceSheetDataService);
   private productService = inject(ProductService);
   private profileService = inject(ProfileService);
   private auth = inject(AuthService);
@@ -40,7 +33,6 @@ export class AppDataBootstrapService {
 
   resetCaches(): void {
     this.readyPromise = null;
-    this.referenceData.invalidateCache();
     this.productService.invalidateCache();
     this.profileService.invalidateCache();
   }
@@ -52,16 +44,7 @@ export class AppDataBootstrapService {
     try {
       const taskTimeoutMs = 45_000;
 
-      if (shouldUseStaticEntityData(this.env, this.health)) {
-        await Promise.allSettled([
-          withTimeout(this.referenceData.fetchReferenceData(), taskTimeoutMs, 'reference sheet'),
-        ]);
-        return;
-      }
-
       if (shouldUseSupabaseData(this.env, this.health)) {
-        await withTimeout(this.catalog.loadAll(), taskTimeoutMs, 'catalog');
-        await withTimeout(this.referenceData.fetchReferenceData(), taskTimeoutMs, 'reference sheet');
         await withTimeout(this.productService.ensureLoaded(), taskTimeoutMs, 'products');
 
         if (this.auth.isAuthenticated()) {

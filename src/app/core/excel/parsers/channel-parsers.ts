@@ -1,17 +1,17 @@
 import { parseDecimalLocale } from '@core/auxiliar/excel-parse.utils';
 import { generateGuid } from '@core/auxiliar/guid-utils';
-import { findReferenceByParent } from '@core/auxiliar/reference-lookup.utils';
 import { ISaleRecordDto } from '@core/interfaces/ISaleRecordDto.interface';
-import { SalesParserContext } from '../sales-parser.context';
 
-export function parseGenericSales(jsonData: Record<string, unknown>[], ctx: SalesParserContext): ISaleRecordDto[] {
+export function parseGenericSales(jsonData: Record<string, unknown>[]): ISaleRecordDto[] {
   return jsonData.map((row: Record<string, unknown>, idx: number) => {
-    const rawSku = String(row['sku'] || '').trim();
+    const rawSku = String(row['sku'] || row['SKU'] || '').trim();
     const itemCost = parseDecimalLocale(row['itemCost']);
     const itemQuantity = parseDecimalLocale(row['itemQuantity']);
     const account = String(row['Account'] || row['account'] || 'Generic Account').trim();
     const orderId = String(row['PO#'] || row['orderId'] || '').trim();
-    const brandInFile = String(row['Brand'] || '').trim();
+    const brand = String(row['Brand'] || row['brand'] || '').trim() || 'Unknown';
+    const collection = String(row['Collection'] || row['collection'] || '').trim() || 'None';
+    const styleName = String(row['StyleName'] || row['styleName'] || row['Name'] || '').trim() || rawSku;
 
     const excelMonth =
       row['MONTH'] !== undefined && row['MONTH'] !== null
@@ -43,20 +43,6 @@ export function parseGenericSales(jsonData: Record<string, unknown>[], ctx: Sale
       total = itemCost * itemQuantity;
     }
 
-    let brand = brandInFile || 'Unknown';
-    let collection = 'None';
-
-    if (rawSku) {
-      const parent = rawSku.split('-')[0];
-      const matched = findReferenceByParent(ctx.referenceList, parent);
-      if (matched) {
-        if (!brandInFile || brandInFile === 'Unknown') {
-          brand = matched.brand || 'Unknown';
-        }
-        collection = matched.collection || 'None';
-      }
-    }
-
     let safeUtcDate: Date | null = null;
     if (excelYear && excelMonth) {
       const y = parseInt(excelYear, 10);
@@ -82,6 +68,8 @@ export function parseGenericSales(jsonData: Record<string, unknown>[], ctx: Sale
       total: Number(total.toFixed(2)),
       brand,
       collection,
+      styleName,
+      parent: rawSku,
       auditMonth: excelMonth,
       auditYear: excelYear,
       channel: excelWeek ? `W${excelWeek}` : undefined,

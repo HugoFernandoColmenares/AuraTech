@@ -78,11 +78,7 @@ export class SalesAnalyticsService {
       .map(([sku, quantity]) => {
         const parent = sku.split('-')[0];
         const info = masterProducts.find(p => p.parent.toLowerCase() === parent.toLowerCase());
-        const typeName = info?.type
-          ? typeof info.type === 'string'
-            ? info.type
-            : info.type.name
-          : 'Uncategorized';
+        const typeName = info?.type || 'Uncategorized';
         return { title: sku, category: typeName, quantity };
       })
       .sort((a, b) => b.quantity - a.quantity)

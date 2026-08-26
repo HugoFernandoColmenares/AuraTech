@@ -87,9 +87,9 @@ export class AlertService {
       html: `
         <div style="font-family:'Figtree',sans-serif; text-align:left;">
           <div style="display:flex; gap: 0.5rem; margin-bottom: 1.5rem; justify-content:center;">
-             <button id="btn-color" class="swal-filter-btn active">Color</button>
-             <button id="btn-size" class="swal-filter-btn">Size</button>
-             <button id="btn-sc" class="swal-filter-btn">Size & Color</button>
+             <button id="btn-color" class="swal-filter-btn active">Account</button>
+             <button id="btn-size" class="swal-filter-btn">Brand</button>
+             <button id="btn-sc" class="swal-filter-btn">Collection</button>
           </div>
           <div id="breakdown-content" style="max-height: 350px; overflow-y: auto; padding-right: 0.5rem;">
             <ul style="list-style:none; padding:0; margin:0;">${list(byColor)}</ul>

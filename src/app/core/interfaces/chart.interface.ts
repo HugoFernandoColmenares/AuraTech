@@ -15,7 +15,7 @@ export type ViewMode = 'table' | 'charts' | 'insights';
 
 export type Granularity = 'week' | 'month' | 'year';
 
-export type ProductGrouping = 'sku' | 'parent' | 'parent-color' | 'parent-size' | 'brand' | 'brand-color' | 'brand-size' | 'collection' | 'collection-color' | 'collection-size' | 'type' | 'division';
+export type ProductGrouping = 'sku' | 'parent' | 'brand' | 'collection' | 'account' | 'category' | 'type' | 'division';
 
 export type ChartKey = 'monthly' | 'warehouse' | 'account' | 'units' | 'state' | 'products' | 'comparison' | 'category' | 'channel' | 'yoy' | 'macro' | 'brand' | 'collection' | 'type' | 'division';
 

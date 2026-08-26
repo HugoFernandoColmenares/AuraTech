@@ -11,7 +11,6 @@ import { ChartKey } from '@core/interfaces/chart.interface';
 import { ISaleRecordView } from '@core/interfaces/ISaleRecordDto.interface';
 import { comparePeriods } from '@core/auxiliar/data-aggregation.helper';
 import { getProductGroupingKey } from '@core/auxiliar/chart-keys.helper';
-import { parseSkuParts } from '@core/auxiliar/sku.utils';
 import { DateUtils } from '@core/auxiliar/date.utils';
 import { ChannelDisplayPipe } from '@core/pipes/channel-display.pipe';
 import { AlertService } from '@core/services/Utils/alert.service';
@@ -46,7 +45,6 @@ export class SalesAnalyticsComponent {
   // Data inputs from parent
   filteredData = input<any[]>([]);
   salesData = input<any[]>([]);
-  referenceData = input<any[]>([]);
   salesFilters = input<any>({});
 
   totalRevenue = input<number>(0);
@@ -157,9 +155,9 @@ export class SalesAnalyticsComponent {
 
   readonly TOP_PRODUCTS_VIEW_OPTIONS: { key: TopProductsView; label: string }[] = [
     { key: 'products', label: 'Top Products' },
-    { key: 'type', label: 'Top Type' },
+    { key: 'type', label: 'Top Brand' },
     { key: 'collection', label: 'Top Collection' },
-    { key: 'division', label: 'Top Division' },
+    { key: 'division', label: 'Top Category' },
   ];
 
   readonly tableDefaultSortKey = 'current';
@@ -186,8 +184,8 @@ export class SalesAnalyticsComponent {
 
   readonly PIVOT_MONTHS = PIVOT_MONTHS;
   readonly PIVOT_CATEGORIES: Record<string, string[]> = {
-    Retail: ['Amazon Dropship', 'Amazon RP', 'Retail', 'RFM'],
-    Wholesale: ['FG', 'Faire', 'WHOLESALES']
+    Retail: ['Direct', 'Outlet', 'Retail'],
+    Wholesale: ['Partner', 'Wholesale']
   };
 
   hasData = computed(() => this.salesData().length > 0);
@@ -198,8 +196,8 @@ export class SalesAnalyticsComponent {
     }
     if (this.activeSubChart() === 'account') return 'Sales by Account';
     if (this.activeSubChart() === 'category') return 'Sales by Category';
-    if (this.activeSubChart() === 'type') return 'Sales by Type';
-    if (this.activeSubChart() === 'division') return 'Sales by Division';
+    if (this.activeSubChart() === 'type') return 'Sales by Brand';
+    if (this.activeSubChart() === 'division') return 'Sales by Category';
     if (this.activeSubChart() === 'collection') return 'Sales by Collection';
     return this.chartConfigs.find(c => c.key === this.activeChart())?.label ?? '';
   });
@@ -271,54 +269,19 @@ export class SalesAnalyticsComponent {
     return data as ISaleRecordView[];
   });
 
-  referenceByParent = computed(() => {
-    const refData = this.referenceData();
-    return new Map(refData.map(item => [item.parent.toLowerCase(), item]));
-  });
-
-  styleNameByParent = computed(() => {
-    const refData = this.referenceData();
-    return new Map(refData.map(item => [item.parent.toLowerCase(), item.styleName]));
-  });
-
-  /** Parents present in the current pivot scope for attribute filters. */
-  private scopedParentKeys = computed(() => {
-    const keys = new Set<string>();
-    this.pivotFilteredRows().forEach(r => {
-      keys.add(parseSkuParts(r.sku).parent.toLowerCase());
-    });
-    return keys;
-  });
-
-  availableTypes = computed(() => {
-    const parents = this.scopedParentKeys();
+  uniqueSaleValues(field: 'brand' | 'category' | 'collection'): string[] {
     return [...new Set(
-      this.referenceData()
-        .filter(r => parents.has(r.parent.toLowerCase()))
-        .map(r => r.type)
+      this.pivotFilteredRows()
+        .map(r => String(r[field] ?? '').trim())
         .filter(Boolean)
     )].sort();
-  });
+  }
 
-  availableDivisions = computed(() => {
-    const parents = this.scopedParentKeys();
-    return [...new Set(
-      this.referenceData()
-        .filter(r => parents.has(r.parent.toLowerCase()))
-        .map(r => r.div)
-        .filter(Boolean)
-    )].sort();
-  });
+  availableTypes = computed(() => this.uniqueSaleValues('brand'));
 
-  availableCollections = computed(() => {
-    const parents = this.scopedParentKeys();
-    return [...new Set(
-      this.referenceData()
-        .filter(r => parents.has(r.parent.toLowerCase()))
-        .map(r => r.collection)
-        .filter(Boolean)
-    )].sort();
-  });
+  availableDivisions = computed(() => this.uniqueSaleValues('category'));
+
+  availableCollections = computed(() => this.uniqueSaleValues('collection'));
 
   activeTopProductsViewLabel = computed(() =>
     this.TOP_PRODUCTS_VIEW_OPTIONS.find(o => o.key === this.topProductsView())?.label ?? 'Top Products'
@@ -461,10 +424,9 @@ export class SalesAnalyticsComponent {
     }
     if (!data.length) return [];
 
-    const refData = this.referenceData();
     const products = new Set<string>();
     data.forEach(r => {
-      products.add(getProductGroupingKey(r, 'parent', refData, this.showStyleName()));
+      products.add(getProductGroupingKey(r, 'parent', this.showStyleName()));
     });
     return Array.from(products).sort();
   });
@@ -485,7 +447,6 @@ export class SalesAnalyticsComponent {
     const selTypes = this.selectedTypes();
     const selDivs = this.selectedDivisions();
     const selColls = this.selectedCollections();
-    const refByParent = this.referenceByParent();
 
     if (selYears.length > 0) {
       views = views.filter(r => r.auditYear && selYears.includes(Number(r.auditYear)));
@@ -499,22 +460,20 @@ export class SalesAnalyticsComponent {
     if (hideUnknown) {
       views = views.filter(r => r.category && r.category.toLowerCase() !== 'unknown');
     }
-    if (selTypes.length > 0 || selDivs.length > 0 || selColls.length > 0) {
-      views = views.filter(r => {
-        const ref = refByParent.get(parseSkuParts(r.sku).parent.toLowerCase());
-        if (!ref) return false;
-        if (selTypes.length > 0 && !selTypes.includes(ref.type)) return false;
-        if (selDivs.length > 0 && !selDivs.includes(ref.div)) return false;
-        if (selColls.length > 0 && !selColls.includes(ref.collection)) return false;
-        return true;
-      });
+    if (selTypes.length > 0) {
+      views = views.filter(r => selTypes.includes(r.brand || ''));
+    }
+    if (selDivs.length > 0) {
+      views = views.filter(r => selDivs.includes(r.category || ''));
+    }
+    if (selColls.length > 0) {
+      views = views.filter(r => selColls.includes(r.collection || ''));
     }
     if (selProds.length > 0) {
-      const refData = this.referenceData();
       const grouping = this.productGroupingKey();
       const prodSet = new Set(selProds);
       views = views.filter(r =>
-        prodSet.has(getProductGroupingKey(r, grouping, refData, this.showStyleName()))
+        prodSet.has(getProductGroupingKey(r, grouping, this.showStyleName()))
       );
     }
     return views;
@@ -590,7 +549,6 @@ export class SalesAnalyticsComponent {
 
     const views = this.productsScopedViews();
     const metric = this.salesMetric();
-    const refData = this.referenceData();
     const grouping = this.productGroupingKey();
     const yearsMap = new Map<number, Map<string, number[]>>();
 
@@ -599,7 +557,7 @@ export class SalesAnalyticsComponent {
       const month = Number(v.auditMonth) - 1;
       if (isNaN(year) || isNaN(month) || month < 0 || month > 11) return;
 
-      const label = getProductGroupingKey(v, grouping, refData, this.showStyleName());
+      const label = getProductGroupingKey(v, grouping, this.showStyleName());
       const val = metric === 'revenue' ? v.total : v.itemQuantity;
 
       if (!yearsMap.has(year)) yearsMap.set(year, new Map());
@@ -875,25 +833,25 @@ export class SalesAnalyticsComponent {
   onProductRowClick(row: TopProductsTableData): void {
     if (!this.isProductTableClickable()) return;
 
-    const refData = this.referenceData();
     const rows = this.productsScopedViews().filter(
-      r => getProductGroupingKey(r, 'parent', refData, this.showStyleName()) === row.name
+      r => getProductGroupingKey(r, 'parent', this.showStyleName()) === row.name
     );
     if (!rows.length) {
       this.alertService.info(row.name, 'No unit breakdown available for this product.');
       return;
     }
 
-    const byColor = new Map<string, number>();
-    const bySize = new Map<string, number>();
-    const bySizeColor = new Map<string, number>();
+    const byAccount = new Map<string, number>();
+    const byBrand = new Map<string, number>();
+    const byCollection = new Map<string, number>();
 
     rows.forEach(r => {
-      const { color, size } = parseSkuParts(r.sku);
-      byColor.set(color, (byColor.get(color) ?? 0) + r.itemQuantity);
-      bySize.set(size, (bySize.get(size) ?? 0) + r.itemQuantity);
-      const scKey = `${size} / ${color}`;
-      bySizeColor.set(scKey, (bySizeColor.get(scKey) ?? 0) + r.itemQuantity);
+      const account = r.account || 'Unknown';
+      const brand = r.brand || 'Unknown';
+      const collection = r.collection || 'None';
+      byAccount.set(account, (byAccount.get(account) ?? 0) + r.itemQuantity);
+      byBrand.set(brand, (byBrand.get(brand) ?? 0) + r.itemQuantity);
+      byCollection.set(collection, (byCollection.get(collection) ?? 0) + r.itemQuantity);
     });
 
     const toSortedList = (map: Map<string, number>) =>
@@ -903,9 +861,9 @@ export class SalesAnalyticsComponent {
 
     this.alertService.productUnitsBreakdown(
       row.name,
-      toSortedList(byColor),
-      toSortedList(bySize),
-      toSortedList(bySizeColor)
+      toSortedList(byAccount),
+      toSortedList(byBrand),
+      toSortedList(byCollection)
     );
   }
 

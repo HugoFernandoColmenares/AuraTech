@@ -7,7 +7,6 @@ import { SalesProcessingService } from '@core/services/Excel/sales-processing.se
 import { LoadingService } from '@core/services/Utils/loading.service';
 import { AlertService } from '@core/services/Utils/alert.service';
 import { DateUtils } from '@core/auxiliar/date.utils';
-import { ReferenceSheetDataService } from '@core/services/Excel/reference-sheet-data.service';
 import { ViewMode } from '@core/interfaces/chart.interface';
 import { SalesFileHandlerService } from '@core/services/Excel/sales-file-handler.service';
 import { BulkSyncService } from '@core/services/Utils/bulk-sync.service';
@@ -61,7 +60,6 @@ export class SalesReportComponent implements OnInit {
   salesProcessor = inject(SalesProcessingService);
   loadingService = inject(LoadingService);
   alertService = inject(AlertService);
-  referenceDataService = inject(ReferenceSheetDataService);
   fileHandler = inject(SalesFileHandlerService);
   salesApi = inject(SaleRecordsApiService);
   dataExport = inject(DataExportService);
@@ -156,7 +154,6 @@ export class SalesReportComponent implements OnInit {
   // Extracted signals for children
   filteredData = this.salesProcessor.filteredData;
   salesData = computed(() => this.salesProcessor.getSalesData());
-  referenceData = computed(() => this.referenceDataService.getReferenceData()());
   salesFilters = computed(() => this.salesProcessor.getFilters());
 
   totalRevenue = this.salesProcessor.totalRevenue;
@@ -262,7 +259,6 @@ export class SalesReportComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    void this.referenceDataService.fetchReferenceData();
     void this.loadInitialSales();
   }
 

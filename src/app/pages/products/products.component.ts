@@ -12,7 +12,6 @@ import { LoadingService } from '@core/services/Utils/loading.service';
 import { BulkSyncService } from '@core/services/Utils/bulk-sync.service';
 import { RolePermissionService } from '@core/services/auth/role-permission.service';
 import { AppStartupService } from '@core/services/bootstrap/app-startup.service';
-import { resolveCatalogItemId } from '@core/auxiliar/product-catalog.util';
 import { DataExportService } from '@core/services/Utils/data-export.service';
 
 @Component({
@@ -34,15 +33,8 @@ export class ProductsComponent implements OnInit {
   private appStartup = inject(AppStartupService);
   private dataExport = inject(DataExportService);
 
-  // Exponer señales del servicio
   products = this.productService.products;
-  brands = this.productService.brands;
-  divisions = this.productService.divisions;
-  types = this.productService.types;
-  collections = this.productService.collections;
-  fits = this.productService.fits;
 
-  // Estado local para UI
   isEditing = signal(false);
   editingId = signal<string | null>(null);
   showForm = signal(false);
@@ -58,51 +50,42 @@ export class ProductsComponent implements OnInit {
   columns: TableColumn[] = [
     { key: 'parent', label: 'Parent', cssClass: 'mono' },
     { key: 'styleName', label: 'Style' },
-    { key: 'brandName', label: 'Brand' },
-    { key: 'divisionName', label: 'Division' },
-    { key: 'typeName', label: 'Type' },
-    { key: 'collectionName', label: 'Collection' },
+    { key: 'brand', label: 'Brand' },
+    { key: 'type', label: 'Type' },
+    { key: 'collection', label: 'Collection' },
     { key: 'actions', label: 'Actions', type: 'action' }
   ];
 
-  // Formulario
   productForm = this.fb.group({
     parent: ['', [Validators.required]],
     styleName: ['', [Validators.required]],
-    brand: [null as unknown, [Validators.required]],
-    division: [null as unknown, [Validators.required]],
-    type: [null as unknown, [Validators.required]],
-    collection: [null as unknown, [Validators.required]],
-    fit: [null as unknown]
+    brand: ['', [Validators.required]],
+    type: [''],
+    collection: ['']
   });
 
-  // Datos filtrados
+  uniqueBrands = computed(() =>
+    [...new Set(this.products().filter(p => p.isActive).map(p => p.brand).filter(Boolean))].sort()
+  );
+
   filteredProducts = computed(() => {
     const search = this.searchFilter().toLowerCase();
-    const brandId = this.brandFilter();
+    const brand = this.brandFilter();
 
     return this.products().filter(p => {
       if (!p.isActive) return false;
 
-      const matchesSearch = p.parent.toLowerCase().includes(search) ||
-        p.styleName.toLowerCase().includes(search);
-      
-      const pBrandId = resolveCatalogItemId(p.brand, this.brands());
-      const matchesBrand = brandId === '' || pBrandId === brandId;
+      const matchesSearch =
+        p.parent.toLowerCase().includes(search) ||
+        p.styleName.toLowerCase().includes(search) ||
+        p.sku.toLowerCase().includes(search);
 
+      const matchesBrand = brand === '' || p.brand === brand;
       return matchesSearch && matchesBrand;
     });
   });
 
-  tableData = computed(() => {
-    return this.filteredProducts().map(p => ({
-      ...p,
-      brandName: this.catalogLabel(p.brand),
-      divisionName: this.catalogLabel(p.division),
-      typeName: this.catalogLabel(p.type),
-      collectionName: this.catalogLabel(p.collection),
-    })) as unknown as Record<string, unknown>[];
-  });
+  tableData = computed(() => this.filteredProducts() as unknown as Record<string, unknown>[]);
 
   ngOnInit(): void {
     void this.initProducts();
@@ -127,7 +110,7 @@ export class ProductsComponent implements OnInit {
   }
 
   resetForm() {
-    this.productForm.reset();
+    this.productForm.reset({ parent: '', styleName: '', brand: '', type: '', collection: '' });
     this.isEditing.set(false);
     this.editingId.set(null);
   }
@@ -145,10 +128,8 @@ export class ProductsComponent implements OnInit {
       parent: product.parent,
       styleName: product.styleName,
       brand: product.brand,
-      division: product.division,
       type: product.type,
-      collection: product.collection,
-      fit: product.fit
+      collection: product.collection
     });
   }
 
@@ -172,11 +153,9 @@ export class ProductsComponent implements OnInit {
       sku: formValue.parent!,
       parent: formValue.parent!,
       styleName: formValue.styleName!,
-      brand: formValue.brand as any, // Internal cast to keep it simple with existing service
-      division: formValue.division as any,
-      type: formValue.type as any,
-      collection: formValue.collection as any,
-      fit: formValue.fit as any
+      brand: formValue.brand || '',
+      type: formValue.type || '',
+      collection: formValue.collection || ''
     };
 
     if (this.isEditing()) {
@@ -252,64 +231,15 @@ export class ProductsComponent implements OnInit {
     }
   }
 
-  // Métodos para catálogos dinámicos
-  async addNewItem(catalogType: string) {
-    if (!this.rolePermissions.can('create')) {
-      this.alertService.error('Access denied', 'You do not have permission to modify catalogs.');
-      return;
-    }
-
-    const { value: name } = await this.alertService.Swal.fire({
-      title: `Add new ${catalogType}`,
-      input: 'text',
-      inputLabel: 'Name',
-      showCancelButton: true,
-      confirmButtonColor: '#0f766e',
-      inputValidator: (value: string) => {
-        if (!value) return 'You must enter a name!';
-        return null;
-      }
-    });
-
-    if (name) {
-      let newItem;
-      switch (catalogType) {
-        case 'Brand': newItem = await this.productService.addBrand(name); break;
-        case 'Division': newItem = await this.productService.addDivision(name); break;
-        case 'Type': newItem = this.productService.addType(name); break;
-        case 'Collection': newItem = await this.productService.addCollection(name); break;
-        case 'Fit': newItem = this.productService.addFit(name); break;
-      }
-
-      if (newItem) {
-        const patch: Record<string, unknown> = {};
-        patch[catalogType.toLowerCase()] = newItem;
-        this.productForm.patchValue(patch);
-      }
-    }
-  }
-
-  compareById(o1: {id: string} | null, o2: {id: string} | null): boolean {
-    return o1 && o2 ? o1.id === o2.id : o1 === o2;
-  }
-
-  private catalogLabel(value: string | { name?: string } | null | undefined): string {
-    if (!value) return '—';
-    if (typeof value === 'string') return value.trim() || '—';
-    return value.name?.trim() || '—';
-  }
-
   async exportTableToExcel(): Promise<void> {
     await this.dataExport.exportFromDatabase({
       fetch: () => this.productsApi.fetchAll(5000),
       mapRow: row => ({
         parent: row.parent,
         styleName: row.styleName,
-        brand: this.catalogLabel(row.brand),
-        division: this.catalogLabel(row.division),
-        type: this.catalogLabel(row.type),
-        collection: this.catalogLabel(row.collection),
-        fit: this.catalogLabel(row.fit),
+        brand: row.brand,
+        type: row.type,
+        collection: row.collection,
       }),
       sheetName: 'Catalog',
       filePrefix: 'auratech_catalog_export',
@@ -324,14 +254,7 @@ export class ProductsComponent implements OnInit {
     }
     await this.bulkSync.exportLocalRecords({
       records: this.products(),
-      upload: rows =>
-        this.productsApi.bulkUploadWithCatalog(rows, {
-          brands: this.brands(),
-          divisions: this.divisions(),
-          types: this.types(),
-          collections: this.collections(),
-          fits: this.fits(),
-        }),
+      upload: rows => this.productsApi.bulkUpload(rows),
       entityLabel: 'products',
       emptyMessage: 'There are no new products to export.',
       onSuccess: () => void this.productService.reloadFromApi(),

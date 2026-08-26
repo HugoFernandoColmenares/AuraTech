@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import { ChartJsConfig, ChartKey, Granularity, ProductGrouping } from '@core/interfaces/chart.interface';
 import { ChartGeneratorService, GLOBAL_CHART_COLORS } from '@core/services/Utils/chart-generator.service';
 import { SalesProcessingService } from '@core/services/Excel/sales-processing.service';
-import { ReferenceSheetDataService } from '@core/services/Excel/reference-sheet-data.service';
 import { ISaleRecordView } from '@core/interfaces/ISaleRecordDto.interface';
 import { comparePeriods, groupAndSum } from '@core/auxiliar/data-aggregation.helper';
 import { getProductGroupingKey, getTimePeriodKey } from '@core/auxiliar/chart-keys.helper';
@@ -43,7 +42,6 @@ export interface TopProductsTableData {
 export class SalesChartBuilderService {
   private chartGenerator = inject(ChartGeneratorService);
   private salesProcessor = inject(SalesProcessingService);
-  private referenceDataService = inject(ReferenceSheetDataService);
 
   buildChart(state: ChartBuilderState): ChartJsConfig {
     if (!state.hasData) return { type: 'line', data: {}, options: {} };
@@ -89,10 +87,9 @@ export class SalesChartBuilderService {
             );
           }
 
-          const refData = this.referenceDataService.getReferenceData()();
           const grouped = groupAndSum(
             state.allRowViews,
-            r => getProductGroupingKey(r, state.productGrouping, refData, !!state.showStyleName),
+            r => getProductGroupingKey(r, state.productGrouping, !!state.showStyleName),
             r => metric === 'revenue' ? r.total : r.itemQuantity
           );
 
@@ -153,10 +150,9 @@ export class SalesChartBuilderService {
             );
           }
 
-          const refData = this.referenceDataService.getReferenceData()();
           const grouped = groupAndSum(
             state.allRowViews,
-            r => getProductGroupingKey(r, state.key, refData, false),
+            r => getProductGroupingKey(r, state.key, false),
             r => metric === 'revenue' ? r.total : r.itemQuantity
           );
           const sorted = grouped.sort((a, b) => b.total - a.total);
@@ -256,24 +252,23 @@ export class SalesChartBuilderService {
     grouping: string = 'parent',
     metric: 'revenue' | 'units' = 'revenue'
   ): TopProductsTableData[] {
-    const refData = this.referenceDataService.getReferenceData()();
     const valueFn = (r: ISaleRecordView) => (metric === 'revenue' ? r.total : r.itemQuantity);
 
     const data = comparePeriods(
       current, ly,
-      r => getProductGroupingKey(r, grouping, refData, useStyleName),
+      r => getProductGroupingKey(r, grouping, useStyleName),
       valueFn
     );
 
     const unitsMap = new Map<string, number>();
     current.forEach(r => {
-      const k = getProductGroupingKey(r, grouping, refData, useStyleName);
+      const k = getProductGroupingKey(r, grouping, useStyleName);
       unitsMap.set(k, (unitsMap.get(k) || 0) + r.itemQuantity);
     });
 
     const revenueMap = new Map<string, number>();
     current.forEach(r => {
-      const k = getProductGroupingKey(r, grouping, refData, useStyleName);
+      const k = getProductGroupingKey(r, grouping, useStyleName);
       revenueMap.set(k, (revenueMap.get(k) || 0) + r.total);
     });
 

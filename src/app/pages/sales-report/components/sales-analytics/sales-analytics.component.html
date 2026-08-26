@@ -192,8 +192,8 @@
             <div class="toggle-group sub-view-toggles">
               <button class="btn btn-xs" [class.active]="activeSubChart() === 'default'" (click)="setActiveSubChart('default')">Main</button>
               <button class="btn btn-xs" [class.active]="activeSubChart() === 'account'" (click)="setActiveSubChart('account')">By Account</button>
-              <button class="btn btn-xs" [class.active]="activeSubChart() === 'type'" (click)="setActiveSubChart('type')">By Type</button>
-              <button class="btn btn-xs" [class.active]="activeSubChart() === 'division'" (click)="setActiveSubChart('division')">By Division</button>
+              <button class="btn btn-xs" [class.active]="activeSubChart() === 'type'" (click)="setActiveSubChart('type')">By Brand</button>
+              <button class="btn btn-xs" [class.active]="activeSubChart() === 'division'" (click)="setActiveSubChart('division')">By Category</button>
               <button class="btn btn-xs" [class.active]="activeSubChart() === 'collection'" (click)="setActiveSubChart('collection')">By Collection</button>
             </div>
           }
@@ -332,7 +332,7 @@
               [attr.aria-haspopup]="'true'"
               [attr.aria-expanded]="showTypeFilterMenu()"
               (click)="showTypeFilterMenu.set(!showTypeFilterMenu())">
-              Types ({{ selectedTypes().length || 'All' }})
+              Brands ({{ selectedTypes().length || 'All' }})
               <span class="dropdown-arrow">▼</span>
             </button>
             @if (showTypeFilterMenu()) {
@@ -351,7 +351,7 @@
               [attr.aria-haspopup]="'true'"
               [attr.aria-expanded]="showDivisionFilterMenu()"
               (click)="showDivisionFilterMenu.set(!showDivisionFilterMenu())">
-              Divisions ({{ selectedDivisions().length || 'All' }})
+              Categories ({{ selectedDivisions().length || 'All' }})
               <span class="dropdown-arrow">▼</span>
             </button>
             @if (showDivisionFilterMenu()) {

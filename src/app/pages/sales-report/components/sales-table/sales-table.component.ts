@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { DataTableComponent, TableColumn } from '@shared/components/data-table/data-table.component';
 import { TableHeaderActionsComponent } from '@shared/components/table-header-actions/table-header-actions.component';
 import { generateSalesTableColumns } from '@core/data/sales-table-columns';
-import { buildStyleNameMap, enrichSaleRowWithSku } from '@core/auxiliar/reference-lookup.utils';
+import { ISaleRecordView } from '@core/interfaces/ISaleRecordDto.interface';
 
 @Component({
   selector: 'app-sales-table',
@@ -19,7 +19,6 @@ export class SalesTableComponent {
   filteredRows = input<unknown[]>([]);
   serverSide = input<boolean>(false);
   page = input<number>(1);
-  referenceData = input<{ parent: string; styleName: string }[]>([]);
 
   showStyleName = input<boolean>(false);
   toggleStyleName = output<boolean>();
@@ -41,21 +40,24 @@ export class SalesTableComponent {
 
   showAccount = signal<boolean>(true);
   showCost = signal<boolean>(false);
-  isSkuSplit = signal<boolean>(false);
 
   columns = computed<TableColumn[]>(() =>
     generateSalesTableColumns({
       showAccount: this.showAccount(),
       showCost: this.showCost(),
-      isSkuSplit: this.isSkuSplit(),
       showStyleName: this.showStyleName(),
     })
   );
 
-  tableData = computed(() => {
-    const styleNameMap = buildStyleNameMap(this.referenceData());
-    return this.filteredRows().map(r => enrichSaleRowWithSku(r as { sku: string }, styleNameMap));
-  });
+  tableData = computed(() =>
+    this.filteredRows().map(r => {
+      const row = r as ISaleRecordView;
+      return {
+        ...row,
+        fullStyleName: row.styleName || row.sku,
+      };
+    })
+  );
 
   onPageChange(page: number): void {
     if (this.serverSide()) {

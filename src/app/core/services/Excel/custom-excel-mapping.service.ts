@@ -1,15 +1,12 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { parseCurrency, parseInteger } from '@core/auxiliar/excel-parse.utils';
 import { generateGuid } from '@core/auxiliar/guid-utils';
-import { lookupBrandCollection } from '@core/auxiliar/reference-lookup.utils';
-import { IReferenceSheetDto } from '@core/interfaces/IReferenceSheetDto.interface';
 import { ISaleRecordDto } from '@core/interfaces/ISaleRecordDto.interface';
 import {
   IExcelMappingDto,
   ISaleRecordMappingProperties,
 } from '@core/interfaces/IExcelMappingDto.interface';
 import { ExcelMappingsApiService } from '@core/services/api/excel-mappings-api.service';
-import { ReferenceSheetApiService } from '@core/services/api/reference-sheet-api.service';
 
 /**
  * Descriptor of an {@link ISaleRecordDto} property that can be mapped from an
@@ -44,22 +41,15 @@ export const SALE_MAPPING_FIELDS: readonly SaleMappingField[] = [
 @Injectable({ providedIn: 'root' })
 export class CustomExcelMappingService {
   private readonly mappingsApi = inject(ExcelMappingsApiService);
-  private readonly referenceApi = inject(ReferenceSheetApiService);
 
   private readonly templates = signal<IExcelMappingDto[]>([]);
   readonly templateList = computed(() => this.templates());
 
-  private referenceList: IReferenceSheetDto[] = [];
-
-  /** Loads saved templates (and reference data for brand/collection cross-ref). */
+  /** Loads saved mapping templates. */
   async loadTemplates(): Promise<void> {
     try {
-      const [templates, references] = await Promise.all([
-        this.mappingsApi.ensureListCache(),
-        this.referenceApi.ensureListCache(),
-      ]);
+      const templates = await this.mappingsApi.ensureListCache();
       this.templates.set([...templates]);
-      this.referenceList = references ?? [];
     } catch {
       this.templates.set([]);
     }
@@ -127,10 +117,9 @@ export class CustomExcelMappingService {
    */
   applyTemplate(rows: Record<string, unknown>[], template: IExcelMappingDto): ISaleRecordDto[] {
     const map = template.propertiesMap;
-    const refList = this.referenceList;
 
     return rows
-      .map((row, idx) => this.mapRow(row, map, template, idx, refList))
+      .map((row, idx) => this.mapRow(row, map, template, idx))
       .filter(r => r.orderId && r.sku);
   }
 
@@ -147,8 +136,7 @@ export class CustomExcelMappingService {
     row: Record<string, unknown>,
     map: ISaleRecordMappingProperties,
     template: IExcelMappingDto,
-    idx: number,
-    refList: IReferenceSheetDto[]
+    idx: number
   ): ISaleRecordDto {
     const read = (key: keyof ISaleRecordMappingProperties): unknown =>
       row[(map[key] ?? '').trim()] ?? '';
@@ -161,8 +149,8 @@ export class CustomExcelMappingService {
     const derivedItemCost = itemCost !== 0 ? itemCost : itemQuantity !== 0 ? total / itemQuantity : 0;
 
     const { orderPlaceDate, auditMonth, auditYear } = this.resolveDates(row, map, template);
-
-    const { brand, collection } = lookupBrandCollection(sku, refList);
+    const brand = String(row['Brand'] ?? row['brand'] ?? '').trim() || 'Unknown';
+    const collection = String(row['Collection'] ?? row['collection'] ?? '').trim() || 'None';
     const id = `CUST-${idx}-${generateGuid()}`;
 
     return {
@@ -184,6 +172,8 @@ export class CustomExcelMappingService {
       orderPlaceDate,
       brand,
       collection,
+      styleName: sku,
+      parent: sku,
     } satisfies ISaleRecordDto;
   }
 

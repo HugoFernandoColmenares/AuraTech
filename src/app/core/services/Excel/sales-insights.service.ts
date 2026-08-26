@@ -109,7 +109,7 @@ export class SalesInsightsService {
       };
 
       const topProductInfo = getProductInfo(products[0].title);
-      const topTypeName = topProductInfo?.type ? (typeof topProductInfo.type === 'string' ? topProductInfo.type : topProductInfo.type.name) : '';
+      const topTypeName = topProductInfo?.type || '';
       const topProductDisplay = topProductInfo 
         ? `${topTypeName} (${topProductInfo.parent})`
         : products[0].title;
@@ -124,7 +124,7 @@ export class SalesInsightsService {
       const categoryMap = new Map<string, number>();
       products.forEach(p => {
         const info = getProductInfo(p.title);
-        const cat = info?.type ? (typeof info.type === 'string' ? info.type : info.type.name) : 'Uncategorized';
+        const cat = info?.type || 'Uncategorized';
         categoryMap.set(cat, (categoryMap.get(cat) ?? 0) + p.quantity);
       });
 

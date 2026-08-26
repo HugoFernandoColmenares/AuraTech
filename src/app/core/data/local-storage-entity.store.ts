@@ -2,7 +2,7 @@ import { SupabaseTableKey } from '@core/constants/supabase-tables.const';
 import { buildDemoProducts, buildDemoSaleRecords } from '@core/data/demo-seed.data';
 
 const STORAGE_PREFIX = 'auratech.ls.';
-const SEED_FLAG = 'auratech.ls.seeded.v2';
+const SEED_FLAG = 'auratech.ls.seeded.v3';
 
 function reviveDates<T extends object>(row: T): T {
   const record = row as T & { orderPlaceDate?: string | Date | null; createdAt?: string | Date; updatedAt?: string | Date };

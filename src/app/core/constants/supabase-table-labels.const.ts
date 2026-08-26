@@ -5,16 +5,8 @@ export const SUPABASE_TABLE_LABELS: Record<SupabaseTableKey, string> = {
   profiles: 'profiles',
   userRoles: 'user roles',
   saleRecords: 'sales records',
-  referenceSheets: 'reference sheet',
   excelMappings: 'excel mappings',
   products: 'products',
-  brands: 'brands',
-  divisionClothes: 'divisions',
-  typeClothes: 'product types',
-  collectionClothes: 'collections',
-  fitClothes: 'fits',
-  sizeClothes: 'sizes',
-  colorsClothes: 'colors',
 };
 
 export function supabaseTableLabel(tableKey: SupabaseTableKey): string {

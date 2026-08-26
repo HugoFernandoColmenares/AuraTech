@@ -12,21 +12,18 @@ export interface ISaleRecordDto {
   itemCost: number;
   itemQuantity: number;
   total: number;
-  brand?: string;       // Brand crossed from Reference Sheet
-  collection?: string;  // Collection crossed from Reference Sheet
-  isLocal?: boolean;    // Flag to identify records not yet in DB
+  brand?: string;
+  collection?: string;
+  styleName?: string;
+  parent?: string;
+  isLocal?: boolean;
   auditMonth?: number | string;
   auditYear?: number | string;
 }
 
 export type StoreType = 'generic-sales-report' | 'custom-excel';
 
-export interface ISaleRecordView extends ISaleRecordDto {
-  parent?: string;
-  color?: string;
-  size?: string;
-  styleName?: string;
-}
+export interface ISaleRecordView extends ISaleRecordDto {}
 export type InsightSeverity = 'positive' | 'warning' | 'neutral' | 'info';
 
 export interface InsightItem {

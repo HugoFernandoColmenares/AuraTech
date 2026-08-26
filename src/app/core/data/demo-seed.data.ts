@@ -48,6 +48,8 @@ export function buildDemoSaleRecords(): ISaleRecordDto[] {
         total: Number((cost * qty).toFixed(2)),
         brand: item.brand,
         collection: item.collection,
+        styleName: item.styleName,
+        parent: item.parent,
         isLocal: false,
         auditMonth: month,
         auditYear: year,
@@ -67,10 +69,8 @@ export function buildDemoProducts(): IProductDto[] {
     styleName: item.styleName,
     isActive: true,
     brand: item.brand,
-    division: item.division,
     type: item.type,
     collection: item.collection,
-    fit: 'Standard',
     isLocal: false,
   }));
 }

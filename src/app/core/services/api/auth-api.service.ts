@@ -14,7 +14,7 @@ import { DateUtils } from '@core/auxiliar/date.utils';
 import { DEFAULT_ROLES } from '../../data/mock-users.data';
 import { MockAuthStore } from '../../data/mock-auth.store';
 import { SupabaseService } from '@core/services/supabase/supabase.service';
-import { SUPABASE_TABLES } from '@core/constants/supabase-tables.const';
+import { SUPABASE_TABLES } from '@core/constants';
 
 @Injectable({ providedIn: 'root' })
 export class AuthApiService {

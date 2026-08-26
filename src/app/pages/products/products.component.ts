@@ -3,7 +3,6 @@ import { Component, inject, signal, computed, ChangeDetectionStrategy, OnInit } 
 import { FormBuilder, ReactiveFormsModule, Validators, FormsModule } from '@angular/forms';
 import { DataTableComponent, TableColumn } from '@shared/components/data-table/data-table.component';
 import { ProductService } from '@core/services/Excel/product.service';
-import { ProductExcelImportService } from '@core/services/Excel/product-excel-import.service';
 import { AlertService } from '@core/services/Utils/alert.service';
 import { IProductDto } from '@core/interfaces/IProductDto.interface';
 import { MainTableFilterComponent } from '@shared/main-table-filter/main-table-filter.component';
@@ -24,7 +23,6 @@ import { DataExportService } from '@core/services/Utils/data-export.service';
 export class ProductsComponent implements OnInit {
   private fb = inject(FormBuilder);
   private productService = inject(ProductService);
-  private productExcelImport = inject(ProductExcelImportService);
   private alertService = inject(AlertService);
   private productsApi = inject(ProductsApiService);
   private loadingService = inject(LoadingService);
@@ -216,19 +214,6 @@ export class ProductsComponent implements OnInit {
   handleBulkTableAction(event: { action: string; rows: unknown[] }): void {
     if (event.action !== 'bulkDelete') return;
     void this.deleteSelectedProducts(event.rows as Record<string, unknown>[]);
-  }
-
-  onFileSelected(event: Event) {
-    if (!this.rolePermissions.can('bulkUpload')) {
-      this.alertService.error('Access denied', 'You do not have permission to import data.');
-      return;
-    }
-    const target = event.target as HTMLInputElement;
-    const file = target.files?.[0];
-    if (file) {
-      void this.productExcelImport.loadFromExcel(file);
-      target.value = '';
-    }
   }
 
   async exportTableToExcel(): Promise<void> {

@@ -1,6 +1,6 @@
 import { IUserDto, IRoleDto } from '../interfaces/user.interface';
 import { DateUtils } from '@core/auxiliar/date.utils';
-import { ROLE_IDS } from '@core/constants/roles.const';
+import { ROLE_IDS } from '@core/constants';
 
 export const DEFAULT_ROLES: IRoleDto[] = [
   {

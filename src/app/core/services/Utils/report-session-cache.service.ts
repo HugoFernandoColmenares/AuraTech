@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IApiResponse } from '@core/interfaces/IApiResponse.interface';
-import { SupabaseTableKey } from '@core/constants/supabase-tables.const';
+import { SupabaseTableKey } from '@core/constants';
 
 export type ReportCacheKey = 'sales';
 export type AnalyticsCacheKey = 'salesAnalytics';

@@ -1,7 +1,6 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { ISaleRecordDto, SalesFilters } from '@core/interfaces/ISaleRecordDto.interface';
-import { filterSaleRecords } from '@core/auxiliar/sales-filter.util';
-import { isPreAggregatedSaleRow } from '@core/auxiliar/sale-record-curation.util';
+import { filterSaleRecords, isPreAggregatedSaleRow } from '@core/auxiliar/sales.util';
 import { SalesRecordCurationService } from '@core/services/Excel/sales-record-curation.service';
 
 /** Session state: raw sales rows, filters, and filtered view. */

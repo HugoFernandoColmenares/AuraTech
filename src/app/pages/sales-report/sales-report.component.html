@@ -23,7 +23,7 @@
     <app-report-upload-placeholder
       icon="📊"
       title="No Sales Data Active"
-      description="Import a POS Excel file to view Analytics, Pivot Tables, and generate AI Insights."
+      description="Map any Excel layout with Custom Excel to view analytics, pivots, and insights."
       (browse)="triggerFileInput()"
     />
   } @else if (initialDataReady()) {
@@ -104,14 +104,6 @@
 
   }<!-- /hasData -->
 
-  <!-- ═══ STORE SELECTION MODAL ═══════════════════════════════════════════ -->
-  @if (showStoreModal()) {
-  <app-store-selection-modal [pendingFileName]="pendingFileName()" (confirm)="confirmUpload($event)"
-    (cancel)="cancelUpload()">
-  </app-store-selection-modal>
-  }
-
-  <!-- ═══ CUSTOM EXCEL MAPPING MODAL ═══════════════════════════════════════ -->
   @if (showCustomModal()) {
   <app-custom-mapping-modal
     [pendingFile]="pendingFile"

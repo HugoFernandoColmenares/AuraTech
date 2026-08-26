@@ -2,13 +2,14 @@
   <header class="home-header flex-column gap-s">
     <h1 class="title">Dashboard</h1>
     <p class="product-brief">
-      AuraTech is a sales intelligence workspace: upload Excel orders, review KPIs and charts,
-      then persist cleaned records. It is built for merchandisers, operations analysts, and
-      independent operators who need a lightweight reporting loop without a full data warehouse.
+      AuraTech is a sales intelligence workspace: map any Excel workbook to sales fields,
+      review KPIs and charts, then persist cleaned records. It is built for merchandisers,
+      operations analysts, and independent operators who need a lightweight reporting loop
+      without a full data warehouse.
     </p>
     <p class="subtitle">
-      Use this demo to upload a generic template or map your own columns with Custom Excel,
-      review session rows, and send records to the database when you are ready.
+      The demo does not assume a fixed spreadsheet layout. Upload your file, map columns
+      with Custom Excel, review session rows, and export to the database when you are ready.
     </p>
   </header>
 
@@ -34,11 +35,10 @@
   </section>
 
   <section class="custom-excel-panel flex-column gap-s p-m" aria-labelledby="customExcelTitle">
-    <h2 id="customExcelTitle" class="panel-title">Custom Excel (Sales Report)</h2>
+    <h2 id="customExcelTitle" class="panel-title">Custom Excel</h2>
     <p>
-      When your spreadsheet does not match the generic template, choose
-      <strong>Custom Excel</strong> on upload. A guided modal lets you pick the worksheet, map each
-      sales column visually, preview the result, and optionally save the mapping as a reusable template.
+      Custom Excel is the only upload path. Pick a worksheet, map each sales column visually,
+      preview the result, and optionally save the mapping as a reusable template for the next file.
     </p>
     <div class="flex gap-s flex-wrap">
       <a routerLink="/layout/sales-report" class="btn btn-secondary btn-sm">Open Sales Report</a>

@@ -1,6 +1,6 @@
 import { DateUtils } from '@core/auxiliar/date.utils';
 import { RpcKpiTotals, SalesMonthlyAggregateRpc } from '@core/interfaces/report-analytics-rpc.interface';
-import { YoyKpiSummary, YearScopeComparison, YoyDataStatus } from '@core/auxiliar/sales-yoy.util';
+import { YoyKpiSummary, YearScopeComparison, YoyDataStatus } from '@core/auxiliar/sales.util';
 import { ISaleRecordDto, SalesFilters } from '@core/interfaces/ISaleRecordDto.interface';
 
 function resolveStatus(

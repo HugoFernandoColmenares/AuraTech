@@ -7,12 +7,12 @@ import { ReportAnalyticsApiService } from '@core/services/api/report-analytics-a
 import { IApiResponse } from '@core/interfaces/IApiResponse.interface';
 import type { BulkUpsertResult } from '@core/interfaces/IBulkUpsertResult.interface';
 import { yoyAnalyticsWindowStartIso } from '@core/auxiliar/report-analytics-fetch.util';
-import { POSTGREST_MAX_PAGE_SIZE } from '@core/constants/supabase-api.const';
+import { POSTGREST_MAX_PAGE_SIZE } from '@core/constants';
 import {
   applySalesTableFiltersToQuery,
   hasActiveSalesTableFilters,
   salesTableFiltersCacheKey,
-} from '@core/auxiliar/sales-table-filters.util';
+} from '@core/auxiliar/sales.util';
 
 /** Curated read model shared by sales table pagination and get_sales_analytics RPC. */
 export const SALES_RECORDS_ANALYTICS_MV = 'sale_records_analytics';

@@ -24,7 +24,7 @@ export interface ISaleRecordMappingProperties {
  */
 export interface IExcelMappingDto {
   id?: string;
-  /** Unique display name, e.g. "Walmart WFS Alternative" or "Faire Custom". */
+  /** Unique display name, e.g. "Direct account workbook". */
   accountName: string;
   /** Exact worksheet tab name to read, e.g. "WFS". */
   sheetName: string;

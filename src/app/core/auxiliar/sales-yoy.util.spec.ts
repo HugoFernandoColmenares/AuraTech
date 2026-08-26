@@ -1,4 +1,4 @@
-import { computeScopedYearComparison, formatYtdComparisonPeriodLabel } from './sales-yoy.util';
+import { computeScopedYearComparison, formatYtdComparisonPeriodLabel } from './sales.util';
 import { ISaleRecordDto, SalesFilters } from '@core/interfaces/ISaleRecordDto.interface';
 
 const EMPTY_FILTERS: SalesFilters = {

@@ -1,10 +1,11 @@
 import { Injectable, computed, inject } from '@angular/core';
-import { groupAndSum } from '@core/auxiliar/data-aggregation.helper';
-import { getNormalizedAuditMonth, getNormalizedAuditYear } from '@core/auxiliar/sales-audit.utils';
+import { groupAndSum } from '@core/auxiliar/charts.util';
 import {
+  getNormalizedAuditMonth,
+  getNormalizedAuditYear,
   computeMonthYoyKpi,
   computeScopedYearComparison,
-} from '@core/auxiliar/sales-yoy.util';
+} from '@core/auxiliar/sales.util';
 import { SalesStateService } from './sales-state.service';
 import { ProductService } from './product.service';
 

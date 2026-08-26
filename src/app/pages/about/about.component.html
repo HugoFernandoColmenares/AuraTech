@@ -2,8 +2,9 @@
   <header class="about-header mb-l">
     <h1 class="page-heading">User Guide & Technical Overview</h1>
     <p class="subtitle">
-      Welcome to AuraTech, a sales analytics demo. This guide explains how Excel uploads,
-      browser session data, and Supabase persistence work together.
+      Welcome to AuraTech, a sales analytics demo. By default the app runs in demo mode:
+      Excel uploads stay in the browser session and persistence uses local storage.
+      The same workflow can target Supabase when demo mode is disabled and credentials are configured.
     </p>
     <a routerLink="/layout/home" class="btn btn-secondary btn-sm">Back to Dashboard tutorial</a>
   </header>
@@ -40,7 +41,8 @@
             @case ('dashboard') {
               <p>
                 The <strong>Dashboard</strong> is your starting point. It summarizes the end-to-end
-                workflow: open a report, upload Excel, review parsed rows, and export session data to Supabase.
+                workflow: open Sales Report, upload Excel through Custom Excel, review parsed rows,
+                and export session data (to local storage in demo mode, or to Supabase when live).
               </p>
               <p>
                 Each report module (Sales, Products) follows the same
@@ -78,13 +80,14 @@
                   rows are still only in your browser.
                 </li>
                 <li>
-                  <strong>Export to DB</strong> when you are satisfied. Session rows are bulk-upserted to Supabase.
-                  After success, the module refreshes paginated data and analytics from the server.
+                  <strong>Export to DB</strong> when you are satisfied. Session rows are persisted
+                  (local storage in demo mode, or bulk upsert to Supabase when live).
+                  After success, the module refreshes tables and analytics.
                 </li>
               </ol>
               <p class="guide-note">
-                Uploading does <em>not</em> write to Supabase automatically. Closing the tab or clearing session
-                data removes unpersisted rows unless you exported them first.
+                Uploading does <em>not</em> persist automatically. Closing the tab or clearing site data
+                removes unexported session rows.
               </p>
             }
 
@@ -125,7 +128,7 @@
                 </li>
                 <li>
                   <strong>Review and export:</strong> filter the table, confirm totals, then use
-                  <strong>Export to DB</strong> when you are ready to persist the session rows to Supabase.
+                  <strong>Export to DB</strong> when you are ready to persist the session rows.
                 </li>
               </ol>
               <p class="guide-note">
@@ -143,8 +146,8 @@
               <ul class="guide-list guide-list--unordered">
                 <li>The button stays <strong>disabled</strong> when there are zero session rows pending export.</li>
                 <li>Sales records are curated before upload (cancelled/refunded rows removed, duplicate summaries dropped).</li>
-                <li>On success you will see a confirmation toast and the table reloads from Supabase.</li>
-                <li>On failure, verify Supabase environment variables locally or on Vercel.</li>
+                <li>On success you will see a confirmation toast and the table reloads from persisted data.</li>
+                <li>On failure in live mode, verify <code>NG_APP_SUPABASE_URL</code> and <code>NG_APP_SUPABASE_ANON_KEY</code>.</li>
               </ul>
               <p>
                 Excel export and JSON export are separate actions: they download a file from your current view or
@@ -156,11 +159,11 @@
               <p>The toolbar <strong>data-source indicator</strong> shows where the current dataset comes from:</p>
               <ul class="guide-list guide-list--unordered">
                 <li><strong>Session / cache</strong> — rows parsed from Excel or created locally (<code>isLocal</code>). Pending Export to DB.</li>
-                <li><strong>Database (Supabase)</strong> — rows already persisted and loaded via paginated API reads.</li>
+                <li><strong>Database</strong> — rows already persisted (local storage in demo mode, or Supabase when live).</li>
                 <li><strong>Mixed</strong> — both session and database rows are present (uncommon; export session rows first).</li>
               </ul>
               <p>
-                Read-only GET responses may be cached for the browser session to avoid redundant Supabase calls.
+                Read-only GET responses may be cached for the browser session.
                 Any successful write (Export to DB, CRUD) invalidates that cache for the affected report.
               </p>
             }
@@ -174,8 +177,8 @@
                 templates. See the <em>Custom Excel Mapping (Sales)</em> section above for the full walkthrough.
               </p>
               <p>
-                Filters support account, date range, month selection, and SKU search. Server-side analytics use
-                Supabase RPC functions when the database is reachable.
+                Filters support account, date range, month selection, and SKU search.
+                Analytics use client-side aggregates in demo mode and may use a Supabase RPC when live.
               </p>
             }
 

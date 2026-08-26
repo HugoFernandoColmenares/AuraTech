@@ -4,9 +4,9 @@ export interface ISaleRecordDto {
   idx: number;
   orderStatus: string;
   warehouseCode: string;
-  account: string; // The source platform/account name (e.g., 'AMAZON DS', 'FAIRE')
-  channel?: string; // Optional: The specific sales channel (e.g., retailer name for Faire)
-  category: 'Retail' | 'Wholesale'; // Classification for the sale
+  account: string;
+  channel?: string;
+  category: 'Retail' | 'Wholesale';
   orderPlaceDate: Date | null;
   sku: string;
   itemCost: number;
@@ -20,8 +20,6 @@ export interface ISaleRecordDto {
   auditMonth?: number | string;
   auditYear?: number | string;
 }
-
-export type StoreType = 'generic-sales-report' | 'custom-excel';
 
 export interface ISaleRecordView extends ISaleRecordDto {}
 export type InsightSeverity = 'positive' | 'warning' | 'neutral' | 'info';

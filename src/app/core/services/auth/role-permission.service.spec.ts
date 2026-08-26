@@ -3,7 +3,7 @@ import { signal } from '@angular/core';
 import { RolePermissionService } from './role-permission.service';
 import { AuthService } from './auth';
 import { IUserDto, IRoleDto } from '@core/interfaces/user.interface';
-import { ROLE_IDS } from '@core/constants/roles.const';
+import { ROLE_IDS } from '@core/constants';
 import { DateUtils } from '@core/auxiliar/date.utils';
 
 function role(name: string, normalizedName: string, id: string): IRoleDto {

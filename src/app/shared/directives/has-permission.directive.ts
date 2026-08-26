@@ -8,7 +8,7 @@ import {
   DestroyRef,
 } from '@angular/core';
 import { RolePermissionService } from '@core/services/auth/role-permission.service';
-import { AppPermission } from '@core/constants/permissions.const';
+import { AppPermission } from '@core/constants';
 
 /**
  * Structural directive: renders content only when the current user has the permission.

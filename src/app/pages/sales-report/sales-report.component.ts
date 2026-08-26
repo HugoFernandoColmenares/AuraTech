@@ -2,16 +2,14 @@ import { Component, inject, signal, effect, computed, ChangeDetectionStrategy, V
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MainTableFilterComponent } from '@shared/main-table-filter/main-table-filter.component';
-import { ExcelHandlerService } from '@core/services/Excel/excel-handler.service';
 import { SalesProcessingService } from '@core/services/Excel/sales-processing.service';
 import { LoadingService } from '@core/services/Utils/loading.service';
 import { AlertService } from '@core/services/Utils/alert.service';
 import { DateUtils } from '@core/auxiliar/date.utils';
 import { ViewMode } from '@core/interfaces/chart.interface';
-import { SalesFileHandlerService } from '@core/services/Excel/sales-file-handler.service';
 import { BulkSyncService } from '@core/services/Utils/bulk-sync.service';
 import { ReportUploadPlaceholderComponent } from '@shared/components/report-upload-placeholder/report-upload-placeholder.component';
-import { ISaleRecordDto, StoreType } from '@core/interfaces/ISaleRecordDto.interface';
+import { ISaleRecordDto } from '@core/interfaces/ISaleRecordDto.interface';
 import { SaleRecordsApiService } from '@core/services/api/sale-records-api.service';
 import { DataExportService } from '@core/services/Utils/data-export.service';
 import { HealthService } from '@core/services/bootstrap/health.service';
@@ -19,7 +17,6 @@ import { SalesInsightsService } from '@core/services/Excel/sales-insights.servic
 
 import { SalesAnalyticsComponent } from './components/sales-analytics/sales-analytics.component';
 import { SalesTableComponent } from './components/sales-table/sales-table.component';
-import { StoreSelectionModalComponent } from './components/store-selection-modal/store-selection-modal.component';
 import {
   CustomMappingModalComponent,
   CustomMappingResult,
@@ -29,8 +26,8 @@ import { InsightsReportComponent } from '@shared/components/insights/insights-re
 import { ViewControlsComponent } from '@shared/components/view-controls/view-controls.component';
 import { RecordFormComponent } from '@shared/components/record-form/record-form.component';
 import { ViewModeOption } from '@core/interfaces/view-controls.interface';
-import { filterSaleRecords } from '@core/auxiliar/sales-filter.util';
-import { salesTableFiltersCacheKey } from '@core/auxiliar/sales-table-filters.util';
+import { filterSaleRecords, salesTableFiltersCacheKey, salesRecordBusinessKey } from '@core/auxiliar/sales.util';
+import type { YearScopeComparison, YoyKpiSummary } from '@core/auxiliar/sales.util';
 import { AuthService } from '@core/services/auth/auth';
 import { RolePermissionService } from '@core/services/auth/role-permission.service';
 import { AppStartupService } from '@core/services/bootstrap/app-startup.service';
@@ -38,12 +35,10 @@ import { ReportSessionCacheService } from '@core/services/Utils/report-session-c
 import { ReportAnalyticsApiService } from '@core/services/api/report-analytics-api.service';
 import { SalesRecordCurationService } from '@core/services/Excel/sales-record-curation.service';
 import { confirmAndRemoveBatch } from '@core/auxiliar/batch-record-delete.util';
-import { SALES_ANALYTICS_CLIENT_FALLBACK_MAX_ROWS } from '@core/constants/sales-analytics.const';
+import { SALES_ANALYTICS_CLIENT_FALLBACK_MAX_ROWS } from '@core/constants';
 import { mapRpcTotalsToYoyKpi, mapRpcTotalsToYearComparison, salesAggregatesToRecords, } from '@core/auxiliar/report-analytics-rpc.mapper';
-import type { YearScopeComparison, YoyKpiSummary } from '@core/auxiliar/sales-yoy.util';
 import { resolveReportDataSourceCounts } from '@core/auxiliar/data-source-count.util';
 import { mergeLocalAndServer } from '@core/auxiliar/local-server-merge.util';
-import { salesRecordBusinessKey } from '@core/auxiliar/sale-record-curation.util';
 
 const ANALYTICS_VIEWS = new Set<ViewMode>(['charts', 'insights']);
 
@@ -51,16 +46,14 @@ const ANALYTICS_VIEWS = new Set<ViewMode>(['charts', 'insights']);
   selector: 'app-sales-report',
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
-  imports: [ CommonModule, FormsModule, MainTableFilterComponent, SalesAnalyticsComponent, SalesTableComponent, StoreSelectionModalComponent, CustomMappingModalComponent, InsightsReportComponent, ViewControlsComponent, ReportUploadPlaceholderComponent, RecordFormComponent, ],
+  imports: [ CommonModule, FormsModule, MainTableFilterComponent, SalesAnalyticsComponent, SalesTableComponent, CustomMappingModalComponent, InsightsReportComponent, ViewControlsComponent, ReportUploadPlaceholderComponent, RecordFormComponent, ],
   templateUrl: './sales-report.component.html',
   styleUrl: './sales-report.component.css'
 })
 export class SalesReportComponent implements OnInit {
-  excelHandler = inject(ExcelHandlerService);
   salesProcessor = inject(SalesProcessingService);
   loadingService = inject(LoadingService);
   alertService = inject(AlertService);
-  fileHandler = inject(SalesFileHandlerService);
   salesApi = inject(SaleRecordsApiService);
   dataExport = inject(DataExportService);
   healthService = inject(HealthService);
@@ -99,10 +92,7 @@ export class SalesReportComponent implements OnInit {
   // Database connectivity
   isDatabaseHealthy = this.healthService.isHealthy;
 
-  // Multi-store upload
-  showStoreModal = signal<boolean>(false);
   pendingFile: File | null = null;
-  pendingFileName = computed(() => this.pendingFile?.name || '');
 
   // Custom Excel mapping
   showCustomModal = signal<boolean>(false);
@@ -597,59 +587,29 @@ export class SalesReportComponent implements OnInit {
     this.fileInput.nativeElement.click();
   }
 
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
+  onFileSelected(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0];
     if (file) {
       this.pendingFile = file;
-      this.showStoreModal.set(true);
+      void this.openCustomExcelMapping();
     }
-    event.target.value = '';
+    input.value = '';
   }
 
-  async confirmUpload(storeType: StoreType) {
+  private async openCustomExcelMapping(): Promise<void> {
     if (!this.pendingFile) return;
-    this.showStoreModal.set(false);
-
-    // Custom Excel: hand off to the visual mapping modal instead of a fixed parser.
-    if (storeType === 'custom-excel') {
-      this.loadingService.begin('Loading mapping templates…');
-      try {
-        await this.customMapping.loadTemplates();
-        this.showCustomModal.set(true);
-      } catch (err: any) {
-        this.logError('confirmUpload', 'Failed to load mapping templates', err);
-        this.alertService.error('Template load error', err?.message ?? 'Could not load saved templates.');
-        this.pendingFile = null;
-      } finally {
-        this.loadingService.end();
-      }
-      return;
-    }
-
-    this.loadingService.begin('Processing sales file…');
-
+    this.loadingService.begin('Loading mapping templates…');
     try {
-      let newRecords: ISaleRecordDto[] = [];
-
-      const rawData = await this.excelHandler.parseExcelFile(this.pendingFile);
-
-      const records = this.fileHandler.processFile(storeType, rawData);
-      newRecords = records.map(r => ({ ...r, isLocal: true }));
-
-      this.clearFilters();
-      this.salesProcessor.addSalesData(newRecords);
-      this.activateLocalSessionAfterImport();
-
-      this.alertService.success(
-        'Upload Complete',
-        `Successfully loaded ${newRecords.length} records from ${storeType}. Remember to Export to DB.`
-      );
-    } catch (err: any) {
-      this.logError('confirmUpload', 'File processing failed', err);
-      this.alertService.error('Upload Error', err?.message || 'Failed to process file.');
+      await this.customMapping.loadTemplates();
+      this.showCustomModal.set(true);
+    } catch (err: unknown) {
+      this.logError('openCustomExcelMapping', 'Failed to load mapping templates', err);
+      const message = err instanceof Error ? err.message : 'Could not load saved templates.';
+      this.alertService.error('Template load error', message);
+      this.pendingFile = null;
     } finally {
       this.loadingService.end();
-      this.pendingFile = null;
     }
   }
 
@@ -677,11 +637,6 @@ export class SalesReportComponent implements OnInit {
 
   onCustomMappingCancel(): void {
     this.showCustomModal.set(false);
-    this.pendingFile = null;
-  }
-
-  cancelUpload() {
-    this.showStoreModal.set(false);
     this.pendingFile = null;
   }
 

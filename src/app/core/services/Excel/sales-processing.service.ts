@@ -3,7 +3,7 @@ import { ISaleRecordDto, SalesFilters } from '@core/interfaces/ISaleRecordDto.in
 import { SalesStateService } from './sales-state.service';
 import { SalesAnalyticsService } from './sales-analytics.service';
 
-export { toISOWeek } from '@core/auxiliar/sales-audit.utils';
+export { toISOWeek } from '@core/auxiliar/sales.util';
 
 /** Facade over {@link SalesStateService} + {@link SalesAnalyticsService}. */
 @Injectable({ providedIn: 'root' })

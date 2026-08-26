@@ -1,5 +1,4 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
-import { parseCurrency, parseInteger } from '@core/auxiliar/excel-parse.utils';
 import { generateGuid } from '@core/auxiliar/guid-utils';
 import { ISaleRecordDto } from '@core/interfaces/ISaleRecordDto.interface';
 import {
@@ -113,7 +112,7 @@ export class CustomExcelMappingService {
 
   /**
    * Maps normalized Excel rows to {@link ISaleRecordDto}s using a template.
-   * Rows without orderId/sku are dropped (same rule as the Walmart parser).
+   * Rows without orderId/sku are dropped.
    */
   applyTemplate(rows: Record<string, unknown>[], template: IExcelMappingDto): ISaleRecordDto[] {
     const map = template.propertiesMap;
@@ -216,4 +215,15 @@ export class CustomExcelMappingService {
     const fallback = new Date(str);
     return Number.isNaN(fallback.getTime()) ? null : fallback;
   }
+}
+
+function parseCurrency(value: unknown): number {
+  if (value == null || value === '') return 0;
+  const n = parseFloat(String(value).replace(/[$,\s]/g, ''));
+  return Number.isNaN(n) ? 0 : n;
+}
+
+function parseInteger(value: unknown): number {
+  const n = parseInt(String(value ?? '0'), 10);
+  return Number.isNaN(n) ? 0 : n;
 }

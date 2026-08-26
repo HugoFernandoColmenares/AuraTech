@@ -3,8 +3,7 @@ import { ChartJsConfig, ChartKey, Granularity, ProductGrouping } from '@core/int
 import { ChartGeneratorService, GLOBAL_CHART_COLORS } from '@core/services/Utils/chart-generator.service';
 import { SalesProcessingService } from '@core/services/Excel/sales-processing.service';
 import { ISaleRecordView } from '@core/interfaces/ISaleRecordDto.interface';
-import { comparePeriods, groupAndSum } from '@core/auxiliar/data-aggregation.helper';
-import { getProductGroupingKey, getTimePeriodKey } from '@core/auxiliar/chart-keys.helper';
+import { comparePeriods, groupAndSum, getProductGroupingKey, getTimePeriodKey } from '@core/auxiliar/charts.util';
 
 export interface ChartBuilderState {
   key: ChartKey;

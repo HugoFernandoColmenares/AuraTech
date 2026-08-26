@@ -5,7 +5,7 @@ import { EnvConfig } from '@core/config/env.config';
 import { HealthService } from '@core/services/bootstrap/health.service';
 import { shouldUseMockAuth, shouldUseSupabaseAuth } from '@core/auxiliar/auth-offline.util';
 import { SupabaseService } from '@core/services/supabase/supabase.service';
-import { SUPABASE_TABLES } from '@core/constants/supabase-tables.const';
+import { SUPABASE_TABLES } from '@core/constants';
 import { mapSupabaseProfileToUser } from '@core/auxiliar/supabase-profile.util';
 import { AuthService } from './auth';
 import { DateUtils } from '@core/auxiliar/date.utils';

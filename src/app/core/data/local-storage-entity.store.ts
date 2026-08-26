@@ -1,4 +1,4 @@
-import { SupabaseTableKey } from '@core/constants/supabase-tables.const';
+import { SupabaseTableKey } from '@core/constants';
 import { buildDemoProducts, buildDemoSaleRecords } from '@core/data/demo-seed.data';
 
 const STORAGE_PREFIX = 'auratech.ls.';

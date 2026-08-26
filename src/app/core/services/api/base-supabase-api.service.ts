@@ -5,14 +5,12 @@ import { SupabaseService } from '@core/services/supabase/supabase.service';
 import { shouldUseSupabaseData } from '@core/auxiliar/supabase-transport.util';
 import { IApiResponse } from '../../interfaces/IApiResponse.interface';
 import type { BulkUpsertResult } from '@core/interfaces/IBulkUpsertResult.interface';
-import { API_BULK_BATCH_SIZE, POSTGREST_MAX_PAGE_SIZE } from '@core/constants/supabase-api.const';
-import { SUPABASE_TABLES, SupabaseTableKey } from '@core/constants/supabase-tables.const';
+import { API_BULK_BATCH_SIZE, POSTGREST_MAX_PAGE_SIZE, SUPABASE_TABLES, SupabaseTableKey, supabaseTableLabel } from '@core/constants';
 import { ReportSessionCacheService } from '@core/services/Utils/report-session-cache.service';
 import { sanitizeForUpload, toCamelCaseRecord } from '@core/auxiliar/api-payload.util';
 import { ListCacheManager } from '@core/auxiliar/list-cache-manager.util';
 import { SupabaseTransportStateService } from '@core/services/supabase/supabase-transport-state.service';
 import { AppBootstrapStateService } from '@core/services/bootstrap/app-bootstrap-state.service';
-import { supabaseTableLabel } from '@core/constants/supabase-table-labels.const';
 import { AlertService } from '@core/services/Utils/alert.service';
 import {
   ACCESS_DENIED_MESSAGE,

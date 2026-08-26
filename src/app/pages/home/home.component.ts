@@ -29,7 +29,7 @@ export class HomeComponent {
       step: 1,
       title: 'Open Sales Report',
       description:
-        'Start in Sales Report to upload a generic Excel template or map your own columns with Custom Excel.',
+        'Start in Sales Report. Upload any Excel file — Custom Excel lets you map columns to sales fields without a fixed template.',
       icon: '📂',
       link: '/layout/sales-report',
       linkLabel: 'Open Sales Report',
@@ -38,7 +38,7 @@ export class HomeComponent {
       step: 2,
       title: 'Upload an Excel file',
       description:
-        'Switch to the Data table view and click Upload Data. Select the correct store or account format when prompted—or choose Custom Excel to map your own column layout. Parsed rows stay in your browser session until you export them.',
+        'Switch to the Data table view and click Upload Data. Map the worksheet columns, preview rows, then load them into your browser session until you export.',
       icon: '📤',
     },
     {
@@ -70,12 +70,12 @@ export class HomeComponent {
     {
       title: 'Sales Report',
       path: '/layout/sales-report',
-      uploadHint: 'Generic template plus Custom Excel mapping for non-standard layouts.',
+      uploadHint: 'Map any Excel layout with Custom Excel, then review analytics and persist rows.',
     },
     {
       title: 'Products',
       path: '/layout/products',
-      uploadHint: 'Product catalog Excel import and manual CRUD.',
+      uploadHint: 'Manual catalog of SKUs, brands, and collections used when reviewing sales.',
     },
   ];
 }

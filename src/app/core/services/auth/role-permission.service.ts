@@ -7,13 +7,11 @@ import {
   PERMISSION_LABELS,
   ROLE_CAPABILITY_SUMMARY,
   ROLE_HIERARCHY,
-} from '@core/constants/permissions.const';
-import {
   NormalizedRole,
   ROLE_ALIASES,
   ROLE_IDS,
   RoleKey,
-} from '@core/constants/roles.const';
+} from '@core/constants';
 
 @Injectable({ providedIn: 'root' })
 export class RolePermissionService {

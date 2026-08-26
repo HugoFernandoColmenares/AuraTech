@@ -5,10 +5,10 @@ import {
   curateSalesRecords,
   CurateSalesRecordsOptions,
   countPreAggregatedUploadRows,
-} from '@core/auxiliar/sale-record-curation.util';
+} from '@core/auxiliar/sales.util';
 
 /**
- * Shared sales row curation — same rules as Excel channel parsers:
+ * Shared sales row curation for Custom Excel imports and database reads:
  * dates, audit period, cancelled/refund filter, PG-safe integers, optional dedupe.
  */
 @Injectable({ providedIn: 'root' })

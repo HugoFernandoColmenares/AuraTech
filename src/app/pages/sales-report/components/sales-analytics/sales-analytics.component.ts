@@ -6,11 +6,10 @@ import { DataTableComponent, TableColumn } from '@shared/components/data-table/d
 import { MainTableFilterComponent } from '@shared/main-table-filter/main-table-filter.component';
 
 import { SalesChartBuilderService, ChartBuilderState, TopProductsTableData } from '@core/services/Excel/sales-chart-builder.service';
-import { CHART_CONFIGS } from '@core/data/sales-report.constants';
+import { CHART_CONFIGS, PIVOT_MONTHS } from '@core/constants';
 import { ChartKey } from '@core/interfaces/chart.interface';
 import { ISaleRecordView } from '@core/interfaces/ISaleRecordDto.interface';
-import { comparePeriods } from '@core/auxiliar/data-aggregation.helper';
-import { getProductGroupingKey } from '@core/auxiliar/chart-keys.helper';
+import { getProductGroupingKey, buildYoyPivotData } from '@core/auxiliar/charts.util';
 import { DateUtils } from '@core/auxiliar/date.utils';
 import { ChannelDisplayPipe } from '@core/pipes/channel-display.pipe';
 import { AlertService } from '@core/services/Utils/alert.service';
@@ -19,14 +18,12 @@ import { PivotTableComponent } from '@shared/components/pivot-table/pivot-table.
 import { KpiGridComponent } from '@shared/components/kpi-grid/kpi-grid.component';
 import { ChartPanelComponent } from '@shared/components/chart-panel/chart-panel.component';
 import { PivotRow, PivotYearData } from '@core/interfaces/pivot.interface';
-import { PIVOT_MONTHS } from '@core/constants/pivot.constants';
-import { buildYoyPivotData } from '@core/auxiliar/yoy-pivot.helper';
 import {
   filterPriorYearRowsForScope,
   filterRecordsForYoyAnalysis,
   formatYoyPeriodLabel,
   formatYtdComparisonPeriodLabel,
-} from '@core/auxiliar/sales-yoy.util';
+} from '@core/auxiliar/sales.util';
 
 export type TopProductsView = 'products' | 'type' | 'collection' | 'division';
 

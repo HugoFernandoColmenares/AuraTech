@@ -53,8 +53,7 @@
               <ol class="guide-list">
                 <li>
                   <strong>Prepare your Excel file.</strong>
-                  Use the generic sales template or Custom Excel mapping. Column headers must match the parser
-                  or the mapping you define.
+                  Any column layout works. You will map headers to sales fields in Custom Excel.
                 </li>
                 <li>
                   <strong>Navigate to the report module</strong> and switch to the <em>Data</em> or table view
@@ -62,7 +61,7 @@
                 </li>
                 <li>
                   <strong>Click Upload Data</strong> in the table toolbar (requires bulk-upload permission).
-                  Choose the file from your computer. For Sales you pick Generic or Custom Excel
+                  Choose the file from your computer. Custom Excel opens so you can map columns
                   before parsing begins.
                 </li>
                 <li>
@@ -91,9 +90,9 @@
 
             @case ('custom-excel') {
               <p>
-                <strong>Custom Excel</strong> is for sales spreadsheets that do not match the generic template.
+                <strong>Custom Excel</strong> is the upload path for sales spreadsheets of any layout.
                 You map your own column headers to AuraTech sales fields in a
-                four-step modal, preview the parsed rows, then load them into the browser session like any other upload.
+                four-step modal, preview the parsed rows, then load them into the browser session.
               </p>
               <ol class="guide-list">
                 <li>
@@ -104,7 +103,7 @@
                   <code>.xls</code> file.
                 </li>
                 <li>
-                  <strong>Select Custom Excel</strong> in the store picker (🧩 icon) and confirm.
+                  <strong>The mapping wizard opens</strong> immediately after you pick a file.
                 </li>
                 <li>
                   <strong>Step 1 — File:</strong> verify the selected workbook, then click
@@ -143,7 +142,7 @@
               </p>
               <ul class="guide-list guide-list--unordered">
                 <li>The button stays <strong>disabled</strong> when there are zero session rows pending export.</li>
-                <li>Sales records are curated before upload (cancelled/refunded rows removed, Shopify summary deduped).</li>
+                <li>Sales records are curated before upload (cancelled/refunded rows removed, duplicate summaries dropped).</li>
                 <li>On success you will see a confirmation toast and the table reloads from Supabase.</li>
                 <li>On failure, verify Supabase environment variables locally or on Vercel.</li>
               </ul>
@@ -168,7 +167,7 @@
 
             @case ('sales-reporting') {
               <p>
-                Import sales with the generic template or Custom Excel mapping, then explore Analytics and Data views.
+                Import sales with Custom Excel mapping, then explore Analytics and Data views.
               </p>
               <p>
                 For non-standard layouts, use <strong>Custom Excel</strong> to map columns manually and save reusable
@@ -189,8 +188,7 @@
 
             @case ('management') {
               <p>
-                Manage products manually or via Excel import. Brand, type, and collection are free-text fields.
-                Session imports follow the same Export to DB pattern as report modules.
+                Manage products manually. Brand, type, and collection are free-text fields.
               </p>
             }
 

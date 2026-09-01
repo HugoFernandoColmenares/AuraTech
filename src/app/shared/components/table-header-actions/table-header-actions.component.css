@@ -1,17 +1,13 @@
 .table-header-actions {
-  border-bottom: 1px solid var(--color-border, #E0E0E0);
-  background: var(--color-surface, #FAFAFA);
-  border-radius: var(--radius-s, 0.25rem) var(--radius-s, 0.25rem) 0 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-muted);
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
 }
 
 .section-title {
   font-size: 1.2rem;
   font-weight: 600;
   margin: 0;
-}
-
-.hidden-input {
-  display: none;
 }
 
 .btn-primary:disabled,

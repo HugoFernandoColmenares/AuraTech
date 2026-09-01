@@ -12,7 +12,7 @@
 }
 
 .page-heading {
-    font-family: 'Figtree', sans-serif;
+    font-family: var(--font-ui);
     font-size: var(--fs-title);
     color: var(--text-color);
     margin-bottom: 0.5rem;
@@ -20,7 +20,7 @@
 }
 
 .subtitle {
-    font-family: 'Figtree', sans-serif;
+    font-family: var(--font-ui);
     color: var(--text-muted);
     font-size: 1.05rem;
 }
@@ -36,7 +36,7 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 4px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    box-shadow: var(--shadow-sm);
     transition: border-color 0.3s ease;
     overflow: hidden;
 }
@@ -60,11 +60,11 @@
 }
 
 .accordion-header:hover {
-    background: rgba(15, 118, 110, 0.02);
+    background: var(--primary-soft);
 }
 
 .section-title {
-    font-family: 'Figtree', sans-serif;
+    font-family: var(--font-ui);
     font-size: 1.4rem;
     font-weight: 700;
     color: var(--text-color);
@@ -88,7 +88,7 @@
     max-height: 0;
     opacity: 0;
     overflow: hidden;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     border-top: 1px solid transparent;
 }
 
@@ -112,7 +112,7 @@
 .guide-note {
     padding: 0.75rem 1rem;
     border-left: 3px solid var(--primary-color);
-    background: rgba(15, 118, 110, 0.04);
+    background: var(--primary-soft);
 }
 
 .about-header .btn-sm {
@@ -120,7 +120,7 @@
 }
 
 .accordion-content p {
-    font-family: 'Figtree', sans-serif;
+    font-family: var(--font-ui);
     line-height: 1.8;
     color: var(--text-muted);
     font-size: 1rem;
@@ -131,5 +131,3 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-.flex-between { display: flex; justify-content: space-between; }
-.align-center { align-items: center; }

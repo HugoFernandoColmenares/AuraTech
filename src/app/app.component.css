@@ -4,8 +4,8 @@
 }
 
 .app-boot__text {
-  font-family: 'Figtree', sans-serif;
+  font-family: var(--font-ui);
   font-size: 0.875rem;
-  color: #666;
+  color: var(--text-muted);
   margin: 0;
 }

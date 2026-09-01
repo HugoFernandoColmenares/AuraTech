@@ -13,7 +13,7 @@
 }
 
 .home-header .title {
-  font-family: 'Figtree', sans-serif;
+  font-family: var(--font-ui);
   font-size: 1.75rem;
   color: var(--text-color);
   margin: 0;
@@ -37,10 +37,10 @@
 }
 
 .panel-title {
-  font-family: 'Figtree', sans-serif;
+  font-family: var(--font-ui);
   font-size: 1.5rem;
   margin: 0;
-  color: var(--primary-color, #0f766e);
+  color: var(--primary-color);
 }
 
 .workflow-panel,
@@ -52,8 +52,8 @@
 }
 
 .custom-excel-panel {
-  border-color: var(--primary-color, #0f766e);
-  background: rgba(15, 118, 110, 0.03);
+  border-color: var(--primary-color);
+  background: var(--primary-soft);
 }
 
 .custom-excel-panel p {
@@ -79,8 +79,8 @@
   width: 2rem;
   height: 2rem;
   border-radius: 50%;
-  background: var(--primary-color, #0f766e);
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--on-primary);
   font-weight: 700;
   font-size: 0.95rem;
 }
@@ -113,13 +113,13 @@
 }
 
 .module-card:hover {
-  border-color: var(--primary-color, #0f766e);
+  border-color: var(--primary-color);
   transform: translateY(-2px);
 }
 
 .module-card__title {
   margin: 0;
-  font-family: 'Figtree', sans-serif;
+  font-family: var(--font-ui);
   font-size: 1.15rem;
 }
 

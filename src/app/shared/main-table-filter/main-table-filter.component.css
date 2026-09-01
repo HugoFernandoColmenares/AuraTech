@@ -1,16 +1,12 @@
-/* ═══════════════════════════════════════════════════════════════════════
-   Main Table Filter — Specific Layouts
-════════════════════════════════════════════════════════════════════════ */
-
 .flexbox-filters {
   display: flex;
   flex-wrap: wrap;
   align-items: flex-end;
   gap: 1rem;
   padding: 1rem;
-  background-color: #FAFAFA;
-  border: 1px solid #E8E8E8;
-  border-radius: 0.25rem;
+  background-color: var(--surface);
+  border: 1px solid var(--accent-color);
+  border-radius: var(--radius-sm);
 }
 
 .filter-main {
@@ -41,14 +37,14 @@
 
 .filter-calendar .p-inputtext {
   width: 100%;
-  font-family: 'Figtree', sans-serif;
+  font-family: var(--font-ui);
   font-size: 0.875rem;
   padding: 0.5rem 0.75rem;
-  border: 1px solid #D0D0D0;
+  border: 1px solid var(--border);
   border-radius: 0.375rem;
   font-variant-numeric: tabular-nums;
 }
 
 .filter-calendar .p-datepicker-trigger {
-  color: var(--primary-color, #0f766e);
+  color: var(--primary-color);
 }

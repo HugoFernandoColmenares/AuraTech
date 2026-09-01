@@ -4,7 +4,7 @@
 
 .view-controls-host--bordered {
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--color-border, #E0E0E0);
+  border-bottom: 1px solid var(--border);
 }
 
 .header-titles {

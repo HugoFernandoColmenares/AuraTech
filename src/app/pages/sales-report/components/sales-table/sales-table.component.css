@@ -23,7 +23,7 @@
 .v-divider-sm {
   height: 2.5rem;
   width: 1px;
-  background: var(--color-border, #E0E0E0);
+  background: var(--border);
   flex-shrink: 0;
 }
 
@@ -37,14 +37,14 @@
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: #888;
+  color: var(--text-muted);
   font-weight: 700;
 }
 
 /* Results count */
 .results-count {
   font-size: 0.875rem;
-  color: #333;
+  color: var(--text-color);
 }
 
 /* Compact Data Table overrides (scoped to this component only) */
@@ -64,8 +64,8 @@
 /* Table section container */
 .table-section {
   width: 100%;
-  background: var(--color-white, #FFF);
-  border-radius: 0 0 var(--radius-s, 0.25rem) var(--radius-s, 0.25rem);
+  background: var(--surface);
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
   overflow: hidden;
   padding-top: 0.5rem;
 }
@@ -84,7 +84,7 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: var(--overlay);
   backdrop-filter: blur(4px);
   z-index: 1000;
   display: flex;

@@ -3,32 +3,32 @@
 }
 
 .data-source-indicator__trigger {
-  border: 1px solid var(--color-border, #e0e0e0);
-  background: var(--color-white, #fff);
-  border-radius: var(--radius-s, 0.25rem);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
   padding: 0.4rem 0.65rem;
   font-size: 0.85rem;
   cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color var(--transition), box-shadow var(--transition);
 }
 
 .data-source-indicator__trigger:hover,
 .data-source-indicator__trigger:focus-visible {
-  border-color: var(--primary-color, #0f766e);
-  box-shadow: 0 0 0 2px rgba(15, 118, 110, 0.12);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--focus-ring);
   outline: none;
 }
 
 .data-source-indicator__trigger--session {
-  border-color: rgba(19, 78, 74, 0.35);
+  border-color: var(--primary-tint);
 }
 
 .data-source-indicator__trigger--database {
-  border-color: rgba(33, 150, 243, 0.35);
+  border-color: color-mix(in srgb, var(--info) 45%, transparent);
 }
 
 .data-source-indicator__trigger--mixed {
-  border-color: rgba(15, 118, 110, 0.45);
+  border-color: var(--primary-color);
 }
 
 .data-source-indicator__icon {
@@ -45,8 +45,8 @@
   min-width: 1.25rem;
   padding: 0.1rem 0.35rem;
   border-radius: 999px;
-  background: var(--primary-color, #0f766e);
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--on-primary);
   font-size: 0.75rem;
   font-weight: 700;
   text-align: center;
@@ -65,15 +65,15 @@
   z-index: 50;
   min-width: 18rem;
   max-width: 22rem;
-  background: var(--color-white, #fff);
-  border: 1px solid var(--color-border, #e0e0e0);
-  border-radius: var(--radius-s, 0.25rem);
-  box-shadow: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.12);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
 }
 
 .data-source-indicator__panel-title {
   margin: 0;
-  font-family: 'Figtree', sans-serif;
+  font-family: var(--font-ui);
   font-size: 1rem;
 }
 
@@ -85,7 +85,7 @@
 
 .data-source-indicator__row {
   padding: 0.35rem 0;
-  border-bottom: 1px dashed var(--color-border, #e0e0e0);
+  border-bottom: 1px dashed var(--border);
   font-size: 0.9rem;
 }
 
@@ -97,5 +97,5 @@
   margin: 0;
   font-size: 0.8rem;
   line-height: 1.5;
-  color: var(--color-gray-dark, #555);
+  color: var(--text-muted);
 }

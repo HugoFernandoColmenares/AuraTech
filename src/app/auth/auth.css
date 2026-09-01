@@ -1,10 +1,5 @@
 :host {
-  --color-primary: var(--surface);
-  --color-secondary: var(--primary-color);
-  --color-tertiary: var(--text-color);
-  --color-accent: var(--border);
-  --font-primary: 'Figtree', sans-serif;
-  --font-secondary: 'Figtree', sans-serif;
+  --font-primary: var(--font-ui);
 }
 
 .auth-wrapper {
@@ -16,7 +11,6 @@
   background-image:
     radial-gradient(ellipse at 10% 0%, color-mix(in srgb, var(--primary-color) 12%, transparent), transparent 55%),
     radial-gradient(ellipse at 90% 100%, color-mix(in srgb, var(--primary-color) 8%, transparent), transparent 50%);
-  background-size: auto, auto;
 }
 
 .auth-container {
@@ -25,8 +19,8 @@
   padding: clamp(1.25rem, 4vw, 2rem);
   background-color: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 0.75rem;
-  box-shadow: 0 0.75rem 2rem rgba(26, 35, 50, 0.08);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
 }
 
 .auth-theme-toggle {
@@ -36,9 +30,9 @@
   border: 1px solid var(--border);
   background: var(--surface);
   color: var(--text-color);
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
   padding: 0.45rem 0.75rem;
-  font-family: var(--font-primary);
+  font-family: var(--font-ui);
   font-size: 0.8125rem;
   font-weight: 600;
   cursor: pointer;
@@ -53,13 +47,13 @@
   position: absolute;
   top: -3rem;
   left: 1rem;
-  background: var(--color-secondary);
+  background: var(--primary-color);
   color: var(--on-primary);
   padding: 0.5rem 1rem;
   z-index: 100;
   transition: top 0.3s ease;
-  font-family: var(--font-primary);
-  border-radius: 0.25rem;
+  font-family: var(--font-ui);
+  border-radius: var(--radius-sm);
 }
 
 .skip-link:focus {

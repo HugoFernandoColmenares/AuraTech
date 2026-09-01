@@ -33,7 +33,7 @@
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--overlay);
   z-index: 150;
   backdrop-filter: blur(2px);
   transition: opacity 0.3s ease;
@@ -54,7 +54,7 @@
     z-index: 200;
     transform: translateX(-100%);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 10px 0 25px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-lg);
     border-right: none;
   }
 

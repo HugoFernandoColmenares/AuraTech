@@ -33,7 +33,7 @@
 .style-name-hint-text {
   color: var(--text-color);
   font-style: italic;
-  font-size: var(--fs-label, 0.8125rem);
+  font-size: var(--fs-label);
 }
 
 /* Dropdown menus */
@@ -46,11 +46,11 @@
 }
 
 .category-group:not(:last-child) {
-  border-bottom: 1px solid var(--color-border, #EEE);
+  border-bottom: 1px solid var(--border);
 }
 
 .group-header {
-  color: var(--primary-color, #134e4a);
+  color: var(--primary-color);
   font-weight: 700;
 }
 
@@ -71,7 +71,7 @@
   flex-wrap: wrap;
   align-items: center;
   gap: 1.25rem !important;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+  box-shadow: var(--shadow-sm);
 }
 
 .filters-bar__trailing {
@@ -87,7 +87,7 @@
 }
 
 .kpi-meta--warning {
-  color: #b45309;
+  color: var(--warning);
   font-style: italic;
 }
 
@@ -104,11 +104,11 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  color: var(--primary-color, #134e4a);
+  color: var(--primary-color);
   padding: 0.125rem 0.5rem;
-  border: 1px solid rgba(19, 78, 74, 0.25);
-  border-radius: 0.25rem;
-  background: rgba(19, 78, 74, 0.05);
+  border: 1px solid var(--primary-tint);
+  border-radius: var(--radius-sm);
+  background: var(--primary-soft);
 }
 
 .kpi-value--muted {
@@ -124,8 +124,8 @@
 }
 
 .kpi-card--collapsible:hover {
-  border-color: rgba(19, 78, 74, 0.22);
-  box-shadow: 0 4px 18px rgba(19, 78, 74, 0.07);
+  border-color: var(--primary-tint);
+  box-shadow: var(--shadow-md);
 }
 
 .kpi-card--collapsible.collapsed {
@@ -154,15 +154,15 @@
 }
 
 .kpi-card--collapsible .kpi-toggle-btn:hover {
-  background: rgba(19, 78, 74, 0.08);
-  color: var(--secondary-color, #134e4a);
+  background: var(--primary-soft);
+  color: var(--primary-color);
 }
 
 .kpi-card--collapsible .kpi-toggle-btn:focus-visible {
   outline: none;
-  background: rgba(19, 78, 74, 0.1);
-  color: var(--secondary-color, #134e4a);
-  box-shadow: 0 0 0 2px rgba(19, 78, 74, 0.18);
+  background: var(--primary-tint);
+  color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--focus-ring);
 }
 
 .chevron {
@@ -191,10 +191,10 @@
   top: 100%;
   left: 0;
   z-index: 10;
-  background: var(--color-white, #FFF);
+  background: var(--surface);
   border-radius: 0.25rem;
   min-width: 9.5rem;
-  border: 1px solid var(--color-border, #EEE);
+  border: 1px solid var(--border);
 }
 
 .dropdown-menu-wide {
@@ -205,7 +205,7 @@
 
 /* Select All separator inside dropdown */
 .dropdown-select-all {
-  border-bottom: 1px solid var(--color-border, #EEE);
+  border-bottom: 1px solid var(--border);
   padding-bottom: 0.5rem;
   font-weight: 700;
 }
@@ -217,9 +217,9 @@
   min-height: 14rem;
   max-height: min(22rem, 42vh);
   height: clamp(14rem, 24vw, 22rem);
-  border: 1px dashed var(--color-border, #E0E0E0);
+  border: 1px dashed var(--border);
   border-radius: 0.375rem;
-  background: #FAFAFA;
+  background: var(--surface-muted);
 }
 
 @media (min-width: 90rem) {
@@ -242,10 +242,10 @@
   width: 1.25rem;
   height: 1.25rem;
   padding: 0;
-  border: 1px solid var(--primary-color, #134e4a);
+  border: 1px solid var(--primary-color);
   border-radius: 50%;
-  background: var(--color-white, #FFF);
-  color: var(--primary-color, #134e4a);
+  background: var(--surface);
+  color: var(--primary-color);
   font-size: 0.75rem;
   font-weight: 700;
   line-height: 1;
@@ -258,8 +258,8 @@
 
 .kpi-info-btn:hover,
 .kpi-info-btn:focus-visible {
-  background: var(--primary-color, #134e4a);
-  color: var(--color-white, #FFF);
+  background: var(--primary-color);
+  color: var(--on-primary);
   outline: none;
 }
 
@@ -269,9 +269,9 @@
 
 .analytics-loading {
   min-height: 12rem;
-  background: var(--color-white, #FFF);
-  border-radius: var(--radius-m, 0.5rem);
-  border: 1px solid var(--color-border, #E0E0E0);
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
 }
 
 .chart-wrapper--yoy {
@@ -281,7 +281,7 @@
 /* ── Mobile Responsiveness ──────────────────────────────────────────────── */
 @media (max-width: 768px) {
   .analytics-layout {
-    gap: var(--gap-m, 1rem);
+    gap: var(--gap-m);
   }
 
   .chart-type-tags {
@@ -316,9 +316,9 @@
 
   .yoy-controls .checkbox-container {
     padding: 0.5rem;
-    border: 1px solid var(--color-border, #EEE);
+    border: 1px solid var(--border);
     border-radius: 0.25rem;
-    background: #FAFAFA;
+    background: var(--surface-muted);
   }
 
   .filters-bar--collapsible {

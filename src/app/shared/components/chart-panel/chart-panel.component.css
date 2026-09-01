@@ -11,8 +11,8 @@
   gap: 0.75rem;
   width: 100%;
   padding: 1rem;
-  background: rgba(19, 78, 74, 0.03);
-  border: 1px solid rgba(19, 78, 74, 0.12);
+  background: var(--primary-soft);
+  border: 1px solid var(--primary-tint);
   border-radius: 0.25rem;
 }
 
@@ -29,7 +29,7 @@
 
 .chart-panel-header__row--secondary {
   padding-top: 0.75rem;
-  border-top: 1px solid rgba(192, 192, 192, 0.5);
+  border-top: 1px solid var(--border);
 }
 
 .chart-panel-header__row--secondary:empty {
@@ -39,7 +39,7 @@
 }
 
 .chart-title {
-  font-family: var(--font-secondary, 'Figtree', sans-serif);
+  font-family: var(--font-ui);
   font-size: 1.125rem;
   font-weight: 700;
   color: var(--text-color);

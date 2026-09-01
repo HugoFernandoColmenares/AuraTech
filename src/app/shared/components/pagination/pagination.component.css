@@ -3,12 +3,12 @@
   justify-content: space-between;
   align-items: center;
   padding: 1.5rem 0 0.5rem 0;
-  border-top: 1px solid var(--secondary-color, #134e4a);
+  border-top: 1px solid var(--primary-color);
 }
 
 .pagination-info {
   font-size: 0.875rem;
-  color: var(--tertiary-color, #000000);
+  color: var(--text-color);
 }
 
 .pagination-controls {
@@ -18,40 +18,20 @@
 }
 
 .page-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 2rem;
-  height: 2rem;
-  padding: 0 0.5rem;
-  border: 1px solid var(--accent-color, #94a3b8);
   background: transparent;
-  color: var(--tertiary-color, #000000);
-  cursor: pointer;
-  font-size: 0.875rem;
-  transition: all 0.3s ease;
-  border-radius: 0.25rem;
+  color: var(--text-color);
+  border-color: var(--accent-color);
+  font-weight: 400;
 }
 
 .page-btn:hover:not(:disabled) {
-  border-color: var(--secondary-color, #134e4a);
-  color: var(--secondary-color, #134e4a);
-}
-
-.page-btn.active {
-  background: var(--secondary-color, #134e4a);
-  border-color: var(--secondary-color, #134e4a);
-  color: white;
-}
-
-.page-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  border-color: var(--primary-color);
+  color: var(--primary-color);
 }
 
 .page-ellipsis {
   padding: 0 0.25rem;
-  color: var(--accent-color, #94a3b8);
+  color: var(--accent-color);
 }
 
 @media (max-width: 640px) {
